@@ -1,0 +1,45 @@
+{
+  "id": "a35db766-52e7-429a-94e1-847851f1944a",
+  "name": "Acumens Item Ledger Compression",
+  "publisher": "SBC Dynamics ERP",
+  "version": "28.1023.0.0",
+  "brief": "Acumens Item Ledger Compression",
+  "description": "Acumens Item Ledger Compression",
+  "privacyStatement": "https://www.sbcdynamicserp.com/privacy-policy/",
+  "EULA": "https://www.sbcdynamicserp.com/end-user-license-agreement/",
+  "help": "https://www.sbcdynamicserp.com/support/?starterpackforarmadaeqmrentalapp=yes",
+  "url": "https://www.sbcdynamicserp.com/acumens-starter-pack-for-armada-eqm-rental/",
+  
+  "contextSensitiveHelpUrl": "https://www.sbcdynamicserp.com/acumens-starter-pack-for-armada-eqm-rental/",
+  "applicationInsightsConnectionString": "InstrumentationKey=ba4686d0-d97a-4532-b53c-7ece85786a03;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=5a99d773-71c1-4ae0-86de-4989e2a06e51",
+  
+  "dependencies": [
+
+      {
+        "id": "ad778411-e5f3-4d7e-9077-37cde7758cdb",
+        "name": "Acumens Cash Flow Solutions",
+        "publisher":  "SBC Dynamics ERP",
+        "version":  "22.1023.1.63"
+      }
+  ],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "27.0.0.0",
+  "idRanges": [
+    {
+      "from": 14305124,
+      "to": 14305343
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": false,
+    "includeSourceInSymbolFile": false
+  },
+  "runtime": "14.0",
+  "features": [
+    "NoImplicitWith",
+    "TranslationFile"
+  ],
+  "target": "Cloud"
+}

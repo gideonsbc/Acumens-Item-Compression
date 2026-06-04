@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="en-US" target-language="en-US" original="Acumens Item Ledger Compression">
+    <body>
+      <group id="body">
+        <trans-unit id="Table 1132973549 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Quantity vs Remaining</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Item Quantity vs Remaining - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1132973549 - Field 3581858122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Applied Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Item Quantity vs Remaining - Field Applied Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1132973549 - Field 503024588 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Comments</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Item Quantity vs Remaining - Field Comments - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1132973549 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Item Quantity vs Remaining - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1132973549 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Item Quantity vs Remaining - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1132973549 - Field 2704404533 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Item Quantity vs Remaining - Field Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 1132973549 - Field 2367056265 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Remaining Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Item Quantity vs Remaining - Field Remaining Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 3087706269 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Applied Quanty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Applied Quanty - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 2818869259 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Last Puchase/ +Ve Unit Cost</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Last Puchase/ +Ve Unit Cost - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 1351033643 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Net Qty On Hand</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Net Qty On Hand - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 3613330850 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qty On Hand</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Qty On Hand - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 1038849004 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Season Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Season Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 4126842061 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Shortcut Dimension 6 Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Shortcut Dimension 6 Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1366355712 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check ILE &amp; Its Application</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Check ILE &amp; Its Application - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1366355712 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Check ILE &amp; Its Application - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 2443914472 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check Item Remaining Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Check Item Remaining Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 664826842 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compress Additional Tables Rec</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Compress Additional Tables Rec - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2012054186 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create ILE Entries using QoH</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Create ILE Entries using QoH - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2012054186 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Item No.  ########1#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Create ILE Entries using QoH - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 1554922445 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create Item Application</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Create Item Application - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 579273333 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create Missing ILEs</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Create Missing ILEs - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 579273333 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Create Missing ILEs - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 1729275727 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delete ILE and VLE</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Delete ILE and VLE - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1729275727 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Item No.  ########1#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Delete ILE and VLE - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 1729275727 - NamedType 3752334001" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Do you want to run batch process for below filters?\</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Delete ILE and VLE - NamedType Text002</note>
+        </trans-unit>
+        <trans-unit id="Report 1729275727 - NamedType 95063322" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deleted ILE Count %1\VLE Count %2</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Delete ILE and VLE - NamedType Text003</note>
+        </trans-unit>
+        <trans-unit id="Report 261484043 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Delete Orphan Item Appl. Entry</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Delete Orphan Item Appl. Entry - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 261484043 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Delete Orphan Item Appl. Entry - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 3644501486 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Generate Quantity On Hand</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3644501486 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Item No. ###########1######</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 3644501486 - NamedType 3752334001" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Ledger Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text002</note>
+        </trans-unit>
+        <trans-unit id="Report 3644501486 - NamedType 95063322" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Value Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text003</note>
+        </trans-unit>
+        <trans-unit id="Report 3644501486 - NamedType 732759939" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Application Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text004</note>
+        </trans-unit>
+        <trans-unit id="Report 3644501486 - NamedType 1370456556" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Are batch processes Report 795 "Adjust Cost - Item Entries" and Report 1002 "Post Inventory Cost to G/L" completed?</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text005</note>
+        </trans-unit>
+        <trans-unit id="Report 3644501486 - NamedType 2008153173" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Report Execution is aborted to respect user's decision.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text006</note>
+        </trans-unit>
+        <trans-unit id="Report 2215297186 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Move ILE To Old Number</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Move ILE To Old Number - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2215297186 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Move ILE To Old Number - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 1536109673 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Open All Items for Adjustment</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report Open All Items for Adjustment - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="PermissionSet 2953152544 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Acumens Item Ledger Compression</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">PermissionSet AQD Item Ldgr Comprs - Property Caption</note>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

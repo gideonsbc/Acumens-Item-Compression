@@ -1,0 +1,2083 @@
+OBJECT Report 85295 Check Item Remaining Quantity
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/04/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE, Verify ILE sum of Quantity Remaining Quantity Match;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+  }
+  DATAITEMS
+  {
+    { PROPERTIES
+      {
+        DataItemTable=Table27;
+        OnPreDataItem=BEGIN
+                        Window.OPEN(Text001);
+                        StartTime := TIME;
+                        Counter := 0;
+                      END;
+
+        OnAfterGetRecord=BEGIN
+                           IF (Counter MOD 1000) = 0 THEN
+                             Window.UPDATE(1,FORMAT((Counter DIV 1000)) + '->' + "No.");
+
+                           Counter := Counter + 1;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         ItemQtyVsRemainingQty.RESET;
+                         IF ItemQtyVsRemainingQty.FINDFIRST THEN BEGIN
+                           REPEAT
+                             IF ItemQtyVsRemainingQty.Quantity = ItemQtyVsRemainingQty."Remaining Quantity" THEN
+                               ItemQtyVsRemainingQty.DELETE;
+                           UNTIL ItemQtyVsRemainingQty.NEXT = 0;
+                         END;
+
+                         Window.CLOSE;
+                         MESSAGE('Batch Process is completed - Check Item Remaining Quantity\\Start Time: %1 End Time: %2',StartTime,TIME);
+                       END;
+
+        ReqFilterFields=No.;
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+    { PROPERTIES
+      {
+        DataItemIndent=1;
+        DataItemTable=Table32;
+        DataItemTableView=SORTING(Item No.,Posting Date);
+        OnAfterGetRecord=BEGIN
+                           AppliedQuantity := 0;
+
+                           TempItemEntry.DELETEALL;
+                           FindAppliedEntry("Item Ledger Entry");
+                           TempItemEntry.RESET;
+                           IF TempItemEntry.FINDFIRST THEN BEGIN
+                             REPEAT
+                               AppliedQuantity += TempItemEntry.Quantity;
+                             UNTIL TempItemEntry.NEXT = 0;
+                           END;
+
+                           CLEAR(ItemQtyVsRemainingQty);
+                           IF ItemQtyVsRemainingQty.GET("Item Ledger Entry"."Item No.","Item Ledger Entry"."Location Code") THEN BEGIN
+                             ItemQtyVsRemainingQty.Quantity += Quantity;
+                             ItemQtyVsRemainingQty."Remaining Quantity" += "Remaining Quantity";
+                             ItemQtyVsRemainingQty."Applied Quantity" += AppliedQuantity;
+                             IF ABS("Item Ledger Entry".Quantity) - ABS(AppliedQuantity) <> 0 THEN BEGIN
+                               IF STRLEN(ItemQtyVsRemainingQty.Comments) + STRLEN(FORMAT("Entry No."))+1<= MAXSTRLEN(ItemQtyVsRemainingQty.Comments) THEN BEGIN
+                                 IF ItemQtyVsRemainingQty.Comments <> '' THEN
+                                   ItemQtyVsRemainingQty.Comments += ',';
+                                   //ItemQtyVsRemainingQty.Comments += FORMAT(AppliedQuantity);
+
+                                 ItemQtyVsRemainingQty.Comments += FORMAT("Entry No.");
+                               END;
+                             END;
+                             ItemQtyVsRemainingQty.MODIFY;
+                           END ELSE BEGIN
+                             ItemQtyVsRemainingQty.INIT;
+                             ItemQtyVsRemainingQty."Item No." := "Item No.";
+                             ItemQtyVsRemainingQty."Location Code" := "Location Code";
+                             ItemQtyVsRemainingQty.Quantity := Quantity;
+                             ItemQtyVsRemainingQty."Remaining Quantity" := "Remaining Quantity";
+                             IF ABS("Item Ledger Entry".Quantity) - ABS(AppliedQuantity) <> 0 THEN BEGIN
+                               ItemQtyVsRemainingQty."Applied Quantity" := AppliedQuantity;
+                               //ItemQtyVsRemainingQty.Comments := FORMAT(AppliedQuantity);
+                               ItemQtyVsRemainingQty.Comments += FORMAT("Entry No.");
+                             END;
+                             ItemQtyVsRemainingQty.INSERT;
+                           END;
+                         END;
+
+        DataItemLink=Item No.=FIELD(No.);
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      ItemQtyVsRemainingQty@1000000000 : Record 50302;
+      Text001@1000000002 : TextConst 'ENU=Processing Item No.    #1##########;ESM=Nombre secci¢n diario #1##########\\;FRC=Nom de lot du journal    #1##########\\;ENC=Journal Batch Name    #1##########\\';
+      TempItemEntry@1000000003 : TEMPORARY Record 32;
+      Window@1000000001 : Dialog;
+      AppliedQuantity@1000000004 : Decimal;
+      StartTime@1000000005 : Time;
+      Counter@1000000006 : Integer;
+
+    LOCAL PROCEDURE FindAppliedEntry@2(ItemLedgEntry@1000 : Record 32);
+    VAR
+      ItemApplnEntry@1001 : Record 339;
+    BEGIN
+      WITH ItemLedgEntry DO BEGIN
+        IF Positive THEN BEGIN
+          ItemApplnEntry.RESET;
+          ItemApplnEntry.SETCURRENTKEY("Inbound Item Entry No.","Outbound Item Entry No.","Cost Application");
+          ItemApplnEntry.SETRANGE("Inbound Item Entry No.","Entry No.");
+          ItemApplnEntry.SETFILTER("Outbound Item Entry No.",'<>%1',0);
+          //ItemApplnEntry.SETRANGE("Cost Application",TRUE);
+          IF ItemApplnEntry.FIND('-') THEN
+            REPEAT
+              InsertTempEntry(ItemApplnEntry."Outbound Item Entry No.",ItemApplnEntry.Quantity);
+            UNTIL ItemApplnEntry.NEXT = 0;
+        END ELSE BEGIN
+          ItemApplnEntry.RESET;
+          ItemApplnEntry.SETCURRENTKEY("Outbound Item Entry No.","Item Ledger Entry No.","Cost Application");
+          ItemApplnEntry.SETRANGE("Outbound Item Entry No.","Entry No.");
+          ItemApplnEntry.SETRANGE("Item Ledger Entry No.","Entry No.");
+          //ItemApplnEntry.SETRANGE("Cost Application",TRUE);
+          IF ItemApplnEntry.FIND('-') THEN
+            REPEAT
+              InsertTempEntry(ItemApplnEntry."Inbound Item Entry No.",-ItemApplnEntry.Quantity);
+            UNTIL ItemApplnEntry.NEXT = 0;
+        END;
+      END;
+    END;
+
+    LOCAL PROCEDURE InsertTempEntry@1(EntryNo@1000 : Integer;AppliedQty@1001 : Decimal);
+    VAR
+      ItemLedgEntry@1002 : Record 32;
+    BEGIN
+      ItemLedgEntry.GET(EntryNo);
+      IF AppliedQty * ItemLedgEntry.Quantity < 0 THEN
+        EXIT;
+
+      IF NOT TempItemEntry.GET(EntryNo) THEN BEGIN
+        TempItemEntry.INIT;
+        TempItemEntry := ItemLedgEntry;
+        TempItemEntry.Quantity := AppliedQty;
+        TempItemEntry.INSERT;
+      END ELSE BEGIN
+        TempItemEntry.Quantity := TempItemEntry.Quantity + AppliedQty;
+        TempItemEntry.MODIFY;
+      END;
+    END;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85296 1 Generate Quantity On Hand
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/03/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+    OnPreReport=BEGIN
+                  // Check Item Ledger Entry, Value Entry or Item Application Entry backup are taken
+                  IF ItemLdgrEntryBkpT50123.ISEMPTY THEN
+                    ERROR(Text002);
+
+                  IF ValueEntryBkpT50124.ISEMPTY THEN
+                    ERROR(Text003);
+
+                  IF ItemApplicationEntryBkpT50125.ISEMPTY THEN
+                    ERROR(Text004);
+
+                  IF NOT CONFIRM(Text005,FALSE) THEN
+                    ERROR(Text006);
+                END;
+
+  }
+  DATAITEMS
+  {
+    { PROPERTIES
+      {
+        DataItemTable=Table27;
+        DataItemTableView=SORTING(No.);
+        OnPreDataItem=BEGIN
+                        MaxPostingDate := DMY2DATE(1,1,2015);
+
+                        IF QoH.FINDLAST THEN
+                          LastQoHEntryNo := QoH."Entry No" +1
+                        ELSE
+                          LastQoHEntryNo := 1;
+
+                        Window.OPEN(Text001);
+                        StartTime := TIME;
+                        Counter := 0;
+                      END;
+
+        OnAfterGetRecord=BEGIN
+                           IF (Counter MOD 1000) = 0 THEN
+                             Window.UPDATE(1,FORMAT((Counter DIV 1000)) + '->' + "No.");
+
+                           QoH.RESET;
+                           QoH.SETRANGE("Item No.","No.");
+                           QoH.DELETEALL;
+                           Counter := Counter + 1;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         Window.CLOSE();
+                         MESSAGE('Batch process execution is completed - 1 Generate Quantity On Hand\\Start Time: %1 End Time: %2',StartTime,TIME);
+                       END;
+
+        ReqFilterFields=No.;
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+    { PROPERTIES
+      {
+        DataItemIndent=1;
+        DataItemTable=Table32;
+        DataItemTableView=SORTING(Item No.,Posting Date);
+        OnAfterGetRecord=VAR
+                           VLE@1000000000 : Record 5802;
+                         BEGIN
+                           QoH.RESET;
+                           QoH.SETRANGE("Item No.","Item No.");
+                           QoH.SETRANGE("Location Code","Location Code");
+                           IF QoH.FINDFIRST THEN BEGIN
+                             QoH."Qty On Hand" += Quantity;
+                             IF "Entry Type" IN ["Entry Type"::Purchase,"Entry Type"::"Positive Adjmt."] THEN BEGIN
+                               CALCFIELDS("Cost Amount (Expected)","Cost Amount (Actual)");
+                               IF "Cost Amount (Actual)" <> 0 THEN
+                                 QoH."Last Puchase/ +Ve Unit Cost" := "Cost Amount (Actual)" / "Invoiced Quantity"
+                               ELSE
+                                 QoH."Last Puchase/ +Ve Unit Cost" := "Cost Amount (Expected)" / Quantity;
+                             END;
+                             QoH.MODIFY;
+                           END ELSE BEGIN
+                             QoH.INIT;
+                             QoH."Entry No" := LastQoHEntryNo;
+                             QoH."Item No." := "Item No.";
+                             QoH."Location Code" := "Location Code";
+                             QoH."Qty On Hand" := Quantity;
+                             IF "Entry Type" IN ["Entry Type"::Purchase,"Entry Type"::"Positive Adjmt."] THEN BEGIN
+                               CALCFIELDS("Cost Amount (Expected)","Cost Amount (Actual)");
+                               IF "Cost Amount (Actual)" <> 0 THEN
+                                 QoH."Last Puchase/ +Ve Unit Cost" := "Cost Amount (Actual)" / "Invoiced Quantity"
+                               ELSE
+                                 QoH."Last Puchase/ +Ve Unit Cost" := "Cost Amount (Expected)" / Quantity;
+                             END;
+                             QoH.INSERT;
+                             LastQoHEntryNo += 1;
+                           END;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         QoH.RESET;
+                         QoH.SETRANGE("Item No.",Item."No.");
+                         QoH.SETRANGE("Qty On Hand",0);
+                         QoH.DELETEALL;
+                       END;
+
+        ReqFilterFields=Posting Date;
+        DataItemLink=Item No.=FIELD(No.);
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      QoH@1000000000 : Record 50301;
+      LastQoHEntryNo@1000000001 : Integer;
+      Text001@1000000002 : TextConst 'ENU=Processing Item No.    #1##########;ESM=Nombre secci¢n diario #1##########\\;FRC=Nom de lot du journal    #1##########\\;ENC=Journal Batch Name    #1##########\\';
+      Window@1000000003 : Dialog;
+      ItemLdgrEntryBkpT50123@1000000004 : Record 50303;
+      ValueEntryBkpT50124@1000000005 : Record 50304;
+      ItemApplicationEntryBkpT50125@1000000006 : Record 50305;
+      Text002@1000000007 : TextConst 'ENU=Item Ledger Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.';
+      Text003@1000000008 : TextConst 'ENU=Value Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.';
+      Text004@1000000009 : TextConst 'ENU=Item Application Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.';
+      Text005@1000000010 : TextConst 'ENU=Are batch processes Report 795 "Adjust Cost - Item Entries" and Report 1002 "Post Inventory Cost to G/L" completed?';
+      Text006@1000000011 : TextConst 'ENU=Report Execution is aborted to respect user''s decision.';
+      ItemApplicationEntry@1000000013 : Record 339;
+      MaxPostingDate@1000000014 : Date;
+      StartTime@1000000012 : Time;
+      Counter@1000000015 : Integer;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85297 2 Delete ILE and VLE
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/03/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE, Delete ILE and VLE after giving Date filters after Creating QoH;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+    OnPreReport=BEGIN
+                  IF NOT CONFIRM(Text002 + Item.GETFILTERS + '\' + "Item Ledger Entry".GETFILTERS) THEN BEGIN
+                    ERROR('Report is aborted');
+                    CurrReport.BREAK;
+                  END;
+                END;
+
+  }
+  DATAITEMS
+  {
+    { PROPERTIES
+      {
+        DataItemTable=Table27;
+        DataItemTableView=SORTING(No.);
+        OnPreDataItem=BEGIN
+                        MaxPostingDate := DMY2DATE(1,1,2015);
+
+                        Window.OPEN(Text001);
+                        Counter := 0;
+                        StartTime := TIME;
+                      END;
+
+        OnAfterGetRecord=BEGIN
+                           IF COUNT MOD 1000 = 0 THEN
+                             Window.UPDATE(1,FORMAT(Counter DIV 1000) + '->' + "No.");
+                           Counter := Counter + 1;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         Window.CLOSE();
+
+                         MESSAGE('Batch process execution is completed - 2 Delete ILE and VLE\\Start Time: %1 End Time: %2' +
+                           '\\Deleted ILE Count %3\\VLE Count %4',StartTime,TIME,ILEDeleteCount,VLEDeleteCount);
+                       END;
+
+        ReqFilterFields=No.;
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+    { PROPERTIES
+      {
+        DataItemIndent=1;
+        DataItemTable=Table32;
+        DataItemTableView=SORTING(Item No.,Posting Date);
+        OnAfterGetRecord=BEGIN
+                           IF "Document No." IN ['QOH-123114' , 'MILE-123114'] THEN
+                             CurrReport.SKIP;
+
+                           ValueEntry.RESET;
+                           ValueEntry.SETCURRENTKEY("Item Ledger Entry No.","Entry Type");
+                           ValueEntry.SETRANGE("Item Ledger Entry No.","Entry No.");
+                           ValueEntry.SETFILTER("Posting Date",'<%1',MaxPostingDate);
+                           VLEDeleteCount += ValueEntry.COUNT;
+                           ValueEntry.DELETEALL;
+
+                           DELETE;
+                           ILEDeleteCount += 1;
+                         END;
+
+        ReqFilterFields=Posting Date;
+        DataItemLink=Item No.=FIELD(No.);
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      Text001@1000000002 : TextConst 'ENU=Processing Item No.    #1##########;ESM=Nombre secci¢n diario #1##########\\;FRC=Nom de lot du journal    #1##########\\;ENC=Journal Batch Name    #1##########\\';
+      ValueEntry@1000000000 : Record 5802;
+      Window@1000000003 : Dialog;
+      MaxPostingDate@1000000001 : Date;
+      Text002@1000000004 : TextConst 'ENU=Do you want to run batch process for below filters?\\';
+      ILEDeleteCount@1000000005 : Integer;
+      VLEDeleteCount@1000000006 : Integer;
+      Text003@1000000007 : TextConst 'ENU=Deleted ILE Count %1\\VLE Count %2';
+      Counter@1000000008 : Integer;
+      StartTime@1000000009 : Time;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85298 3 Create Missing ILEs
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/04/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE, Create ILE which was open as of 12142014 but closed afterward;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+  }
+  DATAITEMS
+  {
+    { PROPERTIES
+      {
+        DataItemTable=Table27;
+        OnPreDataItem=BEGIN
+                        Window.OPEN(Text001);
+                        Counter := 0;
+                        StartTime := TIME;
+                      END;
+
+        OnAfterGetRecord=BEGIN
+                           IF COUNT MOD 1000 = 0 THEN
+                             Window.UPDATE(1,FORMAT(Counter DIV 1000) + '->' + "No.");
+
+                           Counter := Counter + 1;
+
+                           QoHRec.RESET;
+                           QoHRec.SETRANGE("Item No." , "No.");
+                           QoHRec.MODIFYALL("Applied Quanty" , 0);
+                           //ItemR.GET( "Quantity on Hand"."Item No.");
+                           QoH.RESET;
+                           QoH.SETRANGE("Item No." , "No.");
+                           IF NOT QoH.FIND('-') THEN
+                             CurrReport.SKIP;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         Window.CLOSE();
+                         MESSAGE('Batch process execution is completed - 3 Create Missing ILEs\\Start Time: %1 End Time: %2',StartTime,TIME);
+                       END;
+
+        ReqFilterFields=No.;
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+    { PROPERTIES
+      {
+        DataItemIndent=1;
+        DataItemTable=Table32;
+        DataItemTableView=SORTING(Item No.,Variant Code,Location Code,Posting Date);
+        DataItemVarName=ILE;
+        OnAfterGetRecord=BEGIN
+                           IF "Document No." IN ['QOH-123114' , 'MILE-123114'] THEN
+                             CurrReport.SKIP;
+
+                           //>> SBC 2019-07-23
+                           QoH.RESET;
+                           QoH.SETRANGE("Item No." , "Item No.");
+                           QoH.SETRANGE("Location Code" , "Location Code");
+                           IF QoH.ISEMPTY THEN
+                             CurrReport.SKIP;
+                           //<< SBC 2019-07-23
+
+                           ItemApplicationEntry.SETRANGE("Item Ledger Entry No." , ILE."Entry No.");
+                           IF ItemApplicationEntry.FINDSET THEN
+                             REPEAT
+                               IF ILE.Positive THEN BEGIN
+                                 IF ItemApplicationEntry."Outbound Item Entry No." <> 0 THEN BEGIN
+                                   IF (NOT AppliedILE.GET( ItemApplicationEntry."Outbound Item Entry No." ))  THEN
+                                     CreateMissingILE(TRUE)
+                                   ELSE BEGIN
+                                    IF AppliedILE."Posting Date" = 123114D THEN
+                                      ModifyILE(TRUE)
+                                   END
+                                 END;
+                               END ELSE BEGIN
+                                 IF ItemApplicationEntry."Inbound Item Entry No." <> 0 THEN BEGIN
+                                   IF (NOT AppliedILE.GET( ItemApplicationEntry."Inbound Item Entry No." ))  THEN
+                                     CreateMissingILE(FALSE)
+                                   ELSE BEGIN
+                                     IF AppliedILE."Posting Date" = 123114D THEN
+                                      ModifyILE(FALSE)
+                                   END;
+                                 END;
+                               END;
+                             UNTIL ItemApplicationEntry.NEXT = 0
+                         END;
+
+        DataItemLink=Item No.=FIELD(No.);
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      AppliedILE@1000000000 : Record 32;
+      AppliedVE@1000000001 : Record 5802;
+      ItemApplicationEntry@1000000002 : Record 339;
+      QoHRec@1000000003 : Record 50301;
+      LED@1000000004 : Record 355;
+      ItemR@1000000005 : Record 27;
+      QoH@1000000006 : Record 50301;
+      VE@1000000007 : Record 5802;
+      Text001@1000000008 : TextConst 'ENU=Processing Item No.    #1##########;ESM=Nombre secci¢n diario #1##########\\;FRC=Nom de lot du journal    #1##########\\;ENC=Journal Batch Name    #1##########\\';
+      Window@1000000009 : Dialog;
+      Counter@1000000011 : Integer;
+      StartTime@1000000010 : Time;
+
+    PROCEDURE CreateMissingILE@1000000000(OutBound@1000000000 : Boolean);
+    BEGIN
+      WITH AppliedILE DO BEGIN
+        //INIT; // SBC 2019-07-28 It slower performance very much
+        IF OutBound THEN
+          "Entry No." := ItemApplicationEntry."Outbound Item Entry No."
+        ELSE
+          "Entry No." := ItemApplicationEntry."Inbound Item Entry No.";
+
+        LED.SETRANGE("Table ID" , 5802);
+        LED.SETRANGE("Entry No." , AppliedILE."Entry No."-500000);//9511464
+        LED.DELETEALL;
+
+        LED.SETRANGE("Table ID" , 32);
+        LED.SETRANGE("Entry No." , AppliedILE."Entry No.");//9511464
+        LED.DELETEALL;
+
+        "Item No." := ILE."Item No.";//ST5498
+        "Posting Date" := 123114D;//1/5/2015
+
+        IF ItemApplicationEntry.Quantity < 0 THEN BEGIN
+          "Entry Type" := "Entry Type"::"Positive Adjmt."  ;
+          Positive := TRUE;
+        END ELSE
+          "Entry Type" := "Entry Type"::"Negative Adjmt.";
+
+        "Document No." := 'MILE-123114';//MO102890
+        "Location Code" := ILE."Location Code";//STOCKROOM
+        Quantity := - ItemApplicationEntry.Quantity;//-26
+        "Remaining Quantity" := 0;//0
+        "Invoiced Quantity" := -ItemApplicationEntry.Quantity;//-26
+        Open := FALSE;
+        //Positive :=  OutBound;
+        "Document Date" := 123114D;//1/5/2015
+        "No. Series" := 'ITEM-MO';
+        "Qty. per Unit of Measure" :=1;
+        "Unit of Measure Code" := 'EA';
+        "Product Group Code" := ILE."Product Group Code";//STONE;
+        //"Global Dimension 1 Code" := '01100';
+        //"Shortcut Dimension 6 Code" := ILE."Shortcut Dimension 6 Code" ; // SBC 2019-06-21
+        "Completely Invoiced" := TRUE;//Yes
+        "Last Invoice Date" := 123114D;//1/5/2015
+        INSERT;
+      END;
+
+      QoHRec.RESET;
+      QoHRec.SETRANGE("Item No.",ILE."Item No.");
+      QoHRec.SETRANGE("Location Code",ILE."Location Code");
+      //>> SBC 2019-06-21
+      //IF ILE."Shortcut Dimension 6 Code" = '' THEN
+      //  QoHRec.SETRANGE("Season Code" , 'Blank')
+      //ELSE
+      //  QoHRec.SETRANGE("Season Code" , ILE."Shortcut Dimension 6 Code");
+
+      //IF NOT QoHRec.FINDFIRST THEN
+      //  QoHRec.SETRANGE("Season Code" , 'Blank');
+      IF ItemApplicationEntry.Quantity < 0 THEN BEGIN // Sales Return Case Sold before 01/01/2015 and return after 01/01/2015
+        IF QoHRec.FINDFIRST THEN BEGIN
+          QoHRec."Applied Quanty" += ItemApplicationEntry.Quantity;
+          QoHRec.MODIFY;
+        END;
+      END;
+      //FieldValue
+      {
+      LED.INIT;
+      LED."Table ID" := 32;
+      LED."Entry No." := AppliedILE."Entry No.";//9511464
+      LED."Dimension Code" :=  'DEPARTMENT';//DEPARTMENT
+      LED."Dimension Value Code" :='01100';
+      LED.INSERT;
+      }
+
+      //>> SBC 2019-06-21
+      {
+      IF ( AppliedILE."Shortcut Dimension 6 Code" <> '' ) THEN BEGIN
+        //FieldValue
+        LED.INIT;
+        LED."Table ID" := 32;
+        LED."Entry No." := AppliedILE."Entry No.";//9511464
+        LED."Dimension Code" :=  'SEASON GROUP';//DEPARTMENT
+        LED."Dimension Value Code" := AppliedILE."Shortcut Dimension 6 Code";
+        LED.INSERT;
+      END;
+      }
+      //<< SBC 2019-06-21
+
+      CreateMissingVE;
+    END;
+
+    PROCEDURE CreateMissingVE@1000000003();
+    BEGIN
+      VE.FINDLAST;
+      VE."Entry No." := VE."Entry No."+1;
+
+      WITH AppliedVE DO BEGIN
+        //INIT; // SBC 2019-07-28  It slower performance very much
+        //"Entry No." := AppliedILE."Entry No."-500000;//17870268
+        "Entry No." := VE."Entry No.";
+        "Item No.":= AppliedILE."Item No.";//ST5498
+        "Posting Date" := 123114D;//1/5/2015
+        IF AppliedILE.Quantity < 0 THEN
+          "Item Ledger Entry Type" := "Item Ledger Entry Type"::"Negative Adjmt."
+        ELSE
+          "Item Ledger Entry Type" := "Item Ledger Entry Type"::"Positive Adjmt.";
+
+        "Document No." := 'MILE-123114';
+        "Location Code" := AppliedILE."Location Code";  //STOCKROOM
+        "Inventory Posting Group" := ItemR."Inventory Posting Group";  //RM-INV
+        "Item Ledger Entry No." := AppliedILE."Entry No.";  //9511464
+        "Valued Quantity" := AppliedILE.Quantity;  //-26
+        "Item Ledger Entry Quantity" := AppliedILE.Quantity;  //-26
+        "Invoiced Quantity" := AppliedILE.Quantity;  //-26
+        "User ID" := 'DPFE';  //MARIAO
+        "Source Code" := 'ITEMJNL';
+        //"Global Dimension 1 Code" := '01100';
+        //"Shortcut Dimension 6 Code" := AppliedILE."Shortcut Dimension 6 Code"; // SBC 2019-06-21
+
+        ILE.CALCFIELDS("Cost Amount (Actual)");
+
+        "Cost per Unit" := 0; //0.04846
+        IF ILE."Invoiced Quantity" <> 0 THEN
+          "Cost per Unit" := ROUND( ILE."Cost Amount (Actual)" / ILE."Invoiced Quantity" ,0.00001);
+
+        "Cost Amount (Actual)" :=  "Cost per Unit" * AppliedILE.Quantity;//-1.26
+        "Cost Posted to G/L" :=  "Cost per Unit" * AppliedILE.Quantity; //-1.26
+        "Journal Batch Name" := 'DPFE';
+        "Gen. Prod. Posting Group" := ItemR."Gen. Prod. Posting Group";//RM
+        "Document Date" := 123114D;//1/5/2015
+        Inventoriable := TRUE;
+        "Valuation Date" := 123114D;//1/5/2015
+        "Entry Type" := "Entry Type"::"Direct Cost";
+        //"Store Code" :=
+        //"Product Code" :=
+        //"SG Code" :=
+        //"Classification Code" :=
+        //"VP Code" :=
+        INSERT;
+      END;
+
+      //FieldValue
+      {
+      LED.INIT;
+      LED."Table ID" := 5802;
+      LED."Entry No." := AppliedVE."Entry No.";//9511464
+      LED."Dimension Code" :=  'DEPARTMENT';//DEPARTMENT
+      LED."Dimension Value Code" :='01100';
+      IF NOT LED.INSERT THEN LED.MODIFY;
+      }
+
+      //>> SBC 2019-06-21
+      {
+      IF ( AppliedILE."Shortcut Dimension 6 Code" <> '' ) THEN BEGIN
+        //FieldValue
+        LED.INIT;
+        LED."Table ID" := 5802;
+        LED."Entry No." := AppliedVE."Entry No.";//9511464
+        LED."Dimension Code" :=  'SEASON GROUP';//DEPARTMENT
+        LED."Dimension Value Code" := AppliedILE."Shortcut Dimension 6 Code";
+        IF NOT LED.INSERT THEN LED.MODIFY;
+
+      END;
+      }
+      //<< SBC 2019-06-21
+    END;
+
+    PROCEDURE ModifyILE@1000000001(outbound@1000000000 : Boolean);
+    BEGIN
+      WITH AppliedILE DO BEGIN
+         Quantity += - ItemApplicationEntry.Quantity;//-26
+         "Remaining Quantity" := 0;//0
+         "Invoiced Quantity" += -ItemApplicationEntry.Quantity;//-26
+         Open := FALSE;
+         MODIFY;
+      END;
+
+      QoHRec.SETRANGE("Item No." , AppliedILE."Item No.");
+      QoHRec.SETRANGE("Location Code" , AppliedILE."Location Code");
+      //>> SBC 2019-06-21
+      //IF ILE."Shortcut Dimension 6 Code" = '' THEN
+      //  QoHRec.SETRANGE("Season Code" , 'Blank')
+      //ELSE
+      //  QoHRec.SETRANGE("Season Code" , AppliedILE."Shortcut Dimension 6 Code");
+      //<< SBC 2019-06-21
+      //IF NOT QoHRec.FINDFIRST THEN
+      //   QoHRec.SETRANGE("Season Code" , 'Blank');
+
+      IF ItemApplicationEntry.Quantity < 0 THEN BEGIN // Sales Return Case Sold before 01/01/2015 and return after 01/01/2015
+        IF QoHRec.FINDFIRST THEN BEGIN
+          QoHRec."Applied Quanty" += ItemApplicationEntry.Quantity;
+          QoHRec.MODIFY;
+        END;
+      END;
+      ModifyVE;
+    END;
+
+    PROCEDURE ModifyVE@1000000004();
+    BEGIN
+      WITH AppliedVE DO BEGIN
+        SETRANGE("Item Ledger Entry No." , AppliedILE."Entry No.");
+        //>> SBC 2019-07-28
+        //FIND('-');
+        FINDFIRST;
+        //<< SBC 2019-07-28
+        "Valued Quantity" := AppliedILE.Quantity;//-26
+        "Item Ledger Entry Quantity" := AppliedILE.Quantity;//-26
+        "Invoiced Quantity" := AppliedILE.Quantity;//-26
+        ILE.CALCFIELDS("Cost Amount (Actual)" );
+
+        IF ILE."Invoiced Quantity" <> 0 THEN
+          "Cost per Unit" := ROUND(ILE."Cost Amount (Actual)" / ILE."Invoiced Quantity" ,0.00001);
+
+        "Cost Amount (Actual)" +=  "Cost per Unit" * -ItemApplicationEntry.Quantity;//-1.26
+        "Cost Posted to G/L" +=  "Cost per Unit" * -ItemApplicationEntry.Quantity; //-1.26
+        "Journal Batch Name" := 'DPFE';
+        MODIFY;
+      END;
+    END;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85299 4 Create ILE Entries using QoH
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/04/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE, Create ILE having Remaining Quantity;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=No;
+  }
+  DATAITEMS
+  {
+    { PROPERTIES
+      {
+        DataItemTable=Table50301;
+        DataItemTableView=SORTING(Item No.);
+        DataItemVarName=QoH;
+        OnPreDataItem=BEGIN
+                        Window.OPEN(Text001);
+                        //ILE.SETRANGE("Posting Date" , 123114D);
+                        //ILE.SETFILTER("Document No.",'%1','QOH-123114');
+                        IF ILE.FINDLAST THEN
+                          ILEEntryNo := ILE."Entry No." +1
+                        ELSE
+                          ILEEntryNo := 1000;
+
+                        //VE.SETRANGE("Posting Date" , 123114D);
+                        //VE.SETFILTER("Document No.",'%1','QOH-123114');
+                        IF VE.FINDLAST THEN
+                          VEEntryNo := VE."Entry No." + 1
+                        ELSE
+                          VEEntryNo := 1000;
+
+                        ILE.RESET;
+                        VE.RESET;
+                        StartTime := TIME;
+                        Counter := 0;
+                      END;
+
+        OnAfterGetRecord=BEGIN
+                           IF COUNT MOD 1000 = 0 THEN
+                             Window.UPDATE(1,FORMAT(Counter DIV 1000) + '->' + "Item No.");
+
+                           IF NOT Item.GET(QoH."Item No.") THEN
+                             CurrReport.SKIP;
+
+                           QoH."Net Qty On Hand" := QoH."Qty On Hand" + QoH."Applied Quanty";
+                           IF QoH."Net Qty On Hand" = 0 THEN
+                             CurrReport.SKIP;
+
+                           LED.SETRANGE("Table ID" , 5802);
+                           LED.SETRANGE("Entry No." , ILEEntryNo);//9511464
+                           LED.DELETEALL;
+
+                           LED.SETRANGE("Table ID" , 32);
+                           LED.SETRANGE("Entry No." ,VEEntryNo);//9511464
+                           LED.DELETEALL;
+
+                           CreateILE;
+                           CreateVE;
+
+                           ILEEntryNo += 1;
+                           VEEntryNo += 1;
+
+                           Counter := Counter + 1;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         Window.CLOSE();
+                         MESSAGE('Batch process execution is completed - 4 Create ILE Entries using QoH\\Start Time: %1 End Time: %2',StartTime,TIME);
+                       END;
+
+        ReqFilterFields=Item No.;
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Header;
+            SectionWidth=17850;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+            { 1000000001;Label  ;300  ;0    ;1050 ;846  ;ParentControl=1000000000;
+                                                         HorzAlign=Right;
+                                                         VertAlign=Bottom;
+                                                         FontBold=Yes;
+                                                         MultiLine=Yes }
+            { 1000000003;Label  ;1650 ;0    ;4500 ;846  ;ParentControl=1000000002;
+                                                         VertAlign=Bottom;
+                                                         FontBold=Yes;
+                                                         MultiLine=Yes }
+            { 1000000005;Label  ;6450 ;0    ;4500 ;846  ;ParentControl=1000000004;
+                                                         VertAlign=Bottom;
+                                                         FontBold=Yes;
+                                                         MultiLine=Yes }
+            { 1000000007;Label  ;11250;0    ;4500 ;846  ;ParentControl=1000000006;
+                                                         VertAlign=Bottom;
+                                                         FontBold=Yes;
+                                                         MultiLine=Yes }
+            { 1000000009;Label  ;16050;0    ;1800 ;846  ;ParentControl=1000000008;
+                                                         HorzAlign=Right;
+                                                         VertAlign=Bottom;
+                                                         FontBold=Yes;
+                                                         MultiLine=Yes }
+          }
+           }
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=17850;
+            SectionHeight=423;
+          }
+          CONTROLS
+          {
+            { 1000000000;TextBox;300  ;0    ;1050 ;423  ;SourceExpr="Entry No" }
+            { 1000000002;TextBox;1500 ;0    ;4500 ;423  ;SourceExpr="Item No." }
+            { 1000000004;TextBox;6150 ;0    ;4500 ;423  ;SourceExpr="Season Code" }
+            { 1000000006;TextBox;10800;0    ;4500 ;423  ;SourceExpr="Location Code" }
+            { 1000000008;TextBox;15450;0    ;1800 ;423  ;SourceExpr="Qty On Hand" }
+          }
+           }
+      }
+       }
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      ILEEntryNo@1000000000 : Integer;
+      VEEntryNo@1000000004 : Integer;
+      ILE@1000000001 : Record 32;
+      VE@1000000002 : Record 5802;
+      Item@1000000003 : Record 27;
+      LED@1000000005 : Record 355;
+      Window@1000000006 : Dialog;
+      Text001@1000000007 : TextConst 'ENU=Processing Item No.    #1##########;ESM=Nombre secci¢n diario #1##########\\;FRC=Nom de lot du journal    #1##########\\;ENC=Journal Batch Name    #1##########\\';
+      Counter@1000000009 : Integer;
+      StartTime@1000000008 : Time;
+
+    PROCEDURE CreateILE@1000000000();
+    BEGIN
+      WITH ILE DO BEGIN
+        //INIT; // SBC 2019-07-28 It slower the performance
+        "Entry No." := ILEEntryNo;
+        "Item No." := QoH."Item No.";//ST5498
+        "Posting Date" := 123114D;//1/5/2015
+        IF QoH."Net Qty On Hand" < 0 THEN
+          "Entry Type" := "Entry Type"::"Negative Adjmt."
+        ELSE
+         "Entry Type" := "Entry Type"::"Positive Adjmt.";
+
+        "Document Type" := "Document Type"::" "; // SBC 2019-07-25
+        "Document No." := 'QoH-123114';//MO102890
+        "Location Code" := QoH."Location Code";//STOCKROOM
+        Quantity := QoH."Net Qty On Hand" ;//-26
+        "Remaining Quantity" := QoH."Net Qty On Hand" ;//0
+        "Invoiced Quantity" := QoH."Net Qty On Hand" ;//-26
+        Open := FALSE;
+        Positive := QoH."Net Qty On Hand" > 0 ;
+        "Document Date" := 123114D;//1/5/2015
+        //"No. Series" := 'ITEM-MO'; // SBC 2019-07-28
+        "Qty. per Unit of Measure" := 1;
+        //>> SBC 2019-07-28
+        //"Unit of Measure Code" := 'EA';
+        "Unit of Measure Code" := Item."Base Unit of Measure";
+        //<< SBC 2019-07-28
+        "Product Group Code" := Item."Product Group Code";//STONE;
+        "Completely Invoiced" := TRUE;//Yes
+        "Last Invoice Date" := 123114D;//1/5/2015
+        //"Global Dimension 1 Code" :=  '01100'; // SBC 2019-07-27
+        //>> SBC 2019-06-21
+        //IF QOH."Season Code" <> 'Blank' THEN
+        //  "Shortcut Dimension 6 Code" := QOH."Season Code";
+        //<< SBC 2019-06-21
+        Open := TRUE;
+
+        INSERT;
+      END;
+      {
+      LED.INIT;
+      LED."Table ID" := 32;
+      LED."Entry No." := ILE."Entry No.";//9511464
+      LED."Dimension Code" :=  'DEPARTMENT';//DEPARTMENT
+      LED."Dimension Value Code" := '01100';
+      LED.INSERT;
+
+      IF ( QoH."Season Code" <> 'Blank' ) AND  ( QoH."Season Code" <> '' ) THEN BEGIN
+        //FieldValue
+        LED.INIT;
+        LED."Table ID" := 32;
+        LED."Entry No." := ILE."Entry No.";//9511464
+        LED."Dimension Code" :=  'SEASON GROUP';//DEPARTMENT
+        LED."Dimension Value Code" := QoH."Season Code";
+        LED.INSERT;
+      END;
+      }
+    END;
+
+    PROCEDURE CreateVE@1000000001();
+    BEGIN
+      WITH VE DO BEGIN
+        //INIT; // SBC 2019-07-28 It slower the performance
+        "Entry No." := VEEntryNo;//17870268
+        "Item No.":= QoH."Item No.";//ST5498
+        "Posting Date" := 123114D;//1/5/2015
+        IF QoH."Net Qty On Hand" < 0 THEN
+          "Item Ledger Entry Type" := "Item Ledger Entry Type"::"Negative Adjmt."
+        ELSE
+          "Item Ledger Entry Type" := "Item Ledger Entry Type"::"Positive Adjmt.";
+
+        "Document No." := 'QoH-123114';
+        "Location Code" := QoH."Location Code";//STOCKROOM
+        "Inventory Posting Group" := Item."Inventory Posting Group";//RM-INV
+        "Item Ledger Entry No." := ILEEntryNo;//9511464
+        "Valued Quantity" := QoH."Net Qty On Hand";//-26
+        "Item Ledger Entry Quantity" := QoH."Net Qty On Hand";//-26
+        "Invoiced Quantity" := QoH."Net Qty On Hand";//-26
+        //>> SBC 2019-07-18
+        //"Cost per Unit" := Item."Unit Cost"; //0.04846
+        IF QoH."Last Puchase/ +Ve Unit Cost" <> 0 THEN
+          "Cost per Unit" := QoH."Last Puchase/ +Ve Unit Cost"
+        ELSE
+          "Cost per Unit" := Item."Unit Cost"; //0.04846
+        //<< SBC 2019-07-18
+        "User ID" := 'DPFE';//MARIAO
+        "Source Code" := 'ITEMJNL';
+        //"Global Dimension 1 Code" := '1100';
+        //>> SBC 2019-06-21
+        //IF QOH."Season Code" <> 'Blank' THEN
+        //  "Shortcut Dimension 6 Code" := QOH."Season Code";
+        //<< SBC 2019-06-21
+        //>> SBC 2019-07-18
+        //"Cost Amount (Actual)" := Item."Unit Cost" * QoH."Net Qty On Hand";//-1.26
+        //"Cost Posted to G/L" := Item."Unit Cost" * QoH."Net Qty On Hand"; //-1.26
+        "Cost Amount (Actual)" := "Cost per Unit" * QoH."Net Qty On Hand";//-1.26
+        "Cost Posted to G/L" := "Cost per Unit" * QoH."Net Qty On Hand"; //-1.26
+        //<< SBC 2019-07-18
+        "Journal Batch Name" := 'DPFE';
+        "Gen. Prod. Posting Group" := Item."Gen. Prod. Posting Group";//RM
+        "Document Date" := 123114D;//1/5/2015
+        Inventoriable := TRUE;
+        "Valuation Date" := 123114D;//1/5/2015
+        "Entry Type" := "Entry Type"::"Direct Cost";
+        //"Store Code" :=
+        //"Product Code" :=
+        //"SG Code" :=
+        //"Classification Code" :=
+        //"VP Code" :=
+        INSERT;
+      END;
+      {
+      LED.INIT;
+      LED."Table ID" := 5802;
+      LED."Entry No." := VE."Entry No.";//9511464
+      LED."Dimension Code" :=  'DEPARTMENT';//DEPARTMENT
+      LED."Dimension Value Code" := '1100';
+      LED.INSERT;
+
+      IF ( QoH."Season Code" <> 'Blank' ) AND  ( QoH."Season Code" <> '' ) THEN BEGIN
+        //FieldValue
+        LED.INIT;
+        LED."Table ID" := 5802;
+        LED."Entry No." := VE."Entry No.";//9511464
+        LED."Dimension Code" :=  'SEASON GROUP';//DEPARTMENT
+        LED."Dimension Value Code" := QoH."Season Code";
+        LED.INSERT;
+      END;
+      }
+    END;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85303 Delete Orphan Item Appl. Entry
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/04/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE, Delete Orphan Item Application Entry;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+  }
+  DATAITEMS
+  {
+    { PROPERTIES
+      {
+        DataItemTable=Table339;
+        OnPreDataItem=BEGIN
+                        Window.OPEN(Text001);
+                        StartTime := TIME; // SBC 2019-07-29
+                      END;
+
+        OnAfterGetRecord=BEGIN
+                           RecordDeleted := FALSE;
+                           IF "Entry No." MOD 1000 = 0 THEN
+                             Window.UPDATE(1, FORMAT("Entry No." DIV 1000) + '->' + FORMAT("Entry No."));
+
+                           IF NOT ItemLedgerEntry.GET("Item Ledger Entry No.") THEN BEGIN
+                           //ItemLedgerEntry.RESET;
+                           //ItemLedgerEntry.SETRANGE("Entry No.","Item Ledger Entry No.");
+                           //IF ItemLedgerEntry.ISEMPTY THEN BEGIN
+                             DELETE;
+                             RecordDeleted := TRUE;
+                             DeleteCount += 1;
+                           END;
+
+                           IF NOT RecordDeleted THEN BEGIN
+                             IF NOT ItemLedgerEntry.GET("Inbound Item Entry No.") THEN BEGIN
+                             //ItemLedgerEntry.RESET;
+                             //ItemLedgerEntry.SETRANGE("Entry No.","Inbound Item Entry No.");
+                             //IF ItemLedgerEntry.ISEMPTY THEN BEGIN
+                               DELETE;
+                               RecordDeleted := TRUE;
+                               DeleteCount += 1;
+                             END;
+                           END;
+
+                           IF NOT RecordDeleted THEN BEGIN
+                             IF NOT ItemLedgerEntry.GET("Outbound Item Entry No.") THEN BEGIN
+                             //ItemLedgerEntry.RESET;
+                             //ItemLedgerEntry.SETRANGE("Entry No.","Outbound Item Entry No.");
+                             //IF ItemLedgerEntry.ISEMPTY THEN BEGIN
+                               DELETE;
+                               RecordDeleted := TRUE;
+                               DeleteCount += 1;
+                             END;
+                           END;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         Window.CLOSE;
+                         MESSAGE('Item Application Check and Orphan Records Deleted: %1\\Start Time: %2 End Time: %3',DeleteCount,StartTime,TIME);
+                       END;
+
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      ItemLedgerEntry@1000000000 : Record 32;
+      RecordDeleted@1000000001 : Boolean;
+      DeleteCount@1000000002 : Integer;
+      Text001@1000000003 : TextConst 'ENU=Processing Entry No.    #1##########;ESM=Nombre secci¢n diario #1##########\\;FRC=Nom de lot du journal    #1##########\\;ENC=Journal Batch Name    #1##########\\';
+      Window@1000000004 : Dialog;
+      StartTime@1000000005 : Time;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85304 Compress Additional Tables Rec
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/04/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE,Delete Additiona Tables Orphan Records;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+    OnInitReport=BEGIN
+                   StartTime := TIME; // SBC 2019-07-29
+                 END;
+
+    OnPreReport=BEGIN
+                  Window.OPEN('Checking and Deleting Records...');
+
+                  DateToFilter := DMY2DATE(1,1,2015);
+
+                  ItemRegister.RESET;
+                  ItemRegister.SETFILTER("Creation Date",'<%1',DateToFilter);
+                  ItemRegister.DELETEALL;
+
+                  ItemJnlLine.DELETEALL;
+
+                  LedgerEntryDimension.RESET;
+                  LedgerEntryDimension.SETFILTER("Table ID",'%1|%2',32,5802);
+                  IF LedgerEntryDimension.FINDFIRST THEN BEGIN
+                    REPEAT
+                      IF LedgerEntryDimension."Table ID" = 32 THEN BEGIN
+                        IF NOT ItemLdgrEntry.GET(LedgerEntryDimension."Entry No.") THEN
+                          LedgerEntryDimension.DELETE;
+                      END ELSE IF LedgerEntryDimension."Table ID" = 5802 THEN BEGIN
+                        IF NOT ValueEntry.GET(LedgerEntryDimension."Entry No.") THEN
+                          LedgerEntryDimension.DELETE;
+                      END;
+                    UNTIL LedgerEntryDimension.NEXT = 0;
+                  END;
+
+                  JnlLineDimension.RESET;
+                  JnlLineDimension.SETRANGE("Table ID",83);
+                  IF JnlLineDimension.FINDFIRST THEN BEGIN
+                    REPEAT
+                      IF NOT ItemJnlLine.GET(JnlLineDimension."Journal Template Name",JnlLineDimension."Journal Batch Name",
+                        JnlLineDimension."Journal Line No.")
+                      THEN
+                        JnlLineDimension.DELETE;
+                    UNTIL JnlLineDimension.NEXT = 0;
+                  END;
+
+                  // ,Transfer Order,Posted Transfer Shipment,Posted Transfer Receipt
+                  InventoryCommentLine.RESET;
+                  IF InventoryCommentLine.FINDFIRST THEN BEGIN
+                    REPEAT
+                      CASE InventoryCommentLine."Document Type" OF
+                        InventoryCommentLine."Document Type"::"Transfer Order":
+                          BEGIN
+                            IF NOT TransferLine.GET(InventoryCommentLine."No.",InventoryCommentLine."Line No.") THEN
+                              InventoryCommentLine.DELETE;
+                          END;
+                        InventoryCommentLine."Document Type"::"Posted Transfer Shipment":
+                          BEGIN
+                            IF NOT TransferShptLine.GET(InventoryCommentLine."No.",InventoryCommentLine."Line No.") THEN
+                              InventoryCommentLine.DELETE;
+                          END;
+                        InventoryCommentLine."Document Type"::"Posted Transfer Receipt":
+                          BEGIN
+                            IF NOT TransferRcptLine.GET(InventoryCommentLine."No.",InventoryCommentLine."Line No.") THEN
+                              InventoryCommentLine.DELETE;
+                          END;
+                      END;
+                    UNTIL InventoryCommentLine.NEXT = 0;
+                  END;
+
+                  // Not Want to Delete
+                  //AvgCostAdjmtEntryPoint.RESET;
+                  //AvgCostAdjmtEntryPoint.SETFILTER("Valuation Date",'<%1',DateToFilter);
+                  //AvgCostAdjmtEntryPoint.SETRANGE("Cost Is Adjusted",TRUE);
+                  //AvgCostAdjmtEntryPoint.DELETEALL;
+
+                  GLItemLedgerRelation.RESET;
+                  IF GLItemLedgerRelation.FINDFIRST THEN BEGIN
+                    REPEAT
+                      DeleteRecord := FALSE;
+
+                      IF NOT GLEntry.GET(GLItemLedgerRelation."G/L Entry No.") THEN
+                        DeleteRecord := TRUE;
+                      IF NOT ValueEntry.GET(GLItemLedgerRelation."Value Entry No.") THEN
+                        DeleteRecord := TRUE;
+
+                      IF DeleteRecord THEN
+                        GLItemLedgerRelation.DELETE;
+                    UNTIL GLItemLedgerRelation.NEXT = 0;
+                  END;
+
+                  PlanningAssignment.DELETEALL;
+                END;
+
+    OnPostReport=BEGIN
+                   Window.CLOSE;
+                   MESSAGE('Report processing is completed.\\Start Time: %1 End Time: %2',StartTime,TIME);
+                 END;
+
+  }
+  DATAITEMS
+  {
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      ItemRegister@1000000008 : Record 46;
+      ItemJnlLine@1000000007 : Record 83;
+      LedgerEntryDimension@1000000006 : Record 355;
+      JnlLineDimension@1000000005 : Record 356;
+      InventoryCommentLine@1000000004 : Record 5748;
+      AvgCostAdjmtEntryPoint@1000000003 : Record 5804;
+      GLItemLedgerRelation@1000000002 : Record 5823;
+      PlanningAssignment@1000000000 : Record 99000850;
+      DateToFilter@1000000009 : Date;
+      ItemLdgrEntry@1000000011 : Record 32;
+      ValueEntry@1000000012 : Record 5802;
+      TransferLine@1000000013 : Record 5741;
+      TransferShptLine@1000000014 : Record 5745;
+      TransferRcptLine@1000000015 : Record 5747;
+      GLEntry@1000000016 : Record 17;
+      DeleteRecord@1000000017 : Boolean;
+      Window@1000000018 : Dialog;
+      StartTime@1000000019 : Time;
+
+    BEGIN
+    {
+      46       Item Register
+      83       Item Journal Line
+      355      Ledger Entry Dimension
+      356      Journal Line Dimension
+      5748     Inventory Comment Line
+      5804     Avg. Cost Adjmt. Entry Point
+      5823     G/L - Item Ledger Relation
+      76355    Ledger Entry Dimension2
+      76359    Posted Document Dimension2
+      99000850 Planning Assignment
+    }
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85307 Create Item Application
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/04/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+  }
+  DATAITEMS
+  {
+    { PROPERTIES
+      {
+        DataItemTable=Table32;
+        DataItemTableView=SORTING(Document No.,Posting Date)
+                          WHERE(Posting Date=CONST(12/31/14),
+                                Document No.=FILTER(QOH-123114|MILE-123114));
+        OnPreDataItem=BEGIN
+                        //PositiveILE.FINDLAST;
+                        //PositiveVLE.FINDLAST;
+                        ItemApplicationEntry.FINDLAST;
+
+                        //NextItemLdgrEntryNo := PositiveILE."Entry No." + 1;
+                        //NextValueEntryNo := PositiveVLE."Entry No." + 1;
+                        NextItemLdgrEntryNo := 85000;
+                        NextValueEntryNo := 85000;
+
+                        NextItemApplicationEntryNo := ItemApplicationEntry."Entry No." + 1;
+                        StartTime := TIME;
+                      END;
+
+        OnAfterGetRecord=BEGIN
+                           "Document Type" := "Document Type"::" ";
+                           "Document Line No." := 0;
+                           Positive := Quantity > 0;
+                           MODIFY;
+
+                           ItemApplicationEntry.RESET;
+                           ItemApplicationEntry.SETCURRENTKEY("Item Ledger Entry No.","Output Completely Invd. Date");
+                           ItemApplicationEntry.SETRANGE("Item Ledger Entry No.","Entry No.");
+                           IF Positive THEN BEGIN
+                             ItemApplicationEntry.SETRANGE("Inbound Item Entry No.","Entry No.");
+                             ItemApplicationEntry.SETRANGE("Outbound Item Entry No.",0);
+                             IF ItemApplicationEntry.FINDFIRST THEN BEGIN
+                               ItemApplicationEntry.Quantity := Quantity;
+                               ItemApplicationEntry.MODIFY;
+                               ItemApplicationUpdated += 1;
+                             END ELSE BEGIN
+                               NewItemApplicationEntry.INIT;
+                               NewItemApplicationEntry."Entry No." := NextItemApplicationEntryNo;
+                               NewItemApplicationEntry."Item Ledger Entry No." := "Entry No.";
+                               NewItemApplicationEntry."Inbound Item Entry No." := "Entry No.";
+                               NewItemApplicationEntry."Outbound Item Entry No." := 0;
+                               NewItemApplicationEntry.Quantity := Quantity;
+                               NewItemApplicationEntry."Posting Date" := "Posting Date";
+                               NewItemApplicationEntry."Transferred-from Entry No." := 0;
+                               NewItemApplicationEntry."Creation Date" := CREATEDATETIME("Posting Date",TIME);
+                               NewItemApplicationEntry."Cost Application" := TRUE;
+                               NewItemApplicationEntry."Output Completely Invd. Date" := "Posting Date";
+                               NewItemApplicationEntry.INSERT;
+                               NextItemApplicationEntryNo += 1;
+                               ItemApplicationCreated += 1;
+                             END;
+                           END ELSE BEGIN
+                             ItemApplicationEntry.SETRANGE("Outbound Item Entry No.","Entry No.");
+                             IF ItemApplicationEntry.FINDFIRST THEN
+                               ItemApplicationEntry.DELETE;
+
+                             ItemApplicationEntry.SETRANGE("Item Ledger Entry No.");
+                             IF ItemApplicationEntry.FINDFIRST THEN BEGIN
+                               REPEAT
+                                 ItemApplicationEntry."Outbound Item Entry No." := 0;
+                                 ItemApplicationEntry.MODIFY;
+                               UNTIL ItemApplicationEntry.NEXT = 0;
+                             END;
+
+                             PositiveILE.INIT;
+                             PositiveILE := "Item Ledger Entry";
+                             PositiveILE."Entry Type" := PositiveILE."Entry Type"::"Positive Adjmt.";
+                             PositiveILE."Entry No." := NextItemLdgrEntryNo;
+                             PositiveILE.Quantity := -1 * PositiveILE.Quantity; // Reserve Sign to make it positive
+                             PositiveILE."Remaining Quantity" := -1 * PositiveILE."Remaining Quantity"; // Reserve Sign to make it positive
+                             PositiveILE."Invoiced Quantity" := PositiveILE.Quantity;
+                             PositiveILE.Positive := PositiveILE.Quantity > 0;
+                             PositiveILE.INSERT;
+                             NextItemLdgrEntryNo += 1;
+
+                             NegativeVLE.RESET;
+                             NegativeVLE.SETCURRENTKEY("Item Ledger Entry No.","Entry Type");
+                             NegativeVLE.SETRANGE("Item Ledger Entry No.","Entry No.");
+                             IF NegativeVLE.FINDFIRST THEN BEGIN
+                               REPEAT
+                                 PositiveVLE.INIT;
+                                 PositiveVLE := NegativeVLE;
+                                 PositiveVLE."Entry No." := NextValueEntryNo;
+                                 PositiveVLE."Item Ledger Entry No." := PositiveILE."Entry No.";
+                                 PositiveVLE."Item Ledger Entry Type" := PositiveVLE."Item Ledger Entry Type"::"Positive Adjmt.";
+                                 PositiveVLE."Valued Quantity" := PositiveILE.Quantity;
+                                 PositiveVLE."Item Ledger Entry Quantity" := PositiveILE.Quantity;
+                                 PositiveVLE."Invoiced Quantity" := PositiveILE."Invoiced Quantity";
+                                 PositiveVLE."Cost Amount (Actual)" := -1 * NegativeVLE."Cost Amount (Actual)";
+                                 PositiveVLE."Cost Posted to G/L" := -1 * NegativeVLE."Cost Posted to G/L";
+                                 PositiveVLE.INSERT;
+                                 NextValueEntryNo += 1;
+                               UNTIL NegativeVLE.NEXT = 0;
+                             END;
+
+                             // For Positive ILE
+                             NewItemApplicationEntry.INIT;
+                             NewItemApplicationEntry."Entry No." := NextItemApplicationEntryNo;
+                             NewItemApplicationEntry."Item Ledger Entry No." := PositiveILE."Entry No.";
+                             NewItemApplicationEntry."Inbound Item Entry No." := PositiveILE."Entry No.";
+                             NewItemApplicationEntry."Outbound Item Entry No." := 0;
+                             NewItemApplicationEntry.Quantity := PositiveILE.Quantity;
+                             NewItemApplicationEntry."Posting Date" := PositiveILE."Posting Date";
+                             NewItemApplicationEntry."Transferred-from Entry No." := 0;
+                             NewItemApplicationEntry."Creation Date" := CREATEDATETIME("Posting Date",TIME);
+                             NewItemApplicationEntry."Cost Application" := TRUE;
+                             NewItemApplicationEntry."Output Completely Invd. Date" := PositiveILE."Posting Date";
+                             NewItemApplicationEntry.INSERT;
+                             NextItemApplicationEntryNo += 1;
+                             ItemApplicationCreated += 1;
+
+                             // For Negative ILE
+                             NewItemApplicationEntry.INIT;
+                             NewItemApplicationEntry."Entry No." := NextItemApplicationEntryNo;
+                             NewItemApplicationEntry."Item Ledger Entry No." := "Entry No.";
+                             NewItemApplicationEntry."Inbound Item Entry No." := PositiveILE."Entry No.";
+                             NewItemApplicationEntry."Outbound Item Entry No." := "Entry No.";
+                             NewItemApplicationEntry.Quantity := Quantity;
+                             NewItemApplicationEntry."Posting Date" := "Posting Date";
+                             NewItemApplicationEntry."Transferred-from Entry No." := 0;
+                             NewItemApplicationEntry."Creation Date" := CREATEDATETIME("Posting Date",TIME);
+                             NewItemApplicationEntry."Cost Application" := TRUE;
+                             NewItemApplicationEntry."Output Completely Invd. Date" := "Posting Date";
+                             NewItemApplicationEntry.INSERT;
+                             NextItemApplicationEntryNo += 1;
+                             ItemApplicationCreated += 1;
+                           END;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         MESSAGE('Item Application Created %1 Modified %2\\Start Time: %3 End Time: %4',ItemApplicationUpdated,ItemApplicationUpdated,
+                           StartTime,TIME);
+                       END;
+
+        ReqFilterFields=Entry No.,Item No.;
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      ItemApplicationEntry@1000000000 : Record 339;
+      NewItemApplicationEntry@1000000003 : Record 339;
+      NextItemApplicationEntryNo@1000000001 : Integer;
+      ItemApplicationCreated@1000000002 : Integer;
+      ItemApplicationUpdated@1000000004 : Integer;
+      PositiveILE@1000000005 : Record 32;
+      NegativeVLE@1000000006 : Record 5802;
+      PositiveVLE@1000000007 : Record 5802;
+      NextItemLdgrEntryNo@1000000008 : Integer;
+      NextValueEntryNo@1000000009 : Integer;
+      StartTime@1000000010 : Time;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85308 Open All Items for Adjustment
+{
+  OBJECT-PROPERTIES
+  {
+    Date=07/25/19;
+    Time=12:00:00 PM;
+    Version List=Compress ILE;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+    OnPreReport=BEGIN
+                  Item.MODIFYALL("Cost is Adjusted",FALSE);
+                  MESSAGE('All Items reset for Cost Adjustment');
+                END;
+
+  }
+  DATAITEMS
+  {
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      Item@1000000000 : Record 27;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85314 Move ILE To Old Number
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/04/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+  }
+  DATAITEMS
+  {
+    { PROPERTIES
+      {
+        DataItemTable=Table32;
+        DataItemTableView=SORTING(Document No.,Posting Date)
+                          WHERE(Posting Date=CONST(12/31/14),
+                                Document No.=FILTER(QOH-123114));
+        OnPreDataItem=BEGIN
+                        SETFILTER("Entry No.",'>=%1',2867147); // Check ILE and Update filter if necessary
+
+                        StartingILENumber := 81005;
+                        StartingVLENumber := 81005;
+
+                        Window.OPEN(Text001);
+                        StartTime := TIME; // SBC 2019-07-29
+                      END;
+
+        OnAfterGetRecord=BEGIN
+                           IF "Entry No." MOD 1000 = 0 THEN
+                             Window.UPDATE(1, FORMAT("Entry No." DIV 1000) + '->' + FORMAT("Entry No."));
+
+                           NewILE.INIT;
+                           NewILE := "Item Ledger Entry";
+                           NewILE."Entry No." := StartingILENumber;
+                           NewILE.INSERT;
+                           StartingILENumber += 1;
+
+                           OldVLE.RESET;
+                           OldVLE.SETCURRENTKEY("Item Ledger Entry No.","Entry Type");
+                           OldVLE.SETRANGE("Item Ledger Entry No.","Entry No.");
+                           IF OldVLE.FINDFIRST THEN BEGIN
+                             REPEAT
+                               NewVLE.INIT;
+                               NewVLE := OldVLE;
+                               NewVLE."Entry No." := StartingVLENumber;
+                               NewVLE."Item Ledger Entry No." := NewILE."Entry No.";
+                               NewVLE.INSERT;
+                               OldVLE.DELETE;
+                               StartingVLENumber += 1;
+                             UNTIL OldVLE.NEXT = 0;
+                           END;
+                           DELETE;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         Window.CLOSE;
+                         MESSAGE('Item Application Check and Orphan Records\\Start Time: %1 End Time: %2',StartTime,TIME);
+                       END;
+
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      StartingILENumber@1000000000 : Integer;
+      StartingVLENumber@1000000004 : Integer;
+      NewILE@1000000001 : Record 32;
+      NewVLE@1000000002 : Record 5802;
+      OldVLE@1000000003 : Record 5802;
+      Window@1000000006 : Dialog;
+      StartTime@1000000005 : Time;
+      Text001@1000000007 : TextConst 'ENU=Processing Entry No.    #1##########;ESM=Nombre secci¢n diario #1##########\\;FRC=Nom de lot du journal    #1##########\\;ENC=Journal Batch Name    #1##########\\';
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85315 Check ILE & Its Application
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/04/20;
+    Time=12:00:00 PM;
+    Version List=Compress ILE;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+  }
+  DATAITEMS
+  {
+    { PROPERTIES
+      {
+        DataItemTable=Table32;
+        OnPreDataItem=BEGIN
+                        Window.OPEN(Text001);
+                        SETRANGE(Positive,TRUE);
+                        SETFILTER(Quantity,'>%1',0);
+                        StartTime := TIME;
+                      END;
+
+        OnAfterGetRecord=BEGIN
+                           IF "Entry No." MOD 1000 = 0 THEN
+                             Window.UPDATE(1,FORMAT("Entry No." DIV 1000) + '->' +  FORMAT("Entry No."));
+
+                           AppliedQuantity := 0;
+                           ItemApplicationEntry.RESET;
+                           ItemApplicationEntry.SETCURRENTKEY("Inbound Item Entry No.","Outbound Item Entry No.","Cost Application");
+                           ItemApplicationEntry.SETFILTER("Item Ledger Entry No.",'<>%1',"Entry No.");
+                           ItemApplicationEntry.SETRANGE("Inbound Item Entry No.","Entry No.");
+                           ItemApplicationEntry.SETFILTER("Outbound Item Entry No.",'<>%1',0);
+                           IF ItemApplicationEntry.FINDFIRST THEN BEGIN
+                             REPEAT
+                               AppliedQuantity += ItemApplicationEntry.Quantity;
+                             UNTIL ItemApplicationEntry.NEXT = 0;
+                           END;
+
+                           IF (Quantity + AppliedQuantity) <> "Remaining Quantity" THEN BEGIN
+                             TmpILE.INIT;
+                             TmpILE := "Item Ledger Entry";
+                             TmpILE."Entry No." := "Entry No.";
+                             TmpILE.INSERT;
+                           END;
+                           Counter += 1;
+                         END;
+
+        OnPostDataItem=BEGIN
+                         Window.CLOSE;
+                         TmpILE.RESET;
+                         IF TmpILE.COUNT <> 0 THEN
+                           FORM.RUNMODAL(38,TmpILE)
+                         ELSE
+                           MESSAGE('Item and its applications are matching\\Start Time: %1 End Time: %2',StartTime,TIME);
+                       END;
+
+      }
+      SECTIONS
+      {
+        { PROPERTIES
+          {
+            SectionType=Body;
+            SectionWidth=12000;
+            SectionHeight=846;
+          }
+          CONTROLS
+          {
+          }
+           }
+      }
+       }
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      ItemApplicationEntry@1000000000 : Record 339;
+      AppliedQuantity@1000000001 : Decimal;
+      TmpILE@1000000002 : TEMPORARY Record 32;
+      Window@1000000003 : Dialog;
+      Text001@1000000004 : TextConst 'ENU=Processing Entry No.    #1##########;ESM=Nombre secci¢n diario #1##########\\;FRC=Nom de lot du journal    #1##########\\;ENC=Journal Batch Name    #1##########\\';
+      StartTime@1000000005 : Time;
+      Counter@1000000006 : Integer;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
+OBJECT Report 85320 Create ILE  - Selected
+{
+  OBJECT-PROPERTIES
+  {
+    Date=01/06/20;
+    Time=[ 9:12:47 AM];
+    Version List=;
+  }
+  PROPERTIES
+  {
+    ProcessingOnly=Yes;
+    OnPreReport=BEGIN
+                  {
+                  ILEBackup.GET(1269821);
+
+                  ILE.INIT;
+                  ILE.TRANSFERFIELDS(ILEBackup);
+                  ILE.INSERT;
+
+                  VLEBackup.RESET;
+                  VLEBackup.SETCURRENTKEY("Item Ledger Entry No.","Entry Type");
+                  VLEBackup.SETRANGE("Item Ledger Entry No.",1269821);
+                  IF VLEBackup.FINDFIRST THEN BEGIN
+                    REPEAT
+                      VLE.INIT;
+                      VLE.TRANSFERFIELDS(VLEBackup);
+                      VLE.INSERT;
+                      VLECraetd += 1;
+                    UNTIL VLEBackup.NEXT = 0;
+                  END;
+                  }
+                END;
+
+    OnPostReport=BEGIN
+                   MESSAGE(FORMAT(VLECraetd));
+                 END;
+
+  }
+  DATAITEMS
+  {
+  }
+  REQUESTFORM
+  {
+    PROPERTIES
+    {
+      Width=9020;
+      Height=3410;
+    }
+    CONTROLS
+    {
+    }
+  }
+  REQUESTPAGE
+  {
+    PROPERTIES
+    {
+    }
+    CONTROLS
+    {
+    }
+  }
+  CODE
+  {
+    VAR
+      ILE@1000000000 : Record 32;
+      VLE@1000000001 : Record 5802;
+      ILEBackup@1000000002 : Record 50303;
+      VLEBackup@1000000003 : Record 50304;
+      VLECraetd@1000000004 : Integer;
+
+    BEGIN
+    END.
+  }
+  RDLDATA
+  {
+  }
+}
+
