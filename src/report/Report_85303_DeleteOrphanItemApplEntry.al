@@ -4,21 +4,27 @@ report 14305129 "Delete Orphan Item Appl. Entry"
     ProcessingOnly = true;
     ApplicationArea = All;
     UsageCategory = Administration;
+
+    Permissions = tabledata "Item Application Entry" = rimd;
     dataset
     {
         dataitem(ItemApplnEntry; "Item Application Entry")
         {
             trigger OnPreDataItem();
             begin
-                Window.Open(Text001);
-                StartTime := TIME; // SBC 2019-07-29
+                if ShowDialog then
+                    Window.Open(Text001);
+                StartTime := TIME;
+                SetFilter("Posting Date", '<=%1', MaxPostingDate);
             end;
 
             trigger OnAfterGetRecord();
             begin
                 RecordDeleted := false;
-                if (ItemApplnEntry."Entry No." MOD 1000) = 0 then
-                    Window.Update(1, Format(ItemApplnEntry."Entry No." DIV 1000) + '->' + Format(ItemApplnEntry."Entry No."));
+                if ShowDialog then begin
+                    if (ItemApplnEntry."Entry No." MOD 1000) = 0 then
+                        Window.Update(1, Format(ItemApplnEntry."Entry No." DIV 1000) + '->' + Format(ItemApplnEntry."Entry No."));
+                end;
 
                 if not ItemLedgerEntry.Get(ItemApplnEntry."Item Ledger Entry No.") then begin
                     ItemApplnEntry.Delete();
@@ -45,17 +51,26 @@ report 14305129 "Delete Orphan Item Appl. Entry"
 
             trigger OnPostDataItem();
             begin
+                if not ShowDialog then exit;
                 Window.Close();
                 Message('Item Application Check and Orphan Records Deleted: %1\Start Time: %2 End Time: %3', DeleteCount, StartTime, TIME);
             end;
         }
     }
 
+    procedure SetRunParameters(vMaxPostingDate: Date; vShowDialog: Boolean)
+    begin
+        MaxPostingDate := vMaxPostingDate;
+        ShowDialog := vShowDialog;
+    end;
+
     var
         ItemLedgerEntry: Record "Item Ledger Entry";
         RecordDeleted: Boolean;
         DeleteCount: Integer;
-        Text001: Label 'Processing Entry No.';
+        Text001: Label 'Processing Entry No. ########1#####';
         Window: Dialog;
         StartTime: Time;
+        MaxPostingDate: Date;
+        ShowDialog: Boolean;
 }

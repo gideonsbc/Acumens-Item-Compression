@@ -14,33 +14,35 @@ report 14305128 "Create ILE Entries using QoH"
 
             trigger OnPreDataItem();
             begin
-                Window.Open(Text001);
+                if ShowDialog then
+                    Window.Open(Text001);
 
                 //ILE.SETRANGE("Posting Date", ProcessDate);
-                //ILE.SETFILTER("Document No.", '%1', 'QOH-123114');
-                if ILE.FindLast() then
+                /*if ILE.FindLast() then
                     ILEEntryNo := ILE."Entry No." + 1
                 else
-                    ILEEntryNo := 1000;
+                    ILEEntryNo := 1000;*/
 
                 //VE.SETRANGE("Posting Date", ProcessDate);
-                //VE.SETFILTER("Document No.", '%1', 'QOH-123114');
-                if VE.FindLast() then
+                /*if VE.FindLast() then
                     VEEntryNo := VE."Entry No." + 1
                 else
-                    VEEntryNo := 1000;
+                    VEEntryNo := 1000;*/
 
                 ILE.Reset();
                 VE.Reset();
-                ProcessDate := DMY2DATE(5, 1, 2015); // set process date (adjust if needed)
+                if ProcessDate = 0D then
+                    ProcessDate := DMY2DATE(5, 1, 2015); // set process date (adjust if needed)
                 StartTime := TIME;
                 Counter := 0;
             end;
 
             trigger OnAfterGetRecord();
             begin
-                if Counter MOD 1000 = 0 then
-                    Window.Update(1, Format(Counter DIV 1000) + '->' + "Item No.");
+                if ShowDialog then begin
+                    if Counter MOD 1000 = 0 then
+                        Window.Update(1, Format(Counter DIV 1000) + ' -> ' + "Item No.");
+                end;
 
                 if not Item.Get(QoH."Item No.") then
                     CurrReport.Skip();
@@ -61,18 +63,33 @@ report 14305128 "Create ILE Entries using QoH"
                 CreateVE();
 
                 ILEEntryNo += 1;
+                EnsureAvailableILEEntryNo(ILEEntryNo);
                 VEEntryNo += 1;
+                EnsureAvailableVEEntryNo(VEEntryNo);
 
                 Counter += 1;
             end;
 
             trigger OnPostDataItem();
             begin
+                if not ShowDialog then exit;
                 Window.Close();
                 Message('Batch process execution is completed - 4 Create ILE Entries using QoH\Start Time: %1 End Time: %2', StartTime, TIME);
             end;
         }
     }
+
+    procedure SetRunParameters(vStartingILENumber: Integer; vStartingVLENumber: Integer; vMaxPostingDate: Date; vShowDialog: Boolean)
+    begin
+        ILEEntryNo := vStartingILENumber;
+        VEEntryNo := vStartingVLENumber;
+        ProcessDate := vMaxPostingDate;
+        ShowDialog := vShowDialog;
+
+        //If the starting entry was a QOH, then it wasn't deleted
+        EnsureAvailableILEEntryNo(ILEEntryNo);
+        EnsureAvailableVEEntryNo(VEEntryNo);
+    end;
 
     var
         ILEEntryNo: Integer;
@@ -86,6 +103,7 @@ report 14305128 "Create ILE Entries using QoH"
         Counter: Integer;
         StartTime: Time;
         ProcessDate: Date;
+        ShowDialog: Boolean;
 
     local procedure CreateILE()
     begin
@@ -99,8 +117,12 @@ report 14305128 "Create ILE Entries using QoH"
             ILE."Entry Type" := ILE."Entry Type"::"Positive Adjmt.";
 
         ILE."Document Type" := ILE."Document Type"::" ";
-        ILE."Document No." := 'QoH-123114';
+        ILE."Document No." := 'QoH-' + Format(ProcessDate);
         ILE."Location Code" := QoH."Location Code";
+        ILE."Variant Code" := QoH."Variant Code";
+        ILE."Lot No." := QoH."Lot No.";
+        ILE."Serial No." := QoH."Serial No.";
+        ILE."Package No." := QoH."Package No.";
         ILE.Quantity := QoH."Net Qty On Hand";
         ILE."Remaining Quantity" := QoH."Net Qty On Hand";
         ILE."Invoiced Quantity" := QoH."Net Qty On Hand";
@@ -128,8 +150,9 @@ report 14305128 "Create ILE Entries using QoH"
         else
             VE."Item Ledger Entry Type" := VE."Item Ledger Entry Type"::"Positive Adjmt.";
 
-        VE."Document No." := 'QoH-123114';
+        VE."Document No." := 'QoH-' + Format(ProcessDate);
         VE."Location Code" := QoH."Location Code";
+        VE."Variant Code" := QoH."Variant Code";
         VE."Inventory Posting Group" := Item."Inventory Posting Group";
         VE."Item Ledger Entry No." := ILEEntryNo;
         VE."Valued Quantity" := QoH."Net Qty On Hand";
@@ -154,5 +177,21 @@ report 14305128 "Create ILE Entries using QoH"
         VE."Entry Type" := VE."Entry Type"::"Direct Cost";
 
         VE.Insert();
+    end;
+
+    local procedure EnsureAvailableILEEntryNo(var vILEentryNo: Integer)
+    var
+        vILE: Record "Item Ledger Entry";
+    begin
+        while vILE.Get(vILEentryNo) do
+            vILEentryNo += 1;
+    end;
+
+    local procedure EnsureAvailableVEEntryNo(var vVEentryNo: Integer)
+    var
+        vVE: Record "Value Entry";
+    begin
+        while vVE.Get(vVEentryNo) do
+            vVEentryNo += 1;
     end;
 }

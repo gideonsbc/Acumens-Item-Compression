@@ -4,6 +4,9 @@ report 14305127 "Create Missing ILEs"
     ProcessingOnly = true;
     ApplicationArea = All;
     UsageCategory = Administration;
+
+    Permissions = tabledata "Item Ledger Entry" = rimd,
+                    tabledata "Value Entry" = rimd;
     dataset
     {
         dataitem(Item; Item)
@@ -11,15 +14,18 @@ report 14305127 "Create Missing ILEs"
             RequestFilterFields = "No.";
             trigger OnPreDataItem();
             begin
-                Window.Open(Text001);
+                if ShowDialog then
+                    Window.Open(Text001);
                 Counter := 0;
                 StartTime := TIME;
             end;
 
             trigger OnAfterGetRecord();
             begin
-                if Counter MOD 1000 = 0 then
-                    Window.Update(1, Format(Counter DIV 1000) + '->' + Item."No.");
+                if ShowDialog then begin
+                    if Counter MOD 1000 = 0 then
+                        Window.Update(1, Format(Counter DIV 1000) + '->' + Item."No.");
+                end;
 
                 Counter += 1;
 
@@ -35,6 +41,7 @@ report 14305127 "Create Missing ILEs"
 
             trigger OnPostDataItem();
             begin
+                if not ShowDialog then exit;
                 Window.Close();
                 Message('Batch process execution is completed - 3 Create Missing ILEs\Start Time: %1 End Time: %2', StartTime, TIME);
             end;
@@ -46,10 +53,9 @@ report 14305127 "Create Missing ILEs"
 
             trigger OnAfterGetRecord();
             begin
-                if "Document No." in ['QOH-123114', 'MILE-123114'] then
+                if "Document No." in ['QOH-' + Format(MaxPostingDate), 'MILE-' + Format(MaxPostingDate)] then
                     CurrReport.Skip();
 
-                // SBC 2019-07-23 - skip if no QoH
                 QoH.Reset();
                 QoH.SetRange("Item No.", ILE."Item No.");
                 QoH.SetRange("Location Code", ILE."Location Code");
@@ -64,7 +70,7 @@ report 14305127 "Create Missing ILEs"
                                 if not AppliedILE.Get(ItemApplicationEntry."Outbound Item Entry No.") then
                                     CreateMissingILE(true)
                                 else begin
-                                    if AppliedILE."Posting Date" = 20141231D then
+                                    if AppliedILE."Posting Date" = MaxPostingDate then
                                         ModifyILE(true);
                                 end;
                             end;
@@ -73,7 +79,7 @@ report 14305127 "Create Missing ILEs"
                                 if not AppliedILE.Get(ItemApplicationEntry."Inbound Item Entry No.") then
                                     CreateMissingILE(false)
                                 else begin
-                                    if AppliedILE."Posting Date" = 20141231D then
+                                    if AppliedILE."Posting Date" = MaxPostingDate then
                                         ModifyILE(false);
                                 end;
                             end;
@@ -82,6 +88,12 @@ report 14305127 "Create Missing ILEs"
             end;
         }
     }
+
+    procedure SetRunParameters(vMaxPostingDate: Date; vShowDialog: Boolean)
+    begin
+        MaxPostingDate := vMaxPostingDate;
+        ShowDialog := vShowDialog;
+    end;
 
     var
         ItemLdgrEntry: Record "Item Ledger Entry";
@@ -97,9 +109,11 @@ report 14305127 "Create Missing ILEs"
         QoH: Record "AQD Quantity on Hand";
         VE: Record "Value Entry";
         Window: Dialog;
-        Text001: Label 'Processing Item No.';
+        Text001: Label 'Processing Item No. ########1#####';
         Counter: Integer;
         StartTime: Time;
+        ShowDialog: Boolean;
+        MaxPostingDate: Date;
 
     local procedure CreateMissingILE(OutBound: Boolean)
     begin
@@ -111,7 +125,7 @@ report 14305127 "Create Missing ILEs"
 
 
         AppliedILE."Item No." := ILE."Item No.";
-        AppliedILE."Posting Date" := 20141231D;
+        AppliedILE."Posting Date" := MaxPostingDate;
 
         if ItemApplicationEntry.Quantity < 0 then begin
             AppliedILE."Entry Type" := AppliedILE."Entry Type"::"Positive Adjmt.";
@@ -119,19 +133,19 @@ report 14305127 "Create Missing ILEs"
         end else
             AppliedILE."Entry Type" := AppliedILE."Entry Type"::"Negative Adjmt.";
 
-        AppliedILE."Document No." := 'MILE-123114';
+        AppliedILE."Document No." := 'MILE-' + Format(MaxPostingDate);
         AppliedILE."Location Code" := ILE."Location Code";
         AppliedILE.Quantity := -ItemApplicationEntry.Quantity;
         AppliedILE."Remaining Quantity" := 0;
         AppliedILE."Invoiced Quantity" := -ItemApplicationEntry.Quantity;
         AppliedILE.Open := false;
-        AppliedILE."Document Date" := 20141231D;
+        AppliedILE."Document Date" := MaxPostingDate;
         AppliedILE."No. Series" := 'ITEM-MO';
         AppliedILE."Qty. per Unit of Measure" := 1;
         AppliedILE."Unit of Measure Code" := 'EA';
         //AppliedILE."Product Group Code" := ILE."Product Group Code";
         AppliedILE."Completely Invoiced" := true;
-        AppliedILE."Last Invoice Date" := 20141231D;
+        AppliedILE."Last Invoice Date" := MaxPostingDate;
         AppliedILE.Insert();
 
         QoHRec.Reset();
@@ -154,13 +168,14 @@ report 14305127 "Create Missing ILEs"
 
         AppliedVE."Entry No." := VE."Entry No.";
         AppliedVE."Item No." := AppliedILE."Item No.";
-        AppliedVE."Posting Date" := 20141231D;
+        AppliedVE."Posting Date" := MaxPostingDate;
         if AppliedILE.Quantity < 0 then
             AppliedVE."Item Ledger Entry Type" := "Item Ledger Entry Type"::"Negative Adjmt."
         else
             AppliedVE."Item Ledger Entry Type" := "Item Ledger Entry Type"::"Positive Adjmt.";
 
-        AppliedVE."Document No." := 'MILE-123114';
+        AppliedVE."Document No." := 'MILE-' + Format(MaxPostingDate);
+        ;
         AppliedVE."Location Code" := AppliedILE."Location Code";
         AppliedVE."Inventory Posting Group" := ItemR."Inventory Posting Group";
         AppliedVE."Item Ledger Entry No." := AppliedILE."Entry No.";
@@ -180,9 +195,9 @@ report 14305127 "Create Missing ILEs"
         AppliedVE."Cost Posted to G/L" := AppliedVE."Cost per Unit" * AppliedILE.Quantity;
         AppliedVE."Journal Batch Name" := 'DPFE';
         AppliedVE."Gen. Prod. Posting Group" := ItemR."Gen. Prod. Posting Group";
-        AppliedVE."Document Date" := 20141231D;
+        AppliedVE."Document Date" := MaxPostingDate;
         AppliedVE.Inventoriable := true;
-        AppliedVE."Valuation Date" := 20141231D;
+        AppliedVE."Valuation Date" := MaxPostingDate;
         AppliedVE."Entry Type" := AppliedVE."Entry Type"::"Direct Cost";
         AppliedVE.Insert();
     end;

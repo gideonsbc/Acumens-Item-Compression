@@ -5,12 +5,18 @@ report 14305130 "Compress Additional Tables Rec"
     ProcessingOnly = true;
     ApplicationArea = All;
     UsageCategory = Administration;
+
+    Permissions = tabledata "Inventory Comment Line" = rimd,
+                    tabledata "G/L - Item Ledger Relation" = rimd,
+                    tabledata "Item Register" = rimd,
+                    tabledata "Item Journal Line" = rimd,
+                    tabledata "Planning Assignment" = rimd;
     dataset
     {
     }
     trigger OnInitReport();
     begin
-        StartTime := TIME; // SBC 2019-07-29
+        StartTime := TIME;
     end;
 
     trigger OnPreReport();
@@ -18,12 +24,14 @@ report 14305130 "Compress Additional Tables Rec"
         DateToFilter: Date;
         DeleteRecord: Boolean;
     begin
-        Window.Open('Checking and Deleting Records...');
-
-        DateToFilter := DMY2DATE(1, 1, 2015);
+        if ShowDialog then
+            Window.Open('Checking and Deleting Records...');
+        DateToFilter := MaxPostingDate;
+        if DateToFilter = 0D then
+            DateToFilter := DMY2DATE(1, 1, 2015);
 
         ItemRegister.Reset();
-        ItemRegister.SetFilter("Creation Date", '<%1', DateToFilter);
+        ItemRegister.SetFilter("Creation Date", '<=%1', DateToFilter);
         ItemRegister.DeleteAll();
 
         ItemJnlLine.DeleteAll();
@@ -102,10 +110,16 @@ report 14305130 "Compress Additional Tables Rec"
 
     trigger OnPostReport();
     begin
+        if not ShowDialog then exit;
         Window.Close();
         Message('Report processing is completed.\Start Time: %1 End Time: %2', StartTime, TIME);
     end;
 
+    procedure SetRunParameters(vMaxPostingDate: Date; vShowDialog: Boolean)
+    begin
+        MaxPostingDate := vMaxPostingDate;
+        ShowDialog := vShowDialog;
+    end;
 
 
     var
@@ -126,4 +140,6 @@ report 14305130 "Compress Additional Tables Rec"
         DeleteRecord: Boolean;
         Window: Dialog;
         StartTime: Time;
+        MaxPostingDate: Date;
+        ShowDialog: Boolean;
 }

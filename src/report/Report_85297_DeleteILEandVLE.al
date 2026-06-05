@@ -5,7 +5,6 @@ report 14305126 "Delete ILE and VLE"
     Caption = 'Delete ILE and VLE';
     ProcessingOnly = true;
     ApplicationArea = All;
-
     UsageCategory = Administration;
 
     dataset
@@ -21,15 +20,20 @@ report 14305126 "Delete ILE and VLE"
                 DataItemTableView = SORTING("Item No.", "Posting Date");
                 DataItemLink = "Item No." = FIELD("No.");
 
+                trigger OnPreDataItem()
+                begin
+                    SetFilter("Posting Date", '<=%1', MaxPostingDate);
+                end;
+
                 trigger OnAfterGetRecord();
                 begin
-                    if "Document No." in ['QOH-123114', 'MILE-123114'] then
+                    if "Document No." in ['QOH-' + Format(MaxPostingDate), 'MILE-' + Format(MaxPostingDate)] then
                         CurrReport.Skip();
 
                     ValueEntry.Reset();
                     ValueEntry.SetCurrentKey("Item Ledger Entry No.", "Entry Type");
                     ValueEntry.SetRange("Item Ledger Entry No.", "Entry No.");
-                    ValueEntry.SetFilter("Posting Date", '<%1', MaxPostingDate);
+                    ValueEntry.SetFilter("Posting Date", '<=%1', MaxPostingDate);
                     VLEDeleteCount += ValueEntry.Count();
                     ValueEntry.DeleteAll();
 
@@ -47,22 +51,27 @@ report 14305126 "Delete ILE and VLE"
             }
             trigger OnPreDataItem();
             begin
-                MaxPostingDate := DMY2DATE(1, 1, 2025);
+                if MaxPostingDate = 0D then
+                    MaxPostingDate := DMY2DATE(1, 1, 2025);
 
-                Window.Open(Text001);
+                if ShowDialog then
+                    Window.Open(Text001);
                 Counter := 0;
                 StartTime := TIME;
             end;
 
             trigger OnAfterGetRecord();
             begin
-                if Counter MOD 1000 = 0 then
-                    Window.Update(1, Format(Counter DIV 1000) + '->' + Item."No.");
+                if ShowDialog then begin
+                    if Counter MOD 1000 = 0 then
+                        Window.Update(1, Format(Counter DIV 1000) + '->' + Item."No.");
+                end;
                 Counter += 1;
             end;
 
             trigger OnPostDataItem();
             begin
+                if not ShowDialog then exit;
                 Window.Close();
                 Message('Batch process execution is completed - 2 Delete ILE and VLE\Start Time: %1 End Time: %2' +
                   '\\Deleted ILE Count %3\\VLE Count %4', StartTime, TIME, ILEDeleteCount, VLEDeleteCount);
@@ -71,10 +80,17 @@ report 14305126 "Delete ILE and VLE"
     }
     trigger OnPreReport();
     begin
+        if not ShowDialog then exit;
         if not Confirm(Text002 + Item.GetFilters() + '\' + "ItemLedgerEntry".GetFilters()) then begin
             Error('Report is aborted');
             CurrReport.Break();
         end;
+    end;
+
+    procedure SetRunParameters(vMaxPostingDate: Date; vShowDialog: Boolean)
+    begin
+        MaxPostingDate := vMaxPostingDate;
+        ShowDialog := vShowDialog;
     end;
 
     var
@@ -88,4 +104,5 @@ report 14305126 "Delete ILE and VLE"
         Text003: Label 'Deleted ILE Count %1\VLE Count %2';
         Counter: Integer;
         StartTime: Time;
+        ShowDialog: Boolean;
 }

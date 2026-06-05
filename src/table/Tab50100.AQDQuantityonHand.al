@@ -10,13 +10,29 @@ table 14305125 "AQD Quantity on Hand"
             DataClassification = SystemMetadata;
             AutoIncrement = true;
         }
-        field(21; "Item No."; Code[20])
+        field(2; "Item No."; Code[20])
         {
             DataClassification = CustomerContent;
         }
-        field(22; "Location Code"; Code[10])
+        field(3; "Location Code"; Code[10])
         {
             DataClassification = CustomerContent;
+        }
+        field(4; "Variant Code"; Code[10])
+        {
+            Caption = 'Variant Code';
+        }
+        field(5; "Lot No."; Code[50])
+        {
+            Caption = 'Lot No.';
+        }
+        field(6; "Serial No."; Code[50])
+        {
+            Caption = 'Serial No.';
+        }
+        field(7; "Package No."; Code[50])
+        {
+            Caption = 'Package No.';
         }
         field(23; "Qty On Hand"; Decimal)
         {

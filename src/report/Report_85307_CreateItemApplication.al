@@ -4,6 +4,10 @@ report 14305131 "Create Item Application"
     ProcessingOnly = true;
     ApplicationArea = All;
     UsageCategory = Administration;
+
+    Permissions = tabledata "Item Application Entry" = rimd,
+                    tabledata "Item Ledger Entry" = rimd,
+                    tabledata "Value Entry" = rimd;
     dataset
     {
         dataitem(ILE; "Item Ledger Entry")
@@ -12,16 +16,22 @@ report 14305131 "Create Item Application"
 
             trigger OnPreDataItem();
             begin
-                //PositiveILE.FindLast;
-                //PositiveVLE.FindLast;
-                ItemApplicationEntry.FindLast();
+                SetFilter("Posting Date", '<=%1', MaxPostingDate); //new
+                NextItemLdgrEntryNo := 1;
+                NextValueEntryNo := 1;
+                NextItemApplicationEntryNo := 1;
 
-                //NextItemLdgrEntryNo := PositiveILE."Entry No." + 1;
-                //NextValueEntryNo := PositiveVLE."Entry No." + 1;
-                NextItemLdgrEntryNo := 85000;
-                NextValueEntryNo := 85000;
+                if PositiveILE.FindLast then
+                    NextItemLdgrEntryNo := PositiveILE."Entry No." + 1;
 
-                NextItemApplicationEntryNo := ItemApplicationEntry."Entry No." + 1;
+                if PositiveVLE.FindLast then
+                    NextValueEntryNo := PositiveVLE."Entry No." + 1;
+                if ItemApplicationEntry.FindLast() then
+                    NextItemApplicationEntryNo := ItemApplicationEntry."Entry No." + 1;
+
+                //NextItemLdgrEntryNo := 85000;
+                //NextValueEntryNo := 85000;
+
                 StartTime := TIME;
             end;
 
@@ -138,14 +148,21 @@ report 14305131 "Create Item Application"
 
             trigger OnPostDataItem();
             begin
+                if not ShowDialog then exit;
                 Message('Item Application Created %1 Modified %2\Start Time: %3 End Time: %4', ItemApplicationCreated, ItemApplicationUpdated, StartTime, TIME);
             end;
         }
     }
 
+    procedure SetRunParameters(vMaxPostingDate: Date; vShowDialog: Boolean)
+    begin
+        MaxPostingDate := vMaxPostingDate;
+        ShowDialog := vShowDialog;
+    end;
+
     var
-        ItemApplicationEntry: Record 339;
-        NewItemApplicationEntry: Record 339;
+        ItemApplicationEntry: Record "Item Application Entry";
+        NewItemApplicationEntry: Record "Item Application Entry";
         NextItemApplicationEntryNo: Integer;
         ItemApplicationCreated: Integer;
         ItemApplicationUpdated: Integer;
@@ -155,4 +172,6 @@ report 14305131 "Create Item Application"
         NextItemLdgrEntryNo: Integer;
         NextValueEntryNo: Integer;
         StartTime: Time;
+        MaxPostingDate: Date;
+        ShowDialog: Boolean;
 }

@@ -17,5 +17,10 @@ permissionset 14305124 "AQD Item Ldgr Comprs"
         report "Generate Quantity On Hand" = X,
         report "Move ILE To Old Number" = X,
         report "Open All Items for Adjustment" = X,
-        codeunit "AQD Item Ledger Compression" = X;
+        codeunit "AQD Item Ledger Compression" = X,
+        tabledata "AQD ILE Compression Setup" = RIMD,
+        table "AQD ILE Compression Setup" = X,
+        report "AQD Date Compress Item Ledger" = X,
+        page "AQD ILE Compression Setup" = X,
+        page "AQD Quantity on Hand" = X;
 }
