@@ -1,0 +1,34 @@
+permissionset 14305124 "AQDLC ILE Compress"
+{
+    Caption = 'Acumens Item Ledger Compression';
+    Assignable = true;
+    Permissions = tabledata "AQDLC ILE Compress Log Entry" = RIMD,
+        tabledata "AQDLC ILE Compression Register" = RIMD,
+        tabledata "AQDLC ILE Compression Setup" = RIMD,
+        tabledata "AQDLC Item Quantity vs Remn" = RIMD,
+        tabledata "AQDLC Qty on Hand" = RIMD,
+        table "AQDLC ILE Compress Log Entry" = X,
+        table "AQDLC ILE Compression Register" = X,
+        table "AQDLC ILE Compression Setup" = X,
+        table "AQDLC Item Quantity vs Remn" = X,
+        table "AQDLC Qty on Hand" = X,
+        report "AQDLC Check ILE & Its Applns" = X,
+        report "AQDLC Check Item Rem. Quantity" = X,
+        report "AQDLC Compress Add. Tables Rec" = X,
+        report "AQDLC Create ILE Entrs frm QoH" = X,
+        report "AQDLC Create Item Application" = X,
+        report "AQDLC Create Missing ILEs" = X,
+        report "AQDLC Date Compress Item Ledg" = X,
+        report "AQDLC Delete ILE and VLE" = X,
+        report "AQDLC Dlt Orphn Itm Apl Entry" = X,
+        report "AQDLC Generate Qty On Hand" = X,
+        report "AQDLC Move ILE To Old Number" = X,
+        report "AQDLC Open All Items for Adj" = X,
+        report "AQDLC Post-Compress Invt. Val" = X,
+        codeunit "AQDLC Item Ledger Compression" = X,
+        page "AQDLC ILE Compress Log Entries" = X,
+        page "AQDLC ILE Compression Register" = X,
+        page "AQDLC ILE Compression Regs" = X,
+        page "AQDLC ILE Compression Setup" = X,
+        page "AQDLC Quantity on Hand" = X;
+}

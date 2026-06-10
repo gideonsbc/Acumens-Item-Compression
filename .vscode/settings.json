@@ -1,0 +1,46 @@
+{
+  "CRS.FileNamePattern": "<ObjectTypeShort><ObjectId>.<ObjectNameShort>.al",
+  "CRS.FileNamePatternExtensions": "<ObjectTypeShort><BaseId>-Ext<ObjectId>.<ObjectNameShort>.al",
+  "CRS.FileNamePatternPageCustomizations": "<ObjectTypeShort><BaseId>-PageCust.<ObjectNameShort>.al",
+  "CRS.OnSaveAlFileAction": "Rename",
+  "CRS.ObjectNamePrefix": "AQDLC",
+
+  "al.enableCodeAnalysis": true,
+  "al.codeAnalyzers": [
+      "${AppSourceCop}"
+  ],
+"al.compilationOptions": {
+  "generateReportLayout": false
+},
+"todohighlight.isEnable": true,
+"todohighlight.isCaseSensitive": true,
+"todohighlight.keywords": [
+ "DEBUG",
+ "WAITINGFOREVENT",
+ "REVIEW","CHANGED","TODO",
+  "HACK", "FIXME","NOTE", "TOREVERT",
+ {
+     "text": "NOTE",
+     "color": "#ff0000",
+     "backgroundColor": "yellow",
+     "overviewRulerColor": "grey"
+ },
+ {
+     "text": "HACK",
+     "color": "#000",
+     "isWholeLine": false,
+ }
+],    
+"todohighlight.toggleURI": true,
+"todo-tree.general.tags": [
+ "REVIEW",
+ "HACK",
+ "FIXME",
+ "TODO",
+ "NOTE",
+ "DEBUG",
+ "WAITINGFOREVENT",
+ "CHANGED",
+ "TOREVERT"
+]
+}

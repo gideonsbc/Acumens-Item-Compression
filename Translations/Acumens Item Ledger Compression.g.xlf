@@ -3,6 +3,91 @@
   <file datatype="xml" source-language="en-US" target-language="en-US" original="Acumens Item Ledger Compression">
     <body>
       <group id="body">
+        <trans-unit id="Table 2042092386 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>AQD ILE Compression Log</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2042092386 - Field 1116687131 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>End Date/Time</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log - Field End Date/Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2042092386 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2042092386 - Field 1444395444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Executed By</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log - Field Executed By - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2042092386 - Field 2223662438 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Executed On</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log - Field Executed On - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2042092386 - Field 60453471 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Filter</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log - Field Item Filter - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2042092386 - Field 2521436282 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Start Date/Time</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log - Field Start Date/Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2042092386 - Field 513339096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Status</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log - Field Status - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3763530566 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>AQD ILE Compression Log Entry</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log Entry - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3763530566 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log Entry - Field Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3763530566 - Field 1116687131 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>End Date/Time</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log Entry - Field End Date/Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3763530566 - Field 2852966117 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Error Message</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log Entry - Field Error Message - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3763530566 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log Entry - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3763530566 - Field 3320823955 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Line No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log Entry - Field Line No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3763530566 - Field 2457814301 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Log No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log Entry - Field Log No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3763530566 - Field 2521436282 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Start Date/Time</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log Entry - Field Start Date/Time - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3763530566 - Field 513339096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Status</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD ILE Compression Log Entry - Field Status - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3426133583 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>AQD ILE Compression Setup</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -98,6 +183,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Entry No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 1213388271 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Value After</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Inventory Value After - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 1734096924 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Value Before</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Inventory Value Before - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3860122871 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -112,6 +207,11 @@
           <source>Location Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 2350854009 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Log Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Log Entry No. - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 3860122871 - Field 1482668068 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Lot No.</source>
@@ -128,10 +228,25 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Package No. - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 3710982960 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posting Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Posting Date - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3860122871 - Field 3613330850 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Qty On Hand</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Qty On Hand - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 3912900078 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Qty On Hand After</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Qty On Hand After - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 336016970 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity Variance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Quantity Variance - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 3860122871 - Field 1038849004 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Season Code</source>
@@ -148,10 +263,150 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Shortcut Dimension 6 Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 1661115603 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unit Cost After</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Unit Cost After - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 1288810904 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unit Cost Before</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Unit Cost Before - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3860122871 - Field 2783065938 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valuation Variance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Valuation Variance - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 3860122871 - Field 3450651614 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Variant Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQD Quantity on Hand - Field Variant Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Ledger Compression Log</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Control 1681531692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Log Entries</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Control AQD ILE Compression Log Entrs - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Control 2445482498 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>General</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Control General - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Control 1116687131 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the End Date/Time field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Control End Date/Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Control 883711285 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Entry No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Control Entry No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Control 1444395444 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Executed By field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Control Executed By - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Control 2223662438 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Executed On field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Control Executed On - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Control 60453471 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item Filter field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Control Item Filter - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Control 2521436282 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Start Date/Time field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Control Start Date/Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2042092386 - Control 513339096 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Status field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log - Control Status - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1681531692 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>ILE Compression Log Entries</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log Entrs - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1681531692 - Control 3461834954 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Description field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log Entrs - Control Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1681531692 - Control 1116687131 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the End Date/Time field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log Entrs - Control End Date/Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1681531692 - Control 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log Entrs - Control Item No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1681531692 - Control 3320823955 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Line No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log Entrs - Control Line No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1681531692 - Control 2521436282 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Start Date/Time field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log Entrs - Control Start Date/Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1681531692 - Control 513339096 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Status field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Log Entrs - Control Status - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2699983247 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Ledger Compression Logs</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Logs - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2699983247 - Control 1116687131 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the End Date/Time field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Logs - Control End Date/Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2699983247 - Control 883711285 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Entry No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Logs - Control Entry No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2699983247 - Control 1444395444 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Executed By field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Logs - Control Executed By - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2699983247 - Control 2223662438 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Executed On field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Logs - Control Executed On - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2699983247 - Control 60453471 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item Filter field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Logs - Control Item Filter - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2699983247 - Control 2521436282 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Start Date/Time field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Logs - Control Start Date/Time - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2699983247 - Control 513339096 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Status field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Logs - Control Status - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 3426133583 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Acumens Item Ledger Compression Setup</source>
@@ -178,6 +433,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Setup - Action CompressResults1 - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3426133583 - Action 1534331953 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View ILE Compression Logs</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Setup - Action &amp;Compression Logs - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3426133583 - Action 1534331953 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compression Logs</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Setup - Action &amp;Compression Logs - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 3426133583 - Action 3676928841 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>View Quantity on Hand</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -187,6 +452,16 @@
           <source>Quantity on Hand</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Setup - Action &amp;Quantity on Hand - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3426133583 - Action 3007351963 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Assigns AQD App permission set to all users and creates TARIFF Charge.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Setup - Action Initialize App - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3426133583 - Action 3007351963 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Initialize the App</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQD ILE Compression Setup - Action Initialize App - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 3426133583 - Action 2032171231 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>About</source>
@@ -273,6 +548,51 @@
           <note from="Developer" annotates="general" priority="2">%</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQD Quantity on Hand - Control Variant Code - Property ToolTip</note>
         </trans-unit>
+        <trans-unit id="Report 3622304358 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check ILE &amp; Its Application</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Check ILE &amp; Its Applns - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3622304358 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Check ILE &amp; Its Applns - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 546174500 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Check Item Remaining Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Check Item Rem. Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3312057520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compress Additional Tables Rec</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Compress Add. Tables Rec - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1840813138 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create ILE Entries using QoH</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Create ILE Entrs using QoH - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 1840813138 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Item No.  ########1#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Create ILE Entrs using QoH - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 961336417 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create Item Application</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Create Item Application - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2201900953 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Create Missing ILEs</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Create Missing ILEs - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2201900953 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Item No. ########1#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Create Missing ILEs - NamedType Text001</note>
+        </trans-unit>
         <trans-unit id="Report 3831804818 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Date Compress Item Ledger</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -298,130 +618,105 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQD Date Compress Item Ledger - Control StartingDate - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Report 1366355712 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Check ILE &amp; Its Application</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Check ILE &amp; Its Application - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Report 1366355712 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Processing Entry No.</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Check ILE &amp; Its Application - NamedType Text001</note>
-        </trans-unit>
-        <trans-unit id="Report 2443914472 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Check Item Remaining Quantity</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Check Item Remaining Quantity - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Report 664826842 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Compress Additional Tables Rec</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Compress Additional Tables Rec - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Report 2012054186 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Create ILE Entries using QoH</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Create ILE Entries using QoH - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Report 2012054186 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Processing Item No.  ########1#####</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Create ILE Entries using QoH - NamedType Text001</note>
-        </trans-unit>
-        <trans-unit id="Report 1554922445 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Create Item Application</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Create Item Application - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Report 579273333 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Create Missing ILEs</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Create Missing ILEs - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Report 579273333 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Processing Item No. ########1#####</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Create Missing ILEs - NamedType Text001</note>
-        </trans-unit>
-        <trans-unit id="Report 1729275727 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 3409671819 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Delete ILE and VLE</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Delete ILE and VLE - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Delete ILE and VLE - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Report 1729275727 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 3409671819 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
           <source>Processing Item No.  ########1#####</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Delete ILE and VLE - NamedType Text001</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Delete ILE and VLE - NamedType Text001</note>
         </trans-unit>
-        <trans-unit id="Report 1729275727 - NamedType 3752334001" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 3409671819 - NamedType 3752334001" size-unit="char" translate="yes" xml:space="preserve">
           <source>Do you want to run batch process for below filters?\</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Delete ILE and VLE - NamedType Text002</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Delete ILE and VLE - NamedType Text002</note>
         </trans-unit>
-        <trans-unit id="Report 1729275727 - NamedType 95063322" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 3409671819 - NamedType 95063322" size-unit="char" translate="yes" xml:space="preserve">
           <source>Deleted ILE Count %1\VLE Count %2</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Delete ILE and VLE - NamedType Text003</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Delete ILE and VLE - NamedType Text003</note>
         </trans-unit>
-        <trans-unit id="Report 261484043 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 2461875081 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Delete Orphan Item Appl. Entry</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Delete Orphan Item Appl. Entry - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Delete Orphn Itm Apl Entry - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Report 261484043 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 2461875081 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
           <source>Processing Entry No. ########1#####</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Delete Orphan Item Appl. Entry - NamedType Text001</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Delete Orphn Itm Apl Entry - NamedType Text001</note>
         </trans-unit>
-        <trans-unit id="Report 3644501486 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 1082139922 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Generate Quantity On Hand</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Generate Quantity On Hand - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Report 3644501486 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 1082139922 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
           <source>Processing Item No. ###########1######</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text001</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Generate Quantity On Hand - NamedType Text001</note>
         </trans-unit>
-        <trans-unit id="Report 3644501486 - NamedType 3752334001" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 1082139922 - NamedType 3752334001" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Ledger Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text002</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Generate Quantity On Hand - NamedType Text002</note>
         </trans-unit>
-        <trans-unit id="Report 3644501486 - NamedType 95063322" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 1082139922 - NamedType 95063322" size-unit="char" translate="yes" xml:space="preserve">
           <source>Value Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text003</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Generate Quantity On Hand - NamedType Text003</note>
         </trans-unit>
-        <trans-unit id="Report 3644501486 - NamedType 732759939" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 1082139922 - NamedType 732759939" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Application Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text004</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Generate Quantity On Hand - NamedType Text004</note>
         </trans-unit>
-        <trans-unit id="Report 3644501486 - NamedType 1370456556" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 1082139922 - NamedType 1370456556" size-unit="char" translate="yes" xml:space="preserve">
           <source>Are batch processes Report 795 "Adjust Cost - Item Entries" and Report 1002 "Post Inventory Cost to G/L" completed?</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text005</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Generate Quantity On Hand - NamedType Text005</note>
         </trans-unit>
-        <trans-unit id="Report 3644501486 - NamedType 2008153173" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 1082139922 - NamedType 2008153173" size-unit="char" translate="yes" xml:space="preserve">
           <source>Report Execution is aborted to respect user's decision.</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Generate Quantity On Hand - NamedType Text006</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Generate Quantity On Hand - NamedType Text006</note>
         </trans-unit>
-        <trans-unit id="Report 2215297186 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 2471592542 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Move ILE To Old Number</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Move ILE To Old Number - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Move ILE To Old Number - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Report 2215297186 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 2471592542 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
           <source>Processing Entry No. ########1#####</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Move ILE To Old Number - NamedType Text001</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Move ILE To Old Number - NamedType Text001</note>
         </trans-unit>
-        <trans-unit id="Report 1536109673 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+        <trans-unit id="Report 628866181 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Open All Items for Adjustment</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Report Open All Items for Adjustment - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Open All Items for Adj - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4240509153 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Post-Compression Inventory Valuation</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Post-Compress Invt. Val - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 4240509153 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Item No.  ########1#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQD Post-Compress Invt. Val - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1049350380 - Field 1226965852 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4089294192">
+          <source>Compression Log No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension AQD Item Ledger Entry - Field AQD Comp. Log No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 640540533 - Field 1276615418 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 467645625">
+          <source>Compression Log No</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension AQD Value Entry - Field AQD Comp. Log No - Property Caption</note>
         </trans-unit>
         <trans-unit id="PermissionSet 2953152544 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Acumens Item Ledger Compression</source>
