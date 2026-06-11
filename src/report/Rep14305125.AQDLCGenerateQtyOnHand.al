@@ -5,6 +5,7 @@ report 14305125 "AQDLC Generate Qty On Hand"
     ApplicationArea = All;
     UsageCategory = Administration;
 
+    Permissions = tabledata "Transfer Line" = rimd;
 
     dataset
     {
@@ -15,13 +16,17 @@ report 14305125 "AQDLC Generate Qty On Hand"
 
             dataitem(ItemLedgerEntry; "Item Ledger Entry")
             {
-                DataItemTableView = SORTING("Item No.", "Posting Date");
+                DataItemTableView = SORTING("Item No.", "Posting Date") where("Completely Invoiced" = filter(true));
                 DataItemLink = "Item No." = FIELD("No.");
 
                 trigger OnAfterGetRecord()
                 var
                     VLE: Record "Value Entry";
                 begin
+                    if ("Entry Type" = "Entry Type"::Transfer) and ("Document Type" = "Document Type"::"Transfer Shipment") then
+                        if not TransferCompletelyReceived(ItemLedgerEntry) then
+                            CurrReport.Skip();
+
                     CalcFields("Cost Amount (Expected)", "Cost Amount (Actual)");
                     QoH.Reset();
                     QoH.SetRange("Item No.", "Item No.");
@@ -185,5 +190,17 @@ report 14305125 "AQDLC Generate Qty On Hand"
             vQoH."Inventory Value Before" += ILE."Cost Amount (Expected)";
         if vQoH."Qty On Hand" <> 0 then
             vQoH."Unit Cost Before" := vQoH."Inventory Value Before" / vQoH."Qty On Hand";
+    end;
+
+    procedure TransferCompletelyReceived(var vILE: Record "Item Ledger Entry"): Boolean
+    var
+        TransferLine: Record "Transfer Line";
+    begin
+        if (vILE."Order No." = '') or (vILE."Order Line No." = 0) then exit(true);
+
+        if not TransferLine.Get(vILE."Order No.", vILE."Order Line No.") then
+            exit(true)
+        else
+            exit(TransferLine."Completely Received");
     end;
 }

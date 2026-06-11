@@ -46,6 +46,14 @@ page 14305128 "AQDLC ILE Compress Log Entries"
                 }
                 field("Error Message"; Rec."Error Message")
                 { }
+                field("No. of ILEs Deleted"; Rec."No. of ILEs Deleted")
+                { }
+                field("No. of VEs Deleted"; Rec."No. of VEs Deleted")
+                { }
+                field("No. of ILEs Created"; Rec."No. of ILEs Created")
+                { }
+                field("No. of VEs Created"; Rec."No. of VEs Created")
+                { }
             }
         }
     }

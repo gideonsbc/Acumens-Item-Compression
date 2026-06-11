@@ -21,7 +21,7 @@ page 14305127 "AQDLC ILE Compression Register"
                 {
                     ToolTip = 'Specifies the value of the Entry No. field.', Comment = '%';
                 }
-                field("Posting Date"; Rec."Posting Date")
+                field("Cut-off Date"; Rec."Cut-off Date")
                 { }
                 field("Executed On"; Rec."Executed On")
                 {
@@ -34,6 +34,7 @@ page 14305127 "AQDLC ILE Compression Register"
                 field("Item Filter"; Rec."Item Filter")
                 {
                     ToolTip = 'Specifies the value of the Item Filter field.', Comment = '%';
+                    Visible = false;
                 }
                 field(Status; Rec.Status)
                 {
@@ -51,6 +52,18 @@ page 14305127 "AQDLC ILE Compression Register"
                 {
                     Editable = false;
                 }
+            }
+            group(ModifiedRecords)
+            {
+                Caption = 'Modified Records';
+                field("No. of ILEs Deleted"; Rec."No. of ILEs Deleted")
+                { }
+                field("No. of VEs Deleted"; Rec."No. of VEs Deleted")
+                { }
+                field("No. of ILEs Created"; Rec."No. of ILEs Created")
+                { }
+                field("No. of VEs Created"; Rec."No. of VEs Created")
+                { }
             }
             part("AQD ILE Compression Log Entrs"; "AQDLC ILE Compress Log Entries")
             {

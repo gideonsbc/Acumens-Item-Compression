@@ -30,11 +30,11 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
         if DateToFilter = 0D then
             DateToFilter := DMY2DATE(1, 1, 2015);
 
-        ItemRegister.Reset();
+        /*ItemRegister.Reset(); //handled when deleting ILE
         ItemRegister.SetFilter("Creation Date", '<=%1', DateToFilter);
         ItemRegister.DeleteAll();
 
-        ItemJnlLine.DeleteAll();
+        ItemJnlLine.DeleteAll();*/
 
         // LedgerEntryDimension.Reset();
         // LedgerEntryDimension.SetFilter("Table ID", '%1|%2', 32, 5802);
@@ -91,7 +91,7 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
         //AvgCostAdjmtEntryPoint.DELETEALL;
 
         GLItemLedgerRelation.Reset();
-        if GLItemLedgerRelation.FindFirst() then begin
+        if GLItemLedgerRelation.FindSet() then begin
             repeat
                 DeleteRecord := false;
 
@@ -105,7 +105,7 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
             until GLItemLedgerRelation.Next() = 0;
         end;
 
-        PlanningAssignment.DeleteAll();
+        //PlanningAssignment.DeleteAll();
     end;
 
     trigger OnPostReport();

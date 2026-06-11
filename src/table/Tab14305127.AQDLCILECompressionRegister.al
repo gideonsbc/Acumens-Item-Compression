@@ -44,13 +44,39 @@ table 14305127 "AQDLC ILE Compression Register"
         {
             Caption = 'End Date/Time';
         }
-        field(8; "Posting Date"; Date)
+        field(8; "Cut-off Date"; Date)
         {
+            Caption = 'Cut-off Date';
             Editable = false;
         }
-        field(9; "Posting Date Run No."; Integer)
+        field(9; "Cut-off Date Run No."; Integer)
+        {
+            Caption = 'Cut-off Date Run No.';
+            Editable = false;
+        }
+        field(10; "No. of ILEs Deleted"; Integer)
         {
             Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = sum("AQDLC ILE Compress Log Entry"."No. of ILEs Deleted" where("Log No." = field("Entry No.")));
+        }
+        field(11; "No. of VEs Deleted"; Integer)
+        {
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = sum("AQDLC ILE Compress Log Entry"."No. of VEs Deleted" where("Log No." = field("Entry No.")));
+        }
+        field(12; "No. of ILEs Created"; Integer)
+        {
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = sum("AQDLC ILE Compress Log Entry"."No. of ILEs Created" where("Log No." = field("Entry No.")));
+        }
+        field(13; "No. of VEs Created"; Integer)
+        {
+            Editable = false;
+            FieldClass = FlowField;
+            CalcFormula = sum("AQDLC ILE Compress Log Entry"."No. of VEs Created" where("Log No." = field("Entry No.")));
         }
     }
     keys
@@ -59,7 +85,7 @@ table 14305127 "AQDLC ILE Compression Register"
         {
             Clustered = true;
         }
-        key(key1; "Posting Date", "Posting Date Run No.")
+        key(key1; "Cut-off Date", "Cut-off Date Run No.")
         { }
     }
     trigger OnInsert()

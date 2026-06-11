@@ -19,7 +19,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
             trigger OnPreDataItem()
             begin
                 if EndingDate = 0D then
-                    Error('Ending Date must be set!');
+                    Error('Cut-off Date must be set!');
 
                 CreateILECompressionLog(GetFilters);
                 StartTime := Time;
@@ -35,7 +35,8 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 Window.Update(2, Item."No." + ' - ' + Item.Description);
                 Window.Update(3, 'Checking cost adjustments (1/8)');
                 LogLineNo := 0;
-                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Check cost adjustment', '', 0);
+                ClearRecordsCount();
+                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Check cost adjustment', '', 0, 0, 0, 0, 0);
                 //Check and confirm that adjustment has been run for items in the set range
                 AvgCostAdjustmentEntryPoints.SetRange("Item No.", Item."No.");
                 AvgCostAdjustmentEntryPoints.SetRange("Valuation Date", StartingDate, EndingDate);
@@ -48,7 +49,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 PostValueEntryToGl.SetRange("AQDLC Skipped", false);
                 if PostValueEntryToGl.Find('-') then
                     Error('Please run "Post Inventory Costs to G/L" for item %1 to and including date %2', Item."No.", EndingDate);
-                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Check cost adjustment', '', 2);
+                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Check cost adjustment', '', 2, 0, 0, 0, 0);
 
                 StartingILENumber := 0;
                 StartingVENumber := 0;
@@ -66,43 +67,48 @@ report 14305135 "AQDLC Date Compress Item Ledg"
 
                 Window.Update(3, 'Generating Quantity on Hand (2/8)');
                 LogLineNo := 0;
-                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Generate Quantity on Hand', '', 0);
+                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Generate Quantity on Hand', '', 0, 0, 0, 0, 0);
                 Clear(GenerateQoHRpt);
                 GenerateQoHRpt.SetTableView(Item);
                 ILE.SetRange("Item No.", Item."No.");
                 ILE.SetFilter("Posting Date", '<=%1', EndingDate);
+                ILE.SetRange("Completely Invoiced", true);
                 GenerateQoHRpt.SetTableView(ILE);
                 GenerateQoHRpt.SetRunParameters(EndingDate, RegNo, false);
                 GenerateQoHRpt.UseRequestPage := false;
                 GenerateQoHRpt.RunModal();
-                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Generate Quantity on Hand', '', 2);
+                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Generate Quantity on Hand', '', 2, 0, 0, 0, 0);
 
                 Window.Update(3, 'Deleting Item Ledger and Value Entries (3/8)');
                 LogLineNo := 0;
-                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Delete Item Ledger and Value Entries', '', 0);
+                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Delete Item Ledger and Value Entries', '', 0, 0, 0, 0, 0);
                 Clear(RptDeleteILEandVLE);
                 RptDeleteILEandVLE.SetTableView(Item);
                 ILE.SetRange("Item No.", Item."No.");
                 ILE.SetFilter("Posting Date", '<=%1', EndingDate);
+                ILE.SetRange("Completely Invoiced", true);
                 RptDeleteILEandVLE.SetTableView(ILE);
                 RptDeleteILEandVLE.SetRunParameters(EndingDate, RegNo, PostingDateRunNo, false);
                 RptDeleteILEandVLE.UseRequestPage := false;
                 RptDeleteILEandVLE.RunModal();
-                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Delete Item Ledger and Value Entries', '', 2);
+                RptDeleteILEandVLE.GetDeleteCount(DeletedILEs, DeletedVEs);
+                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Delete Item Ledger and Value Entries', '', 2, DeletedILEs, DeletedVEs, 0, 0);
 
-                /*Window.Update(3, 'Create Missing Item Ledger Entries (4/8)');
-                Clear(RptCreateMissingILEs);
-                RptCreateMissingILEs.SetTableView(Item);
-                ILE.SetRange("Item No.", Item."No.");
-                ILE.SetFilter("Posting Date", '<=%1', EndingDate);
-                RptCreateMissingILEs.SetTableView(ILE);
-                RptCreateMissingILEs.SetRunParameters(EndingDate,RegNo,  false);
-                RptCreateMissingILEs.UseRequestPage := false;
-                RptCreateMissingILEs.RunModal();//to review*/
+                Window.Update(3, 'Delete Orphan Item Application Entries (6/8)');
+                LogLineNo := 0;
+                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Delete Orphan Item Application Entries', '', 0, 0, 0, 0, 0);
+                Clear(RptDeleteOrphanItemApplEntry);
+                ItemApplicationEntry.SetRange("Item No.", Item."No.");
+                ItemApplicationEntry.SetFilter("Posting Date", '<=%1', EndingDate);
+                RptDeleteOrphanItemApplEntry.SetTableView(ItemApplicationEntry);
+                RptDeleteOrphanItemApplEntry.SetRunParameters(EndingDate, RegNo, false);
+                RptDeleteOrphanItemApplEntry.UseRequestPage := false;
+                RptDeleteOrphanItemApplEntry.RunModal();
+                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Delete Orphan Item Application Entries', '', 2, 0, 0, 0, 0);
 
                 Window.Update(3, 'Create Item Ledger Entries using Quantity on Hand (5/8)');
                 LogLineNo := 0;
-                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Create Item Ledger Entries using Quantity on Hand', '', 0);
+                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Create Item Ledger Entries using Quantity on Hand', '', 0, 0, 0, 0, 0);
                 Clear(RptCrateILEEntriesUsingQoH);
                 QoH.SetRange("Item No.", Item."No.");
                 QoH.SetRange("Posting Date", EndingDate);
@@ -111,32 +117,22 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 RptCrateILEEntriesUsingQoH.SetRunParameters(StartingILENumber, StartingVENumber, EndingDate, RegNo, PostingDateRunNo, false);
                 RptCrateILEEntriesUsingQoH.UseRequestPage := false;
                 RptCrateILEEntriesUsingQoH.RunModal();
-                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Create Item Ledger Entries using Quantity on Hand', '', 2);
+                RptCrateILEEntriesUsingQoH.GetCreatedCount(CreatedILEs, CreatedVEs);
+                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Create Item Ledger Entries using Quantity on Hand', '', 2, 0, 0, CreatedILEs, CreatedVEs);
 
-                Window.Update(3, 'Delete Orphan Item Application Entries (6/8)');
-                LogLineNo := 0;
-                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Delete Orphan Item Application Entries', '', 0);
-                Clear(RptDeleteOrphanItemApplEntry);
-                ItemApplicationEntry.SetRange("Item No.", Item."No.");
-                ItemApplicationEntry.SetFilter("Posting Date", '<=%1', EndingDate);
-                RptDeleteOrphanItemApplEntry.SetTableView(ItemApplicationEntry);
-                RptDeleteOrphanItemApplEntry.SetRunParameters(EndingDate, RegNo, false);
-                RptDeleteOrphanItemApplEntry.UseRequestPage := false;
-                RptDeleteOrphanItemApplEntry.RunModal();
-                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Delete Orphan Item Application Entries', '', 2);
-
-                /*Window.Update(3, 'Create Item Application (7/8)');
+                Window.Update(3, 'Create Item Application (7/8)');
                 Clear(RptCreateItemApplication);
                 ILE.SetRange("Item No.", Item."No.");
                 ILE.SetFilter("Posting Date", '<=%1', EndingDate);
+                ILE.SetRange("Completely Invoiced", true);
                 RptCreateItemApplication.SetTableView(ILE);
-                RptCreateItemApplication.SetRunParameters(EndingDate,RegNo,  false);
+                RptCreateItemApplication.SetRunParameters(EndingDate, RegNo, false);
                 RptCreateItemApplication.UseRequestPage := false;
-                RptCreateItemApplication.RunModal();*/
+                RptCreateItemApplication.RunModal();
 
                 Window.Update(3, 'Running Post-Compression Inventory Valuation (5/8)');
                 LogLineNo := 0;
-                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Run Post-Compression Inventory Valuation', '', 0);
+                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Run Post-Compression Inventory Valuation', '', 0, 0, 0, 0, 0);
                 Clear(RptPostCompressionInvtValuation);
                 QoH.SetRange("Item No.", Item."No.");
                 QoH.SetRange("Posting Date", EndingDate);
@@ -145,7 +141,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 //RptPostCompressionInvtValuation.SetRunParameters(EndingDate,RegNo,  false);
                 RptPostCompressionInvtValuation.UseRequestPage := false;
                 RptPostCompressionInvtValuation.RunModal();
-                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Run Post-Compression Inventory Valuation', '', 2);
+                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Run Post-Compression Inventory Valuation', '', 2, 0, 0, 0, 0);
 
                 Item."Cost is Adjusted" := false;
                 Item.Modify();
@@ -157,11 +153,11 @@ report 14305135 "AQDLC Date Compress Item Ledg"
 
                 Window.Update(3, 'Compress Related Tables (8/8)');
                 LogLineNo := 0;
-                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Compress Related Tables', '', 0);
+                UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Compress Related Tables', '', 0, 0, 0, 0, 0);
                 RptCompressAdditionalTablesRec.SetRunParameters(EndingDate, RegNo, false);
                 RptCompressAdditionalTablesRec.UseRequestPage := false;
                 RptCompressAdditionalTablesRec.RunModal();
-                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Compress Related Tables', '', 2);
+                UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Compress Related Tables', '', 2, 0, 0, 0, 0);
 
                 CloseILECompressionLog();
 
@@ -183,10 +179,11 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                     {
                         Caption = 'Starting Date';
                         ApplicationArea = All;
+                        Visible = false;
                     }
                     field(EndingDate; EndingDate)
                     {
-                        Caption = 'Ending Date';
+                        Caption = 'Cut-off Date';
                         ApplicationArea = All;
                         ShowMandatory = true;
                     }
@@ -210,14 +207,12 @@ report 14305135 "AQDLC Date Compress Item Ledg"
 
     trigger OnPostReport()
     var
-        QoH: Record "AQDLC Qty on Hand"; //should call compression logs
+        CompressionRegister: Record "AQDLC ILE Compression Register";
     begin
-        //if Confirm('Do you want to open the Compression Results page?') then begin
-        QoH.Reset();
-        QoH.SetRange("Register No.", RegNo);
-        if QoH.Find('-') then
-            Page.Run(Page::"AQDLC Quantity on Hand", QoH);
-        //end;
+        CompressionRegister.Reset();
+        CompressionRegister.SetRange("Entry No.", RegNo);
+        if CompressionRegister.Find('-') then
+            Page.Run(Page::"AQDLC ILE Compression Register", CompressionRegister);
     end;
 
     var
@@ -230,12 +225,11 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         AvgCostAdjustmentEntryPoints: Record "Avg. Cost Adjmt. Entry Point";
         PostValueEntryToGl: Record "Post Value Entry to G/L";
         RptDeleteILEandVLE: Report "AQDLC Delete ILE and VLE";
-        RptCreateMissingILEs: Report "AQDLC Create Missing ILEs";
+        //RptCreateMissingILEs: Report "AQDLC Create Missing ILEs";
         RptCrateILEEntriesUsingQoH: Report "AQDLC Create ILE Entrs frm QoH";
         RptDeleteOrphanItemApplEntry: Report "AQDLC Dlt Orphn Itm Apl Entry";
         RptCompressAdditionalTablesRec: Report "AQDLC Compress Add. Tables Rec";
         RptCreateItemApplication: Report "AQDLC Create Item Application";
-        RptOpenAllItemsForAdjustment: Report "AQDLC Open All Items for Adj";
         RptPostCompressionInvtValuation: Report "AQDLC Post-Compress Invt. Val";
         StartTime: Time;
         QoH: Record "AQDLC Qty on Hand";
@@ -248,6 +242,19 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         RegNo: Integer;
         PostingDateRunNo: Integer;
         LogLineNo: Integer;
+
+        DeletedILEs: Integer;
+        DeletedVEs: Integer;
+        CreatedILEs: Integer;
+        CreatedVEs: Integer;
+
+    local procedure ClearRecordsCount()
+    begin
+        DeletedILEs := 0;
+        DeletedVEs := 0;
+        CreatedILEs := 0;
+        CreatedVEs := 0;
+    end;
 
     procedure SetCalledFromEntryNo(vCalledFromRegisterNo: Integer)
     begin
@@ -262,15 +269,14 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         if CalledFromRegisterNo <> 0 then exit;
 
         PostingDateRunNo := GetPostingDateRunNo();
-        ;
         IleCompressionReg.Init();
         IleCompressionReg."Item Filter" := CopyStr(ItemFilters, 1, 200);
         IleCompressionReg."Executed On" := CurrentDateTime;
         IleCompressionReg."Executed By" := UserId;
         IleCompressionReg."Start Date/Time" := CurrentDateTime;
         IleCompressionReg.Status := IleCompressionReg.Status::Incomplete;
-        IleCompressionReg."Posting Date" := EndingDate;
-        IleCompressionReg."Posting Date Run No." := PostingDateRunNo;
+        IleCompressionReg."Cut-off Date" := EndingDate;
+        IleCompressionReg."Cut-off Date Run No." := PostingDateRunNo;
         IleCompressionReg.Insert(true);
         RegNo := IleCompressionReg."Entry No.";
     end;
@@ -279,11 +285,11 @@ report 14305135 "AQDLC Date Compress Item Ledg"
     var
         IleCompressionReg: Record "AQDLC ILE Compression Register";
     begin
-        IleCompressionReg.SetCurrentKey("Posting Date", "Posting Date Run No.");
-        IleCompressionReg.SetRange("Posting Date", EndingDate);
-        IleCompressionReg.SetAscending("Posting Date Run No.", false);
+        IleCompressionReg.SetCurrentKey("Cut-off Date", "Cut-off Date Run No.");
+        IleCompressionReg.SetRange("Cut-off Date", EndingDate);
+        IleCompressionReg.SetAscending("Cut-off Date Run No.", false);
         if IleCompressionReg.FindFirst() then
-            exit(IleCompressionReg."Posting Date Run No." + 1);
+            exit(IleCompressionReg."Cut-off Date Run No." + 1);
         exit(1);
     end;
 
@@ -300,7 +306,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         end;
     end;
 
-    local procedure UpdateCompressionLogEntry(vAction: Option Create,Update; var IleLogLineNo: Integer; ItemNo: Code[20]; Descr: Text; ErrorMessage: Text; vStatus: Option Pending,Failed,Successful)
+    local procedure UpdateCompressionLogEntry(vAction: Option Create,Update; var IleLogLineNo: Integer; ItemNo: Code[20]; Descr: Text; ErrorMessage: Text; vStatus: Option Pending,Failed,Successful; vDeletedILEs: Integer; vDeletedVEs: Integer; vCreatedILEs: Integer; vCreatedVEs: Integer)
     var
         IleCompressionEntry: Record "AQDLC ILE Compress Log Entry";
     begin
@@ -315,6 +321,10 @@ report 14305135 "AQDLC Date Compress Item Ledg"
             IleCompressionEntry.Description := Descr;
             IleCompressionEntry.Status := vStatus;
             IleCompressionEntry."Start Date/Time" := CurrentDateTime;
+            IleCompressionEntry."No. of ILEs Deleted" := vDeletedILEs;
+            IleCompressionEntry."No. of VEs Deleted" := vDeletedVEs;
+            IleCompressionEntry."No. of ILEs Created" := vCreatedILEs;
+            IleCompressionEntry."No. of VEs Created" := vCreatedVEs;
             if vStatus <> vStatus::Pending then
                 IleCompressionEntry."End Date/Time" := CurrentDateTime;
             IleCompressionEntry.Insert(true);
@@ -328,6 +338,10 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 IleCompressionEntry."End Date/Time" := CurrentDateTime;
                 IleCompressionEntry."Error Message" := CopyStr(ErrorMessage, 1, 2000);
                 IleCompressionEntry.Status := vStatus;
+                IleCompressionEntry."No. of ILEs Deleted" := vDeletedILEs;
+                IleCompressionEntry."No. of VEs Deleted" := vDeletedVEs;
+                IleCompressionEntry."No. of ILEs Created" := vCreatedILEs;
+                IleCompressionEntry."No. of VEs Created" := vCreatedVEs;
                 IleCompressionEntry.Modify();
             end;
         end;

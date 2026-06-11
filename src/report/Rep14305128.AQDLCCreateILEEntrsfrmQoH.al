@@ -93,6 +93,12 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         EnsureAvailableVEEntryNo(VEEntryNo);
     end;
 
+    procedure GetCreatedCount(var vILECreatedCount: Integer; var vVECreatedCount: Integer)
+    begin
+        vILECreatedCount := ILECreatedCount;
+        vVECreatedCount := VECreatedCount;
+    end;
+
     var
         ILEEntryNo: Integer;
         VEEntryNo: Integer;
@@ -108,6 +114,8 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         ShowDialog: Boolean;
         CompressionRegNo: Integer;
         PostingDateRunNo: Integer;
+        ILECreatedCount: Integer;
+        VECreatedCount: Integer;
 
     local procedure CreateILE()
     begin
@@ -144,6 +152,7 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         ILE.Open := TRUE;
 
         ILE.Insert();
+        ILECreatedCount += 1;
     end;
 
     local procedure CreateVE()
@@ -187,6 +196,7 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         VE."Entry Type" := VE."Entry Type"::"Direct Cost";
 
         VE.Insert();
+        VECreatedCount += 1;
     end;
 
     local procedure EnsureAvailableILEEntryNo(var vILEentryNo: Integer)

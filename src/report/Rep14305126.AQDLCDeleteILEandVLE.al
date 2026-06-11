@@ -1,7 +1,8 @@
 report 14305126 "AQDLC Delete ILE and VLE"
 {
     Permissions = tabledata "Item Ledger Entry" = RIMD,
-    tabledata "Value Entry" = RIMD;
+    tabledata "Value Entry" = RIMD,
+    tabledata "Item Register" = rimd;
     Caption = 'Delete ILE and VLE';
     ProcessingOnly = true;
     ApplicationArea = All;
@@ -17,7 +18,7 @@ report 14305126 "AQDLC Delete ILE and VLE"
 
             dataitem(ItemLedgerEntry; "Item Ledger Entry")
             {
-                DataItemTableView = SORTING("Item No.", "Posting Date");
+                DataItemTableView = SORTING("Item No.", "Posting Date") where("Completely Invoiced" = filter(true));
                 DataItemLink = "Item No." = FIELD("No.");
 
                 trigger OnPreDataItem()
@@ -29,13 +30,21 @@ report 14305126 "AQDLC Delete ILE and VLE"
                 begin
                     if "Document No." in ['QOH-' + Format(MaxPostingDate) + '-' + Format(PostingDateRunNo), 'MILE-' + Format(MaxPostingDate) + '-' + Format(PostingDateRunNo)] then
                         CurrReport.Skip();
+                    if ("Entry Type" = "Entry Type"::Transfer) and ("Document Type" = "Document Type"::"Transfer Shipment") then
+                        if not RptGenerateQtyOnHand.TransferCompletelyReceived(ItemLedgerEntry) then
+                            CurrReport.Skip();
 
                     ValueEntry.Reset();
                     ValueEntry.SetCurrentKey("Item Ledger Entry No.", "Entry Type");
                     ValueEntry.SetRange("Item Ledger Entry No.", "Entry No.");
                     ValueEntry.SetFilter("Posting Date", '<=%1', MaxPostingDate);
-                    VLEDeleteCount += ValueEntry.Count();
+                    VEDeleteCount += ValueEntry.Count();
                     ValueEntry.DeleteAll();
+
+                    if "Item Register No." <> 0 then begin
+                        ItemRegister.SetRange("No.", "Item Register No.");
+                        ItemRegister.DeleteAll();
+                    end;
 
                     Delete();
                     ILEDeleteCount += 1;
@@ -74,7 +83,7 @@ report 14305126 "AQDLC Delete ILE and VLE"
                 if not ShowDialog then exit;
                 Window.Close();
                 Message('Batch process execution is completed - 2 Delete ILE and VLE\Start Time: %1 End Time: %2' +
-                  '\\Deleted ILE Count %3\\VLE Count %4', StartTime, TIME, ILEDeleteCount, VLEDeleteCount);
+                  '\\Deleted ILE Count %3\\VLE Count %4', StartTime, TIME, ILEDeleteCount, VEDeleteCount);
             end;
         }
     }
@@ -95,6 +104,12 @@ report 14305126 "AQDLC Delete ILE and VLE"
         ShowDialog := vShowDialog;
     end;
 
+    procedure GetDeleteCount(var vILEDeleteCount: Integer; var vVEDeleteCount: Integer)
+    begin
+        vILEDeleteCount := ILEDeleteCount;
+        vVEDeleteCount := VEDeleteCount;
+    end;
+
     var
         Text001: Label 'Processing Item No.  ########1#####';
         ValueEntry: Record "Value Entry";
@@ -102,11 +117,13 @@ report 14305126 "AQDLC Delete ILE and VLE"
         MaxPostingDate: Date;
         Text002: Label 'Do you want to run batch process for below filters?\';
         ILEDeleteCount: Integer;
-        VLEDeleteCount: Integer;
+        VEDeleteCount: Integer;
         Text003: Label 'Deleted ILE Count %1\VLE Count %2';
         Counter: Integer;
         StartTime: Time;
         ShowDialog: Boolean;
         CompressionRegNo: Integer;
         PostingDateRunNo: Integer;
+        ItemRegister: Record "Item Register";
+        RptGenerateQtyOnHand: Report "AQDLC Generate Qty On Hand";
 }

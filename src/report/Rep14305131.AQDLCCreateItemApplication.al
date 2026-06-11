@@ -16,16 +16,17 @@ report 14305131 "AQDLC Create Item Application"
 
             trigger OnPreDataItem();
             begin
-                SetFilter("Posting Date", '<=%1', MaxPostingDate); //new
+                SetFilter("Posting Date", '<=%1', MaxPostingDate);
+                SetRange("AQDLC Comp. Reg No.", CompressionRegNo);
                 NextItemLdgrEntryNo := 1;
                 NextValueEntryNo := 1;
                 NextItemApplicationEntryNo := 1;
 
-                if PositiveILE.FindLast then
+                /*if PositiveILE.FindLast then
                     NextItemLdgrEntryNo := PositiveILE."Entry No." + 1;
 
                 if PositiveVLE.FindLast then
-                    NextValueEntryNo := PositiveVLE."Entry No." + 1;
+                    NextValueEntryNo := PositiveVLE."Entry No." + 1;*/
                 if ItemApplicationEntry.FindLast() then
                     NextItemApplicationEntryNo := ItemApplicationEntry."Entry No." + 1;
 
@@ -70,79 +71,26 @@ report 14305131 "AQDLC Create Item Application"
                     end;
                 end else begin
                     ItemApplicationEntry.SetRange("Outbound Item Entry No.", "Entry No.");
-                    if ItemApplicationEntry.FindFirst() then
-                        ItemApplicationEntry.Delete();
-
-                    ItemApplicationEntry.SetRange("Item Ledger Entry No.");
                     if ItemApplicationEntry.FindFirst() then begin
-                        repeat
-                            ItemApplicationEntry."Outbound Item Entry No." := 0;
-                            ItemApplicationEntry.Modify();
-                        until ItemApplicationEntry.Next() = 0;
+                        ItemApplicationEntry.Quantity := Quantity;
+                        ItemApplicationEntry.Modify();
+                        ItemApplicationUpdated += 1;
+                    end else begin
+                        NewItemApplicationEntry.Init();
+                        NewItemApplicationEntry."Entry No." := NextItemApplicationEntryNo;
+                        NewItemApplicationEntry."Item Ledger Entry No." := "Entry No.";
+                        NewItemApplicationEntry."Inbound Item Entry No." := 0;//PositiveILE."Entry No.";
+                        NewItemApplicationEntry."Outbound Item Entry No." := "Entry No.";
+                        NewItemApplicationEntry.Quantity := Quantity;
+                        NewItemApplicationEntry."Posting Date" := "Posting Date";
+                        NewItemApplicationEntry."Transferred-from Entry No." := 0;
+                        NewItemApplicationEntry."Creation Date" := CreateDateTime("Posting Date", TIME);
+                        NewItemApplicationEntry."Cost Application" := true;
+                        NewItemApplicationEntry."Output Completely Invd. Date" := "Posting Date";
+                        NewItemApplicationEntry.Insert();
+                        NextItemApplicationEntryNo += 1;
+                        ItemApplicationCreated += 1;
                     end;
-
-                    PositiveILE.Init();
-                    PositiveILE := ILE;
-                    PositiveILE."Entry Type" := PositiveILE."Entry Type"::"Positive Adjmt.";
-                    PositiveILE."Entry No." := NextItemLdgrEntryNo;
-                    PositiveILE.Quantity := -1 * PositiveILE.Quantity; // Reserve Sign to make it positive
-                    PositiveILE."Remaining Quantity" := -1 * PositiveILE."Remaining Quantity";
-                    PositiveILE."Invoiced Quantity" := PositiveILE.Quantity;
-                    PositiveILE.Positive := PositiveILE.Quantity > 0;
-                    PositiveILE.Insert();
-                    NextItemLdgrEntryNo += 1;
-
-                    NegativeVLE.Reset();
-                    NegativeVLE.SetCurrentKey("Item Ledger Entry No.", "Entry Type");
-                    NegativeVLE.SetRange("Item Ledger Entry No.", "Entry No.");
-                    if NegativeVLE.FindFirst() then begin
-                        repeat
-                            PositiveVLE.Init();
-                            PositiveVLE := NegativeVLE;
-                            PositiveVLE."Entry No." := NextValueEntryNo;
-                            PositiveVLE."Item Ledger Entry No." := PositiveILE."Entry No.";
-                            PositiveVLE."Item Ledger Entry Type" := PositiveVLE."Item Ledger Entry Type"::"Positive Adjmt.";
-                            PositiveVLE."Valued Quantity" := PositiveILE.Quantity;
-                            PositiveVLE."Item Ledger Entry Quantity" := PositiveILE.Quantity;
-                            PositiveVLE."Invoiced Quantity" := PositiveILE."Invoiced Quantity";
-                            PositiveVLE."Cost Amount (Actual)" := -1 * NegativeVLE."Cost Amount (Actual)";
-                            PositiveVLE."Cost Posted to G/L" := -1 * NegativeVLE."Cost Posted to G/L";
-                            PositiveVLE.Insert();
-                            NextValueEntryNo += 1;
-                        until NegativeVLE.Next() = 0;
-                    end;
-
-                    // For Positive ILE
-                    NewItemApplicationEntry.Init();
-                    NewItemApplicationEntry."Entry No." := NextItemApplicationEntryNo;
-                    NewItemApplicationEntry."Item Ledger Entry No." := PositiveILE."Entry No.";
-                    NewItemApplicationEntry."Inbound Item Entry No." := PositiveILE."Entry No.";
-                    NewItemApplicationEntry."Outbound Item Entry No." := 0;
-                    NewItemApplicationEntry.Quantity := PositiveILE.Quantity;
-                    NewItemApplicationEntry."Posting Date" := PositiveILE."Posting Date";
-                    NewItemApplicationEntry."Transferred-from Entry No." := 0;
-                    NewItemApplicationEntry."Creation Date" := CreateDateTime(PositiveILE."Posting Date", TIME);
-                    NewItemApplicationEntry."Cost Application" := true;
-                    NewItemApplicationEntry."Output Completely Invd. Date" := PositiveILE."Posting Date";
-                    NewItemApplicationEntry.Insert();
-                    NextItemApplicationEntryNo += 1;
-                    ItemApplicationCreated += 1;
-
-                    // For Negative ILE
-                    NewItemApplicationEntry.Init();
-                    NewItemApplicationEntry."Entry No." := NextItemApplicationEntryNo;
-                    NewItemApplicationEntry."Item Ledger Entry No." := "Entry No.";
-                    NewItemApplicationEntry."Inbound Item Entry No." := PositiveILE."Entry No.";
-                    NewItemApplicationEntry."Outbound Item Entry No." := "Entry No.";
-                    NewItemApplicationEntry.Quantity := Quantity;
-                    NewItemApplicationEntry."Posting Date" := "Posting Date";
-                    NewItemApplicationEntry."Transferred-from Entry No." := 0;
-                    NewItemApplicationEntry."Creation Date" := CreateDateTime("Posting Date", TIME);
-                    NewItemApplicationEntry."Cost Application" := true;
-                    NewItemApplicationEntry."Output Completely Invd. Date" := "Posting Date";
-                    NewItemApplicationEntry.Insert();
-                    NextItemApplicationEntryNo += 1;
-                    ItemApplicationCreated += 1;
                 end;
             end;
 

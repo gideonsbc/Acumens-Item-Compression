@@ -47,6 +47,22 @@ table 14305128 "AQDLC ILE Compress Log Entry"
             Caption = 'End Date/Time';
             Editable = false;
         }
+        field(9; "No. of ILEs Deleted"; Integer)
+        {
+            Editable = false;
+        }
+        field(10; "No. of VEs Deleted"; Integer)
+        {
+            Editable = false;
+        }
+        field(11; "No. of ILEs Created"; Integer)
+        {
+            Editable = false;
+        }
+        field(12; "No. of VEs Created"; Integer)
+        {
+            Editable = false;
+        }
     }
     keys
     {

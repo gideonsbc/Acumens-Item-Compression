@@ -22,7 +22,7 @@ page 14305126 "AQDLC ILE Compression Regs"
                 {
                     ToolTip = 'Specifies the value of the Entry No. field.', Comment = '%';
                 }
-                field("Posting Date"; Rec."Posting Date")
+                field("Cut-off Date"; Rec."Cut-off Date")
                 { }
                 field("Executed On"; Rec."Executed On")
                 {
