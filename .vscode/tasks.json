@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Regenerate App Permissions",
+      "type": "process",
+      "command": "${command:al.generatePermissionSetForExtensionObjects}",
+      "problemMatcher": []
+    }
+  ]
+}

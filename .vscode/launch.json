@@ -15,7 +15,8 @@
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
-            "schemaUpdateMode": "ForceSync"
+            "schemaUpdateMode": "ForceSync",
+            "preLaunchTask": "Regenerate App Permissions"
         },
         {
             "name": "SBC SandboxBC25",
@@ -31,7 +32,8 @@
             "launchBrowser": true,
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
-            "schemaUpdateMode": "ForceSync"
+            "schemaUpdateMode": "ForceSync",
+            "preLaunchTask": "Regenerate App Permissions"
         },
     ]
 }

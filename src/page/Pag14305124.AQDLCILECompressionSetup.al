@@ -70,6 +70,22 @@ page 14305124 "AQDLC ILE Compression Setup"
             {
                 Caption = '&Compress Results';
                 Image = Compress;
+                action("&Run Item Selection")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Run Item Selection';
+                    Image = SelectReport;
+                    RunObject = Report "AQDLC Compress Item Selection";
+                    ToolTip = 'Run Compression Item Selection';
+                }
+                action("&Item Selection")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Item Selection';
+                    Image = List;
+                    RunObject = Page "AQDLC Compression Item Selectn";
+                    ToolTip = 'View Compression Item Selection';
+                }
                 action("&Run Compression")
                 {
                     ApplicationArea = All;
@@ -126,6 +142,12 @@ page 14305124 "AQDLC ILE Compression Setup"
                 actionref(InitializeApp_Home; "Initialize App")
                 {
                 }
+                separator("ItemSelection") { }
+                actionref(RunItemSelection_Promoted; "&Run Item Selection")
+                {
+                }
+                actionref(ItemSelection_Promoted; "&Item Selection")
+                { }
                 separator("Compression") { }
                 actionref(RunCompression_Promoted; "&Run Compression")
                 {

@@ -212,12 +212,12 @@ report 14305135 "AQDLC Date Compress Item Ledg"
     var
         QoH: Record "AQDLC Qty on Hand"; //should call compression logs
     begin
-        if Confirm('Do you want to open the Compression Results page?') then begin
-            QoH.Reset();
-            QoH.SetRange("Register No.", RegNo);
-            if QoH.Find('-') then
-                Page.Run(Page::"AQDLC Quantity on Hand", QoH);
-        end;
+        //if Confirm('Do you want to open the Compression Results page?') then begin
+        QoH.Reset();
+        QoH.SetRange("Register No.", RegNo);
+        if QoH.Find('-') then
+            Page.Run(Page::"AQDLC Quantity on Hand", QoH);
+        //end;
     end;
 
     var

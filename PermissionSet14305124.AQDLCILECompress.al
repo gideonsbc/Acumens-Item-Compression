@@ -30,5 +30,9 @@ permissionset 14305124 "AQDLC ILE Compress"
         page "AQDLC ILE Compression Register" = X,
         page "AQDLC ILE Compression Regs" = X,
         page "AQDLC ILE Compression Setup" = X,
-        page "AQDLC Quantity on Hand" = X;
+        page "AQDLC Quantity on Hand" = X,
+        tabledata "AQDLC Compression Item Selectn" = RIMD,
+        table "AQDLC Compression Item Selectn" = X,
+        report "AQDLC Compress Item Selection" = X,
+        page "AQDLC Compression Item Selectn" = X;
 }
