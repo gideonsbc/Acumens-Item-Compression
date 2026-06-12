@@ -152,10 +152,11 @@ report 14305125 "AQDLC Generate Qty On Hand"
             Error(Text006);
     end;
 
-    procedure SetRunParameters(vMaxPostingDate: Date; vCompressionRegNo: Integer; vShowDialog: Boolean)
+    procedure SetRunParameters(vMaxPostingDate: Date; vCompressionRegNo: Integer; vCompressionScheduleNo: Integer; vShowDialog: Boolean)
     begin
         MaxPostingDate := vMaxPostingDate;
         CompressionRegNo := vCompressionRegNo;
+        CompressionScheduleNo := vCompressionScheduleNo;
         ShowDialog := vShowDialog;
     end;
 
@@ -181,6 +182,7 @@ report 14305125 "AQDLC Generate Qty On Hand"
         Text006: Label 'Report Execution is aborted to respect user''s decision.';
         ShowDialog: Boolean;
         CompressionRegNo: Integer;
+        CompressionScheduleNo: Integer;
 
     local procedure UpdateInventoryValueAndUnitCost(var vQoH: Record "AQDLC Qty on Hand"; var ILE: Record "Item Ledger Entry")
     begin
@@ -234,6 +236,7 @@ report 14305125 "AQDLC Generate Qty On Hand"
             ItemValuationComparison."Remaining Qty Before" := ItemQtyOnHandBefore;
             ItemValuationComparison."Unit Cost Before" := ItemUnitCostBefore;
             ItemValuationComparison."Inventory Value Before" := ItemInventoryValueBefore;
+            ItemValuationComparison."Schedule No." := CompressionScheduleNo;
             ItemValuationComparison.Insert();
         end else begin
             ItemValuationComparison."Remaining Qty Before" := ItemQtyOnHandBefore;

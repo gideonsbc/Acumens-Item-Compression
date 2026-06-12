@@ -2,7 +2,10 @@ report 14305126 "AQDLC Delete ILE and VLE"
 {
     Permissions = tabledata "Item Ledger Entry" = RIMD,
     tabledata "Value Entry" = RIMD,
-    tabledata "Item Register" = rimd;
+    tabledata "Item Register" = rimd,
+    tabledata "G/L - Item Ledger Relation" = rimd,
+    tabledata "G/L Entry" = rimd;
+
     Caption = 'Delete ILE and VLE';
     ProcessingOnly = true;
     ApplicationArea = All;
@@ -79,6 +82,22 @@ report 14305126 "AQDLC Delete ILE and VLE"
 
             trigger OnPostDataItem();
             begin
+                //Clear these entries here before new VEs are created
+                GLItemLedgerRelation.Reset();
+                if GLItemLedgerRelation.FindSet() then begin
+                    repeat
+                        DeleteRecord := false;
+
+                        if not GLEntry.Get(GLItemLedgerRelation."G/L Entry No.") then
+                            DeleteRecord := true;
+                        if not ValueEntry.Get(GLItemLedgerRelation."Value Entry No.") then
+                            DeleteRecord := true;
+
+                        if DeleteRecord then
+                            GLItemLedgerRelation.Delete();
+                    until GLItemLedgerRelation.Next() = 0;
+                end;
+
                 if not ShowDialog then exit;
                 Window.Close();
                 Message('Batch process execution is completed - 2 Delete ILE and VLE\Start Time: %1 End Time: %2' +
@@ -125,4 +144,7 @@ report 14305126 "AQDLC Delete ILE and VLE"
         PostingDateRunNo: Integer;
         ItemRegister: Record "Item Register";
         RptGenerateQtyOnHand: Report "AQDLC Generate Qty On Hand";
+        GLItemLedgerRelation: Record "G/L - Item Ledger Relation";
+        GLEntry: Record "G/L Entry";
+        DeleteRecord: Boolean;
 }

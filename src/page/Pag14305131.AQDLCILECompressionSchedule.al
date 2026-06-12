@@ -23,10 +23,12 @@ page 14305131 "AQDLC ILE Compression Schedule"
                     ToolTip = 'Specifies the value of the Cut-off Date field.', Comment = '%';
                     ShowMandatory = true;
                     NotBlank = true;
+                    Editable = not Rec.Processed;
                 }
                 field(Description; Rec.Description)
                 {
                     ToolTip = 'Specifies the value of the Description field.', Comment = '%';
+                    Editable = not Rec.Processed;
                 }
                 field(Processed; Rec.Processed)
                 {

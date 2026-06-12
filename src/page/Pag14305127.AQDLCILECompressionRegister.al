@@ -54,6 +54,17 @@ page 14305127 "AQDLC ILE Compression Register"
                     Editable = false;
                 }
             }
+            group(ProcessingSummary)
+            {
+                Caption = 'Processing Summary';
+                Visible = Rec."Processing Summary" <> '';
+
+                field("Processing Summary"; Rec."Processing Summary")
+                {
+                    ShowCaption = false;
+                    MultiLine = true;
+                }
+            }
             group(ModifiedRecords)
             {
                 Caption = 'Modified Records';

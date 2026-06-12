@@ -59,9 +59,10 @@ table 14305126 "AQDLC ILE Compression Setup"
         {
             Editable = false;
         }
-        field(11; "Maximum Runtime (Hours)"; Integer)
+        field(11; "Maximum Runtime (Hours)"; Decimal)
         {
             MinValue = 0;
+            DecimalPlaces = 0 : 10;
         }
     }
     keys
@@ -71,4 +72,15 @@ table 14305126 "AQDLC ILE Compression Setup"
             Clustered = true;
         }
     }
+
+    procedure UpdateLatestValidDec31()
+    var
+        CutoffDate: Date;
+        PrevYear: Integer;
+    begin
+        TestField("Cut-off Period");
+        CutoffDate := CALCDATE("Cut-off Period", Today);
+        PrevYear := Date2DMY(CutoffDate, 3) - 1;
+        "Latest Valid December 31" := DMY2Date(31, 12, PrevYear);
+    end;
 }

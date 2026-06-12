@@ -9,7 +9,8 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
                     tabledata "G/L - Item Ledger Relation" = rimd,
                     tabledata "Item Register" = rimd,
                     tabledata "Item Journal Line" = rimd,
-                    tabledata "Planning Assignment" = rimd;
+                    tabledata "Planning Assignment" = rimd,
+                    tabledata "G/L Entry" = rimd;
     dataset
     {
     }
@@ -89,7 +90,7 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
         //AvgCostAdjmtEntryPoint.SETRANGE("Cost Is Adjusted",TRUE);
         //AvgCostAdjmtEntryPoint.DELETEALL;
 
-        GLItemLedgerRelation.Reset();
+        /*GLItemLedgerRelation.Reset();
         if GLItemLedgerRelation.FindSet() then begin
             repeat
                 DeleteRecord := false;
@@ -102,7 +103,7 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
                 if DeleteRecord then
                     GLItemLedgerRelation.Delete();
             until GLItemLedgerRelation.Next() = 0;
-        end;
+        end;*/
 
         //PlanningAssignment.DeleteAll();
     end;

@@ -16,7 +16,8 @@ report 14305137 "AQDLC Compress Item Selection"
             begin
                 if AsOfDate = 0D then
                     AsOfDate := Today;
-                if CompressionScheduleNo <> 0 then
+
+                if (CompressionScheduleNo <> 0) and SkipCompressedItems then
                     SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
             end;
 
@@ -78,6 +79,29 @@ report 14305137 "AQDLC Compress Item Selection"
                         Caption = 'Schedule No.';
                         TableRelation = "AQDLC ILE Compression Schedule";
                         ToolTip = 'The compression schedule to be executed after this selection';
+
+                        trigger OnValidate()
+                        var
+                            CompressionSchedule: Record "AQDLC ILE Compression Schedule";
+                        begin
+                            if CompressionScheduleNo = 0 then exit;
+
+                            if CompressionSchedule.Get(CompressionScheduleNo) then begin
+                                SkipCompressedItems := true;
+                                CurrReport.RequestOptionsPage.Update(false);
+                            end;
+                        end;
+                    }
+                    group(SkipCompressedItemsGrp)
+                    {
+                        ShowCaption = false;
+                        Visible = (CompressionScheduleNo <> 0);
+                        field(SkipCompressedItems; SkipCompressedItems)
+                        {
+                            Caption = 'Skip Compressed Items';
+                            ApplicationArea = All;
+                            ToolTip = 'Items already compressed in the selected schedule will be skipped';
+                        }
                     }
                 }
             }
@@ -96,6 +120,12 @@ report 14305137 "AQDLC Compress Item Selection"
             Error('Acumens Item Ledger Compression App is not enabled');
         AsOfDate := Today;
         NoOfItems := 3;
+
+        if CompressionScheduleNo = 0 then
+            GetApplicableCompressionSchedule();
+
+        if CompressionScheduleNo <> 0 then
+            SkipCompressedItems := true;
     end;
 
     trigger OnPreReport()
@@ -120,6 +150,7 @@ report 14305137 "AQDLC Compress Item Selection"
         _ItemSelectionBuf: Record "AQDLC Compression Item Selectn" temporary;
         EntryNo: Integer;
         CompressionScheduleNo: Integer;
+        SkipCompressedItems: Boolean;
 
     local procedure UpdateItemSelectionBuffer(vItem: Record Item; OrderByVal: Decimal)
     var
@@ -157,5 +188,18 @@ report 14305137 "AQDLC Compress Item Selection"
                 ItemSelection."As of Date" := AsOfDate;
                 ItemSelection.Insert();
             until (_ItemSelectionBuf.Next() = 0) or (vEntryNo = NoOfItems);
+    end;
+
+    local procedure GetApplicableCompressionSchedule()
+    var
+        CompressionSchedule: Record "AQDLC ILE Compression Schedule";
+        MaxCutoffDate: Date;
+    begin
+        MaxCutoffDate := CalcDate(ILECompressionSetup."Cut-off Period", Today);
+        CompressionSchedule.SetCurrentKey("Cut-off Date");
+        CompressionSchedule.SetFilter("Cut-off Date", '<=%1', MaxCutoffDate);
+        CompressionSchedule.SetAscending("Cut-off Date", false);
+        if CompressionSchedule.FindFirst() then
+            CompressionScheduleNo := CompressionSchedule."Entry No.";
     end;
 }

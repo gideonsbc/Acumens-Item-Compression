@@ -22,8 +22,6 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                     Error('Cut-off Date must be set!');
                 ValidateCutoffDate();
 
-                if CompressionScheduleNo = 0 then
-                    GetApplicableCompressionSchedule();
                 CreateILECompressionLog(GetFilters);
                 StartTime := Time;
                 Window.Open(Txt000);
@@ -33,12 +31,17 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                     Window.Update(1, '..' + Format(EndingDate));
 
                 SomethingCompressed := false;
+                if (CompressionScheduleNo <> 0) and SkipCompressedItems then
+                    SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
             end;
 
             trigger OnAfterGetRecord()
             var
                 ErrorMsg: Text;
             begin
+                if CheckExecutionTimeOut() then
+                    CurrReport.Break();
+
                 Window.Update(2, Item."No." + ' - ' + Item.Description);
                 Window.Update(3, 'Checking cost adjustments (1/8)');
                 LogLineNo := 0;
@@ -74,7 +77,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 ILE.SetFilter("Posting Date", '<=%1', EndingDate);
                 ILE.SetRange("Completely Invoiced", true);
                 GenerateQoHRpt.SetTableView(ILE);
-                GenerateQoHRpt.SetRunParameters(EndingDate, RegNo, false);
+                GenerateQoHRpt.SetRunParameters(EndingDate, RegNo, CompressionScheduleNo, false);
                 GenerateQoHRpt.UseRequestPage := false;
                 GenerateQoHRpt.RunModal();
                 UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Generate Quantity on Hand', '', 2, 0, 0, 0, 0);
@@ -154,6 +157,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 end;
                 Item.Modify();
                 SomethingCompressed := true;
+                Commit();
             end;
 
             trigger OnPostDataItem()
@@ -162,7 +166,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 if SomethingCompressed then begin
                     Window.Update(3, 'Compress Related Tables (8/8)');
                     LogLineNo := 0;
-                    UpdateCompressionLogEntry(0, LogLineNo, "No.", 'Compress Related Tables', '', 0, 0, 0, 0, 0);
+                    UpdateCompressionLogEntry(0, LogLineNo, '', 'Compress Related Tables', '', 0, 0, 0, 0, 0);
                     RptCompressAdditionalTablesRec.SetRunParameters(EndingDate, RegNo, false);
                     RptCompressAdditionalTablesRec.UseRequestPage := false;
                     RptCompressAdditionalTablesRec.RunModal();
@@ -171,10 +175,10 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 end else
                     CloseILECompressionLog(1);
 
-                if ExecutionSummaryTxt <> '' then
-                    ExecutionSummaryTxt := '\\' + 'Errors Encountered:\' + ExecutionSummaryTxt;
+                if ExecutionTimeOut then
+                    ExecutionSummaryTxt := ExecutionTimeOutMsg + '\\' + ExecutionSummaryTxt;
 
-                Message('Item Ledger Compression Ended! Please review logs for details.\Start Time: %1 End Time: %2' + ExecutionSummaryTxt, StartTime, TIME);
+                Message('Item Ledger Compression Ended! Please review logs for details.\Start Time: %1 End Time: %2\\' + ExecutionSummaryTxt, StartTime, TIME);
                 Window.Close();
             end;
         }
@@ -193,6 +197,8 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                         Caption = 'Schedule No.';
                         TableRelation = "AQDLC ILE Compression Schedule";
                         ToolTip = 'The compression schedule to be executed after this selection';
+                        ShowMandatory = true;
+                        NotBlank = true;
 
                         trigger OnValidate()
                         var
@@ -203,6 +209,8 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                             if CompressionSchedule.Get(CompressionScheduleNo) then begin
                                 EndingDate := CompressionSchedule."Cut-off Date";
                                 ValidateCutoffDate();
+                                CurrReport.RequestOptionsPage.Update(false);
+                                SkipCompressedItems := true;
                             end;
                         end;
                     }
@@ -217,6 +225,8 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                         Caption = 'Cut-off Date';
                         ApplicationArea = All;
                         ShowMandatory = true;
+                        Editable = false;
+                        Enabled = false;
 
                         trigger OnValidate()
                         begin
@@ -224,6 +234,22 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                                 Error('When a Schedule No. is selected as above, the Cut-off date is picked from the schedule!');
                             ValidateCutoffDate();
                         end;
+                    }
+                    group(SkipCompressedItemsGrp)
+                    {
+                        ShowCaption = false;
+                        Visible = (CompressionScheduleNo <> 0);
+                        field(SkipCompressedItems; SkipCompressedItems)
+                        {
+                            Caption = 'Skip Compressed Items';
+                            ApplicationArea = All;
+                            ToolTip = 'Items already compressed in the selected schedule will be skipped';
+                        }
+                    }
+                    field(MaxRunTimeHrs; MaxRunTimeHrs)
+                    {
+                        Caption = 'Maximum Runtime (Hours)';
+                        DecimalPlaces = 0 : 10;
                     }
                 }
             }
@@ -240,9 +266,18 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         if not (ILECompressionSetup.Get() and ILECompressionSetup."Enable App") then
             Error('Acumens Item Ledger Compression App is not enabled');
         ILECompressionSetup.TestField("Cut-off Period");
+
+        ILECompressionSetup.UpdateLatestValidDec31();
         EndingDate := ILECompressionSetup."Latest Valid December 31";
         if EndingDate = 0D then
             EndingDate := CalcDate(ILECompressionSetup."Cut-off Period", Today);
+
+        if CompressionScheduleNo = 0 then
+            GetApplicableCompressionSchedule();
+        if CompressionScheduleNo <> 0 then
+            SkipCompressedItems := true;
+
+        MaxRunTimeHrs := ILECompressionSetup."Maximum Runtime (Hours)";
     end;
 
     trigger OnPostReport()
@@ -334,12 +369,18 @@ report 14305135 "AQDLC Date Compress Item Ledg"
     var
         IleCompressionReg: Record "AQDLC ILE Compression Register";
     begin
+        ExecutionStartDt := CurrentDateTime;
+        if MaxRunTimeHrs > 0 then begin
+            ExpectedExecutionEndDt := ExecutionStartDt + Round(MaxRunTimeHrs * 3600000, 1, '<');
+            ExecutionTimeOutMsg := StrSubstNo('The configured runtime limit of %1 hour(s) has been exhausted. All completed compressions have been committed successfully. Run the report again later to process the remaining entries.', MaxRunTimeHrs);
+        end;
+
         if CalledFromRegisterNo <> 0 then exit;
 
         PostingDateRunNo := GetPostingDateRunNo();
         IleCompressionReg.Init();
         IleCompressionReg."Item Filter" := CopyStr(ItemFilters, 1, 200);
-        IleCompressionReg."Executed On" := CurrentDateTime;
+        IleCompressionReg."Executed On" := ExecutionStartDt;
         IleCompressionReg."Executed By" := UserId;
         IleCompressionReg."Start Date/Time" := CurrentDateTime;
         IleCompressionReg.Status := IleCompressionReg.Status::Incomplete;
@@ -371,6 +412,8 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         if IleCompressionReg.Get(RegNo) then begin
             IleCompressionReg."End Date/Time" := CurrentDateTime;
             IleCompressionReg.Status := vStatus;
+            if ExecutionTimeOut then
+                IleCompressionReg."Processing Summary" := ExecutionTimeOutMsg;
             IleCompressionReg.Modify();
         end;
     end;
@@ -428,7 +471,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         end;
 
         if ExecutionSummaryTxt = '' then
-            ExecutionSummaryTxt := '- ' + Msg
+            ExecutionSummaryTxt := 'Errors Encountered:\ - ' + Msg
         else
             ExecutionSummaryTxt += '\ - ' + Msg;
     end;
@@ -445,6 +488,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
 
     var
         CompressionScheduleNo: Integer;
+        SkipCompressedItems: Boolean;
 
     local procedure GetApplicableCompressionSchedule()
     var
@@ -465,6 +509,24 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         if CompressionSchedule.Get(CompressionScheduleNo) and (not CompressionSchedule.Processed) then begin
             CompressionSchedule.Processed := true;
             CompressionSchedule.Modify();
+        end;
+    end;
+
+    var
+        ExecutionTimeOut: Boolean;
+        ExecutionStartDt: DateTime;
+        ExpectedExecutionEndDt: DateTime;
+        MaxRunTimeHrs: Decimal;
+        ExecutionTimeOutMsg: Text;
+
+    local procedure CheckExecutionTimeOut(): Boolean
+    var
+    begin
+        if ExpectedExecutionEndDt = 0DT then exit(false);
+
+        if CurrentDateTime >= ExpectedExecutionEndDt then begin
+            ExecutionTimeOut := true;
+            exit(true);
         end;
     end;
 }

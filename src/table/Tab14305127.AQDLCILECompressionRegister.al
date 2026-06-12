@@ -83,6 +83,10 @@ table 14305127 "AQDLC ILE Compression Register"
             TableRelation = "AQDLC ILE Compression Schedule";
             Editable = false;
         }
+        field(15; "Processing Summary"; Text[500])
+        {
+            Editable = false;
+        }
     }
     keys
     {
