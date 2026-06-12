@@ -62,14 +62,14 @@ page 14305124 "AQDLC ILE Compression Setup"
                     InitializeApp(true);
                 end;
             }
-            /*action("About App")
+            action("About App")
             {
-                Image = Info;
+                Image = AboutNav;
                 ApplicationArea = All;
-                ToolTip = 'Shows more information about the Acumens Freight, Duties & Tariffs App';
-                Caption = 'About the App';
-                RunObject = page "AQD About Acumens Tariff App";
-            }*/
+                ToolTip = 'Shows more information about the Acumens Item Ledger Compression App';
+                Caption = 'About ILE Compression';
+                RunObject = page "AQDLC About ILE Compression";
+            }
             group(CompressResults1)
             {
                 Caption = '&Compress Results';
@@ -203,13 +203,8 @@ page 14305124 "AQDLC ILE Compression Setup"
                 {
                 }
             }
-            group(About)
+            actionref(Aboutapp_About; "About App")
             {
-                Caption = 'About', Comment = 'Generated from the PromotedActionCategories property index 5.';
-
-                /*actionref(Aboutapp_About; "About App")
-                {
-                }*/
             }
         }
     }
@@ -246,11 +241,19 @@ page 14305124 "AQDLC ILE Compression Setup"
         exit(ModuleInfo.Id);
     end;
 
+    var
+        Text000Txt: Label 'Initializing app...\\';
+        Text001Txt: Label 'Assigning Permission sets:    #1#############\\';
+        Text002Txt: Label 'Creating default parameters:    #2#############\\';
+        Text003Txt: Label 'Creating compression schedule:    #3#############\\';
+        Window: Dialog;
+
     procedure InitializeApp(ShowMessage: Boolean)
     var
         CFBaseEvents: Codeunit "AQD Acumens Base Events";
         AppId: Guid;
     begin
+        Window.Open(Text000Txt + Text001Txt + Text002Txt + Text003Txt);
         Rec.Reset;
         if not Rec.Get then begin
             Rec.Init;
@@ -259,13 +262,17 @@ page 14305124 "AQDLC ILE Compression Setup"
         end;
         Rec."Enable App" := true;
 
+        Window.Update(1, 'AQDLC ILE Comprs Usr & AQDLC ILE Compress');
+        AppId := getAppId();
+        CFBaseEvents.AssignAppPermissionSetToAllUsers(AppId, 'AQDLC ILE Comprs Usr', true);
+        CFBaseEvents.AssignAppPermissionSetToAllSuperUsers(AppId, 'AQDLC ILE Compress', true);
+
+        Window.Update(2, 'Cut-off Period');
         UpdateDefaultParameters();
         Rec.Modify(true);
 
+        Window.Update(3, '1');
         CreateInitialCompressionSchedule();
-
-        AppId := getAppId();
-        CFBaseEvents.AssignAppPermissionSetToAllUsers(AppId, 'AQDLC ILE Compress', true);
 
         if ShowMessage then
             Message('Initialization completed successfully!');

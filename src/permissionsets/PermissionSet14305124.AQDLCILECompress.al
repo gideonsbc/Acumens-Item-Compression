@@ -33,5 +33,10 @@ permissionset 14305124 "AQDLC ILE Compress"
         page "AQDLC Item Valuation Comparisn" = X,
         tabledata "AQDLC ILE Compression Schedule" = RIMD,
         table "AQDLC ILE Compression Schedule" = X,
-        page "AQDLC ILE Compression Schedule" = X;
+        page "AQDLC ILE Compression Schedule" = X,
+        page "AQDLC About ILE Compression" = X,
+        tabledata "AQDLC Compression Cues" = RIMD,
+        table "AQDLC Compression Cues" = X,
+        page "AQDLC Compression Cues" = X,
+        page "AQDLC Compressions RC" = X;
 }
