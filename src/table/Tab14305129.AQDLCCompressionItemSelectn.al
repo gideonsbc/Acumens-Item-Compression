@@ -15,6 +15,7 @@ table 14305129 "AQDLC Compression Item Selectn"
         field(2; "Item No."; Code[20])
         {
             Caption = 'Item No.';
+            TableRelation = Item;
         }
         field(3; Description; Text[200])
         {

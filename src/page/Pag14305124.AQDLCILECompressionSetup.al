@@ -22,6 +22,10 @@ page 14305124 "AQDLC ILE Compression Setup"
                 {
                     ToolTip = 'Specifies the value of the Cut-off Period field.', Comment = '%';
                 }
+                field("Maximum Runtime (Hours)"; Rec."Maximum Runtime (Hours)")
+                {
+                    ToolTip = 'No. of Hours the compression runs per setup, before breaking to continue later';
+                }
             }
             group(CompressionGroupFields)
             {
@@ -70,6 +74,14 @@ page 14305124 "AQDLC ILE Compression Setup"
             {
                 Caption = '&Compress Results';
                 Image = Compress;
+                action("&Compression Schedules")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Compression Schedules';
+                    Image = List;
+                    RunObject = Page "AQDLC ILE Compression Schedule";
+                    ToolTip = 'View Item Compression Schedules';
+                }
                 action("&Run Item Selection")
                 {
                     ApplicationArea = All;
@@ -159,6 +171,9 @@ page 14305124 "AQDLC ILE Compression Setup"
                 {
                 }
                 separator("ItemSelection") { }
+                actionref(CompressionSchedules_Promoted; "&Compression Schedules")
+                {
+                }
                 actionref(RunItemSelection_Promoted; "&Run Item Selection")
                 {
                 }
@@ -210,11 +225,16 @@ page 14305124 "AQDLC ILE Compression Setup"
         //TariffsLicenseMgt.CheckAppAccess();
         if not Rec.Get() then begin
             Rec.Init();
+            if Confirm('Do you want to activate Acumens Item Ledger Compression Defaults?' + '\' + 'This may cause errors if the setup is not completed.') then
+                InitializeApp(true);
             Evaluate(Rec."Cut-off Period", '-7Y');
+            Rec.Validate("Cut-off Period");
             Rec.Insert();
         end;
-        if Format(Rec."Cut-off Period") = '' then
+        if Format(Rec."Cut-off Period") = '' then begin
             Evaluate(Rec."Cut-off Period", '-7Y');
+            Rec.Validate("Cut-off Period");
+        end;
         Rec."Group by Item" := true;
     end;
 
@@ -234,14 +254,43 @@ page 14305124 "AQDLC ILE Compression Setup"
         Rec.Reset;
         if not Rec.Get then begin
             Rec.Init;
+            Rec."Enable App" := true;
             Rec.Insert(true);
         end;
+        Rec."Enable App" := true;
+
+        UpdateDefaultParameters();
+        Rec.Modify(true);
+
+        CreateInitialCompressionSchedule();
 
         AppId := getAppId();
         CFBaseEvents.AssignAppPermissionSetToAllUsers(AppId, 'AQDLC ILE Compress', true);
 
         if ShowMessage then
             Message('Initialization completed successfully!');
+    end;
+
+    local procedure UpdateDefaultParameters()
+    begin
+        Evaluate(Rec."Cut-off Period", '-7Y');
+        Rec.Validate("Cut-off Period");
+        Rec."Group by Item" := true;
+        Rec."Group by Location Code" := true;
+        Rec."Group by Variant Code" := true;
+        Rec."Maximum Runtime (Hours)" := 10;
+    end;
+
+    local procedure CreateInitialCompressionSchedule()
+    var
+        CompressionSchedule: Record "AQDLC ILE Compression Schedule";
+    begin
+        if CompressionSchedule.FindFirst() then exit;
+
+        CompressionSchedule.Init();
+        CompressionSchedule."Entry No." := 1;
+        CompressionSchedule.Validate("Cut-off Date", Rec."Latest Valid December 31");
+        CompressionSchedule.Insert(true);
     end;
 
 }

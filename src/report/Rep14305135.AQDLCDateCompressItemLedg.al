@@ -22,6 +22,8 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                     Error('Cut-off Date must be set!');
                 ValidateCutoffDate();
 
+                if CompressionScheduleNo = 0 then
+                    GetApplicableCompressionSchedule();
                 CreateILECompressionLog(GetFilters);
                 StartTime := Time;
                 Window.Open(Txt000);
@@ -145,6 +147,11 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 UpdateCompressionLogEntry(1, LogLineNo, "No.", 'Run Post-Compression Inventory Valuation', '', 2, 0, 0, 0, 0);
 
                 Item."Cost is Adjusted" := false;
+                if CompressionScheduleNo <> 0 then begin
+                    Item."AQDLC Last Compression No." := CompressionScheduleNo;
+                    Item."AQDLC Last Compression Date" := EndingDate;
+                    MarkScheduleAsProcessed();
+                end;
                 Item.Modify();
                 SomethingCompressed := true;
             end;
@@ -181,6 +188,24 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 group(GroupName)
                 {
                     Caption = 'Options';
+                    field(CompressionScheduleNo; CompressionScheduleNo)
+                    {
+                        Caption = 'Schedule No.';
+                        TableRelation = "AQDLC ILE Compression Schedule";
+                        ToolTip = 'The compression schedule to be executed after this selection';
+
+                        trigger OnValidate()
+                        var
+                            CompressionSchedule: Record "AQDLC ILE Compression Schedule";
+                        begin
+                            if CompressionScheduleNo = 0 then exit;
+
+                            if CompressionSchedule.Get(CompressionScheduleNo) then begin
+                                EndingDate := CompressionSchedule."Cut-off Date";
+                                ValidateCutoffDate();
+                            end;
+                        end;
+                    }
                     field(StartingDate; StartingDate)
                     {
                         Caption = 'Starting Date';
@@ -195,6 +220,8 @@ report 14305135 "AQDLC Date Compress Item Ledg"
 
                         trigger OnValidate()
                         begin
+                            if CompressionScheduleNo <> 0 then
+                                Error('When a Schedule No. is selected as above, the Cut-off date is picked from the schedule!');
                             ValidateCutoffDate();
                         end;
                     }
@@ -210,9 +237,12 @@ report 14305135 "AQDLC Date Compress Item Ledg"
     }
     trigger OnInitReport()
     begin
-        ILECompressionSetup.Get();
+        if not (ILECompressionSetup.Get() and ILECompressionSetup."Enable App") then
+            Error('Acumens Item Ledger Compression App is not enabled');
         ILECompressionSetup.TestField("Cut-off Period");
-        EndingDate := CalcDate(ILECompressionSetup."Cut-off Period", Today);
+        EndingDate := ILECompressionSetup."Latest Valid December 31";
+        if EndingDate = 0D then
+            EndingDate := CalcDate(ILECompressionSetup."Cut-off Period", Today);
     end;
 
     trigger OnPostReport()
@@ -223,6 +253,11 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         CompressionRegister.SetRange("Entry No.", RegNo);
         if CompressionRegister.Find('-') then
             Page.Run(Page::"AQDLC ILE Compression Register", CompressionRegister);
+    end;
+
+    procedure SetRunParameters(vCompressionScheduleNo: Integer)
+    begin
+        CompressionScheduleNo := vCompressionScheduleNo;
     end;
 
     var
@@ -310,6 +345,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         IleCompressionReg.Status := IleCompressionReg.Status::Incomplete;
         IleCompressionReg."Cut-off Date" := EndingDate;
         IleCompressionReg."Cut-off Date Run No." := PostingDateRunNo;
+        IleCompressionReg."Schedule No." := CompressionScheduleNo;
         IleCompressionReg.Insert(true);
         RegNo := IleCompressionReg."Entry No.";
     end;
@@ -405,5 +441,30 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         CutOffDate := CalcDate(ILECompressionSetup."Cut-off Period", Today);
         if EndingDate > CutOffDate then
             Error('The cut-off date %1 is not valid. The latest allowed cut-off date is %2.', EndingDate, CutOffDate);
+    end;
+
+    var
+        CompressionScheduleNo: Integer;
+
+    local procedure GetApplicableCompressionSchedule()
+    var
+        CompressionSchedule: Record "AQDLC ILE Compression Schedule";
+    begin
+        CompressionSchedule.SetCurrentKey("Cut-off Date");
+        CompressionSchedule.SetFilter("Cut-off Date", '<=%1', EndingDate);
+        CompressionSchedule.SetAscending("Cut-off Date", false);
+        if CompressionSchedule.FindFirst() then
+            CompressionScheduleNo := CompressionSchedule."Entry No.";
+    end;
+
+    local procedure MarkScheduleAsProcessed()
+    var
+        CompressionSchedule: Record "AQDLC ILE Compression Schedule";
+    begin
+        if CompressionScheduleNo = 0 then exit;
+        if CompressionSchedule.Get(CompressionScheduleNo) and (not CompressionSchedule.Processed) then begin
+            CompressionSchedule.Processed := true;
+            CompressionSchedule.Modify();
+        end;
     end;
 }

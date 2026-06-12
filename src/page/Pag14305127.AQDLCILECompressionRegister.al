@@ -21,6 +21,8 @@ page 14305127 "AQDLC ILE Compression Register"
                 {
                     ToolTip = 'Specifies the value of the Entry No. field.', Comment = '%';
                 }
+                field("Schedule No."; Rec."Schedule No.")
+                { }
                 field("Cut-off Date"; Rec."Cut-off Date")
                 { }
                 field("Executed On"; Rec."Executed On")

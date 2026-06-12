@@ -17,11 +17,15 @@ table 14305126 "AQDLC ILE Compression Setup"
 
             trigger OnValidate()
             var
-                TestDate: Date;
+                CutoffDate: Date;
+                PrevYear: Integer;
             begin
-                TestDate := CALCDATE("Cut-off Period", Today);
-                if TestDate > Today then
-                    Error('Cut-off Period cannot result in a future date.');
+                CutoffDate := CALCDATE("Cut-off Period", Today);
+                if CutoffDate > Today then
+                    Error('Cut-off Period cannot result in a future Cut-off Date %1.', CutoffDate);
+
+                PrevYear := Date2DMY(CutoffDate, 3) - 1;
+                "Latest Valid December 31" := DMY2Date(31, 12, PrevYear);
             end;
         }
         field(4; "Group by Item"; Boolean)
@@ -50,6 +54,14 @@ table 14305126 "AQDLC ILE Compression Setup"
         field(9; "Group by Package No."; Boolean)
         {
             Caption = 'Package No.';
+        }
+        field(10; "Latest Valid December 31"; Date)
+        {
+            Editable = false;
+        }
+        field(11; "Maximum Runtime (Hours)"; Integer)
+        {
+            MinValue = 0;
         }
     }
     keys

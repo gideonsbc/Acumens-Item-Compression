@@ -16,6 +16,8 @@ report 14305137 "AQDLC Compress Item Selection"
             begin
                 if AsOfDate = 0D then
                     AsOfDate := Today;
+                if CompressionScheduleNo <> 0 then
+                    SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
             end;
 
             trigger OnAfterGetRecord()
@@ -71,6 +73,12 @@ report 14305137 "AQDLC Compress Item Selection"
                         Caption = 'Order By';
                         ApplicationArea = All;
                     }
+                    field(CompressionScheduleNo; CompressionScheduleNo)
+                    {
+                        Caption = 'Schedule No.';
+                        TableRelation = "AQDLC ILE Compression Schedule";
+                        ToolTip = 'The compression schedule to be executed after this selection';
+                    }
                 }
             }
         }
@@ -84,6 +92,8 @@ report 14305137 "AQDLC Compress Item Selection"
 
     trigger OnInitReport()
     begin
+        if not (ILECompressionSetup.Get() and ILECompressionSetup."Enable App") then
+            Error('Acumens Item Ledger Compression App is not enabled');
         AsOfDate := Today;
         NoOfItems := 3;
     end;
@@ -102,12 +112,14 @@ report 14305137 "AQDLC Compress Item Selection"
     end;
 
     var
+        ILECompressionSetup: Record "AQDLC ILE Compression Setup";
         AsOfDate: Date;
         OrderBy: Option "No. of Entries",Quantity,Sales;
         NoOfItems: Integer;
         ItemSelection: Record "AQDLC Compression Item Selectn";
         _ItemSelectionBuf: Record "AQDLC Compression Item Selectn" temporary;
         EntryNo: Integer;
+        CompressionScheduleNo: Integer;
 
     local procedure UpdateItemSelectionBuffer(vItem: Record Item; OrderByVal: Decimal)
     var

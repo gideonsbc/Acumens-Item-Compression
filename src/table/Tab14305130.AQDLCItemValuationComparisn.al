@@ -55,6 +55,11 @@ table 14305130 "AQDLC Item Valuation Comparisn"
         {
             Caption = 'Valuation Variance';
         }
+        field(13; "Schedule No."; Integer)
+        {
+            TableRelation = "AQDLC ILE Compression Schedule";
+            Editable = false;
+        }
     }
     keys
     {
@@ -62,5 +67,7 @@ table 14305130 "AQDLC Item Valuation Comparisn"
         {
             Clustered = true;
         }
+        key(Key1; "Register No.")
+        { }
     }
 }

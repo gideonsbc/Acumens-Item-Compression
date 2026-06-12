@@ -4,6 +4,7 @@ page 14305130 "AQDLC Item Valuation Comparisn"
     Caption = 'Item Valuation Comparison';
     PageType = List;
     SourceTable = "AQDLC Item Valuation Comparisn";
+    SourceTableView = sorting("Register No.") order(descending);
     UsageCategory = Lists;
     Editable = false;
 
@@ -28,6 +29,8 @@ page 14305130 "AQDLC Item Valuation Comparisn"
                             Page.Run(Page::"AQDLC ILE Compression Register", ILECompressionLog);
                     end;
                 }
+                field("Schedule No."; Rec."Schedule No.")
+                { }
                 field("Item No."; Rec."Item No.")
                 {
                     ToolTip = 'Specifies the value of the Item No. field.', Comment = '%';

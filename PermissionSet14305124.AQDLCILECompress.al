@@ -30,5 +30,8 @@ permissionset 14305124 "AQDLC ILE Compress"
         page "AQDLC Quantity on Hand" = X,
         tabledata "AQDLC Item Valuation Comparisn" = RIMD,
         table "AQDLC Item Valuation Comparisn" = X,
-        page "AQDLC Item Valuation Comparisn" = X;
+        page "AQDLC Item Valuation Comparisn" = X,
+        tabledata "AQDLC ILE Compression Schedule" = RIMD,
+        table "AQDLC ILE Compression Schedule" = X,
+        page "AQDLC ILE Compression Schedule" = X;
 }

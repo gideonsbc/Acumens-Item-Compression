@@ -20,6 +20,7 @@ table 14305128 "AQDLC ILE Compress Log Entry"
         {
             Caption = 'Item No.';
             Editable = false;
+            TableRelation = Item;
         }
         field(4; Description; Text[200])
         {

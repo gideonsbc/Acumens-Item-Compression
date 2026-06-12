@@ -13,6 +13,7 @@ table 14305125 "AQDLC Qty on Hand"
         field(2; "Item No."; Code[20])
         {
             DataClassification = CustomerContent;
+            TableRelation = Item;
         }
         field(3; "Location Code"; Code[10])
         {

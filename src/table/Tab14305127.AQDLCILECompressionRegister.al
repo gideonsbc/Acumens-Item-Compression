@@ -78,6 +78,11 @@ table 14305127 "AQDLC ILE Compression Register"
             FieldClass = FlowField;
             CalcFormula = sum("AQDLC ILE Compress Log Entry"."No. of VEs Created" where("Log No." = field("Entry No.")));
         }
+        field(14; "Schedule No."; Integer)
+        {
+            TableRelation = "AQDLC ILE Compression Schedule";
+            Editable = false;
+        }
     }
     keys
     {
