@@ -44,7 +44,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Cues - Field Salesperson Code Filter - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 1699157095 - Field 3136478523 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Compression Items</source>
+          <source>Selected Items</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Cues - Field Selected Compression Items - Property Caption</note>
         </trans-unit>
@@ -522,6 +522,26 @@
           <source>Variant Code</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Variant Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3704631423 - NamedType 598091896" size-unit="char" translate="yes" xml:space="preserve">
+          <source>a35db766-52e7-429a-94e1-847851f1944a</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AQDLCC Compressions Licens Mgt - NamedType appid</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3704631423 - NamedType 3233393410" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Acumens Item Ledger Compression</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AQDLCC Compressions Licens Mgt - NamedType appname</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3704631423 - NamedType 2923600753" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No valid license found. You must have an active subscription or trial for the Basic, Standard, or Enterprise plan to use this feature.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AQDLCC Compressions Licens Mgt - NamedType NoLicenseErr</note>
+        </trans-unit>
+        <trans-unit id="Codeunit 3704631423 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>You do not have license to access %1.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AQDLCC Compressions Licens Mgt - NamedType Text001</note>
         </trans-unit>
         <trans-unit id="Page 2848897876 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>About Acumens Item Ledger Compression</source>

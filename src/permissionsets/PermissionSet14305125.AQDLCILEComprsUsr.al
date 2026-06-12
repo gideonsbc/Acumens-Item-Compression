@@ -2,8 +2,7 @@ permissionset 14305125 "AQDLC ILE Comprs Usr"
 {
     Assignable = true;
     Caption = 'Acumens Item Ledger Compression User';
-    Permissions =
-        table "AQDLC Item Valuation Comparisn" = X,
+    Permissions = table "AQDLC Item Valuation Comparisn" = X,
         tabledata "AQDLC Item Valuation Comparisn" = RMID,
         table "AQDLC Compression Item Selectn" = X,
         tabledata "AQDLC Compression Item Selectn" = RMID,
@@ -29,9 +28,14 @@ permissionset 14305125 "AQDLC ILE Comprs Usr"
         report "AQDLC Dlt Orphn Itm Apl Entry" = X,
         report "AQDLC Create Item Application" = X,
         report "AQDLC Post-Compress Invt. Val" = X,
-        report "AQDLC Date Compress Item Ledg" = X,
         report "AQDLC Compress Item Selection" = X,
         report "AQDLC Delete ILE and VLE" = X,
         report "AQDLC Compress Add. Tables Rec" = X,
-        report "AQDLC Generate Qty On Hand" = X;
+        report "AQDLC Generate Qty On Hand" = X,
+        tabledata "AQDLC Compression Cues" = RIMD,
+        table "AQDLC Compression Cues" = X,
+        codeunit "AQDLC Item Ledger Compression" = X,
+        codeunit "AQDLCC Compressions Licens Mgt" = X,
+        page "AQDLC Compression Cues" = X,
+        page "AQDLC Compressions RC" = X;
 }

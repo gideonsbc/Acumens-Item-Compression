@@ -38,5 +38,6 @@ permissionset 14305124 "AQDLC ILE Compress"
         tabledata "AQDLC Compression Cues" = RIMD,
         table "AQDLC Compression Cues" = X,
         page "AQDLC Compression Cues" = X,
-        page "AQDLC Compressions RC" = X;
+        page "AQDLC Compressions RC" = X,
+        codeunit "AQDLCC Compressions Licens Mgt" = X;
 }

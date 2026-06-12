@@ -108,8 +108,8 @@ page 14305132 "AQDLC About ILE Compression"
         CopyRightInfo := GetCopyrightNotice();
 
         //About texts
-        AboutTheApp := 'Acumens Item Ledger Compression streamlines the management and optimization of Item Ledger Entries in Microsoft Dynamics 365 Business Central. The app enables controlled compression of historical inventory entries based on configurable rules such as date cut-offs, item filters, and batch parameters, helping organizations reduce database size, improve system performance, and maintain data integrity. It provides structured logging, execution tracking, and error handling to ensure transparency and reliability during compression processes, ultimately enhancing system efficiency and long-term maintainability of inventory data.';
-        AboutILECompression := 'Allows you to compress Item Ledger Entries as per schedules and cut-off dates, helping reduce database size, improve system performance, and maintain efficient inventory data management with full traceability.';
+        AboutTheApp := 'Acumens Item Ledger Compression enables compression of Item Ledger Entries as per schedules and cut-off dates in Microsoft Dynamics 365 Business Central. The app helps reduce database size and improve system performance while maintaining data integrity. It supports logging and execution tracking to provide visibility of compression activities and ensures reliable processing for long-term system efficiency.';
+        AboutILECompression := 'Enables compression of Item Ledger Entries as per schedules and cut-off dates, reducing database size and improving system performance while maintaining data integrity.';
     end;
 
     procedure GetMyExtensionVersion(): Text
