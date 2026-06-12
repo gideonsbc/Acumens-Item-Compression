@@ -58,31 +58,39 @@ table 14305125 "AQDLC Qty on Hand"
         {
             DataClassification = CustomerContent;
         }
-        field(14; "Unit Cost Before"; Decimal)
+        field(14; "Unit Cost"; Decimal)
         { }
-        field(15; "Inventory Value Before"; Decimal)
+        field(15; "Inventory Value"; Decimal)
         { }
-        field(16; "Qty On Hand After"; Decimal)
+        field(16; "Item Qty On Hand Before"; Decimal)
         {
             DataClassification = CustomerContent;
         }
-        field(17; "Unit Cost After"; Decimal)
+        field(17; "Item Unit Cost Before"; Decimal)
         { }
-        field(18; "Inventory Value After"; Decimal)
+        field(18; "Item Inventory Value Before"; Decimal)
         { }
-        field(19; "Posting Date"; Date)
+        field(19; "Item Qty On Hand After"; Decimal)
+        {
+            DataClassification = CustomerContent;
+        }
+        field(20; "Item Unit Cost After"; Decimal)
+        { }
+        field(21; "Item Inventory Value After"; Decimal)
+        { }
+        field(22; "Posting Date"; Date)
         {
             Editable = false;
         }
-        field(20; "Quantity Variance"; Decimal)
+        field(23; "Item Quantity Variance"; Decimal)
         {
             Editable = false;
         }
-        field(21; "Valuation Variance"; Decimal)
+        field(24; "Item Valuation Variance"; Decimal)
         {
             Editable = false;
         }
-        field(22; "Register No."; Integer)
+        field(25; "Register No."; Integer)
         {
             Editable = false;
             TableRelation = "AQDLC ILE Compression Register";

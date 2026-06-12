@@ -6,7 +6,6 @@ report 14305126 "AQDLC Delete ILE and VLE"
     Caption = 'Delete ILE and VLE';
     ProcessingOnly = true;
     ApplicationArea = All;
-    UsageCategory = Administration;
 
     dataset
     {

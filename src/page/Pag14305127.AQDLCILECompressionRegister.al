@@ -34,7 +34,6 @@ page 14305127 "AQDLC ILE Compression Register"
                 field("Item Filter"; Rec."Item Filter")
                 {
                     ToolTip = 'Specifies the value of the Item Filter field.', Comment = '%';
-                    Visible = false;
                 }
                 field(Status; Rec.Status)
                 {
@@ -84,6 +83,15 @@ page 14305127 "AQDLC ILE Compression Register"
                 RunObject = Page "AQDLC Quantity on Hand";
                 RunPageLink = "Register No." = field("Entry No.");
             }
+            action("&Valuation Comparison")
+            {
+                ApplicationArea = All;
+                Caption = 'Valuation Comparison';
+                Image = List;
+                RunObject = Page "AQDLC Item Valuation Comparisn";
+                RunPageLink = "Register No." = field("Entry No.");
+                ToolTip = 'View Item Valuation Comparison';
+            }
             action("Item Ledgers")
             {
                 Image = ItemLedger;
@@ -103,6 +111,9 @@ page 14305127 "AQDLC ILE Compression Register"
                 {
                 }
                 actionref(ItemLedgers_Home; "Item Ledgers")
+                {
+                }
+                actionref(ValuationComparison_Promoted; "&Valuation Comparison")
                 {
                 }
             }

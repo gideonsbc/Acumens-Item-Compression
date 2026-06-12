@@ -4,6 +4,7 @@ page 14305125 "AQDLC Quantity on Hand"
     Caption = 'Quantity on Hand';
     PageType = List;
     SourceTable = "AQDLC Qty on Hand";
+    SourceTableView = sorting("Entry No.") order(descending);
     UsageCategory = Lists;
     Editable = false;
     ModifyAllowed = false;
@@ -86,19 +87,9 @@ page 14305125 "AQDLC Quantity on Hand"
                     ToolTip = 'Specifies the value of the Last Puchase/ +Ve Unit Cost field.', Comment = '%';
                     Visible = false;
                 }
-                field("Unit Cost Before"; Rec."Unit Cost Before")
+                field("Unit Cost"; Rec."Unit Cost")
                 { }
-                field("Inventory Value Before"; Rec."Inventory Value Before")
-                { }
-                field("Qty On Hand After"; Rec."Qty On Hand After")
-                { }
-                field("Unit Cost After"; Rec."Unit Cost After")
-                { }
-                field("Inventory Value After"; Rec."Inventory Value After")
-                { }
-                field("Quantity Variance"; Rec."Quantity Variance")
-                { }
-                field("Valuation Variance"; Rec."Valuation Variance")
+                field("Inventory Value"; Rec."Inventory Value")
                 { }
             }
         }
@@ -115,6 +106,15 @@ page 14305125 "AQDLC Quantity on Hand"
                 RunObject = Page "Item Ledger Entries";
                 RunPageLink = "AQDLC Comp. Reg No." = field("Register No."), "AQDLC QoH Entry No." = field("Entry No.");
             }
+            action("&Valuation Comparison")
+            {
+                ApplicationArea = All;
+                Caption = 'Valuation Comparison';
+                Image = List;
+                RunObject = Page "AQDLC Item Valuation Comparisn";
+                RunPageLink = "Register No." = field("Register No."), "Item No." = field("Item No.");
+                ToolTip = 'View Item Valuation Comparison';
+            }
         }
         area(Promoted)
         {
@@ -123,6 +123,9 @@ page 14305125 "AQDLC Quantity on Hand"
                 Caption = 'Home', Comment = 'Generated from the PromotedActionCategories property index 3.';
 
                 actionref(ItemLedgers_Home; "Item Ledgers")
+                {
+                }
+                actionref(ValuationComparison_Promoted; "&Valuation Comparison")
                 {
                 }
             }

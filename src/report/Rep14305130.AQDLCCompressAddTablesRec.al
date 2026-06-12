@@ -4,7 +4,6 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
     Caption = 'Compress Additional Tables Rec';
     ProcessingOnly = true;
     ApplicationArea = All;
-    UsageCategory = Administration;
 
     Permissions = tabledata "Inventory Comment Line" = rimd,
                     tabledata "G/L - Item Ledger Relation" = rimd,

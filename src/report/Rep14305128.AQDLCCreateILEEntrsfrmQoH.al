@@ -3,7 +3,6 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
     Caption = 'Create ILE Entries using QoH';
     ProcessingOnly = true;
     ApplicationArea = All;
-    UsageCategory = Administration;
     Permissions = tabledata "Item Ledger Entry" = RIMD,
     tabledata "Value Entry" = RIMD;
     dataset
@@ -150,6 +149,7 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         ILE."Completely Invoiced" := TRUE;
         ILE."Last Invoice Date" := ProcessDate;
         ILE.Open := TRUE;
+        ILE.Description := 'Date Compressed';
 
         ILE.Insert();
         ILECreatedCount += 1;
@@ -178,8 +178,8 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         VE."Item Ledger Entry Quantity" := QoH."Net Qty On Hand";
         VE."Invoiced Quantity" := QoH."Net Qty On Hand";
 
-        if QoH."Unit Cost Before" <> 0 then //"Last Puchase/ +Ve Unit Cost"
-            VE."Cost per Unit" := QoH."Unit Cost Before" //"Last Puchase/ +Ve Unit Cost"
+        if QoH."Unit Cost" <> 0 then //"Last Puchase/ +Ve Unit Cost"
+            VE."Cost per Unit" := QoH."Unit Cost" //"Last Puchase/ +Ve Unit Cost"
         else
             VE."Cost per Unit" := Item."Unit Cost";
 
@@ -194,6 +194,7 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         VE.Inventoriable := TRUE;
         VE."Valuation Date" := ProcessDate;
         VE."Entry Type" := VE."Entry Type"::"Direct Cost";
+        VE.Description := 'Date Compressed';
 
         VE.Insert();
         VECreatedCount += 1;

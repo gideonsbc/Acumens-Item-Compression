@@ -6,6 +6,7 @@ page 14305126 "AQDLC ILE Compression Regs"
     SourceTable = "AQDLC ILE Compression Register";
     UsageCategory = Lists;
     CardPageId = "AQDLC ILE Compression Register";
+    SourceTableView = sorting("Entry No.") order(descending);
     Editable = false;
     DeleteAllowed = false;
     InsertAllowed = false;
@@ -35,6 +36,7 @@ page 14305126 "AQDLC ILE Compression Regs"
                 field("Item Filter"; Rec."Item Filter")
                 {
                     ToolTip = 'Specifies the value of the Item Filter field.', Comment = '%';
+                    Visible = false;
                 }
                 field(Status; Rec.Status)
                 {
@@ -63,6 +65,15 @@ page 14305126 "AQDLC ILE Compression Regs"
                 RunObject = Page "AQDLC Quantity on Hand";
                 RunPageLink = "Register No." = field("Entry No.");
             }
+            action("&Valuation Comparison")
+            {
+                ApplicationArea = All;
+                Caption = 'Valuation Comparison';
+                Image = List;
+                RunObject = Page "AQDLC Item Valuation Comparisn";
+                RunPageLink = "Register No." = field("Entry No.");
+                ToolTip = 'View Item Valuation Comparison';
+            }
             action("Item Ledgers")
             {
                 Image = ItemLedger;
@@ -82,6 +93,9 @@ page 14305126 "AQDLC ILE Compression Regs"
                 {
                 }
                 actionref(ItemLedgers_Home; "Item Ledgers")
+                {
+                }
+                actionref(ValuationComparison_Promoted; "&Valuation Comparison")
                 {
                 }
             }

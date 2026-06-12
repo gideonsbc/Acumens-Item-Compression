@@ -33,7 +33,7 @@ table 14305127 "AQDLC ILE Compression Register"
         field(5; Status; Option)
         {
             Caption = 'Status';
-            OptionMembers = Incomplete,Completed;
+            OptionMembers = Incomplete,Failed,Completed;
             Editable = false;
         }
         field(6; "Start Date/Time"; DateTime)

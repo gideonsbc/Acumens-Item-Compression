@@ -3,7 +3,6 @@ report 14305125 "AQDLC Generate Qty On Hand"
     Caption = 'Generate Quantity On Hand';
     ProcessingOnly = true;
     ApplicationArea = All;
-    UsageCategory = Administration;
 
     Permissions = tabledata "Transfer Line" = rimd;
 
@@ -129,6 +128,8 @@ report 14305125 "AQDLC Generate Qty On Hand"
                 QoH.SetRange("Register No.", CompressionRegNo);
                 QoH.DeleteAll();
                 Counter += 1;
+
+                GetItemValuationBefore(Item);
             end;
 
             trigger OnPostDataItem()
@@ -185,11 +186,61 @@ report 14305125 "AQDLC Generate Qty On Hand"
     begin
         ILE.CalcFields("Cost Amount (Actual)", "Cost Amount (Expected)");
         if ILE."Cost Amount (Actual)" <> 0 then
-            vQoH."Inventory Value Before" += ILE."Cost Amount (Actual)"
+            vQoH."Inventory Value" += ILE."Cost Amount (Actual)"
         else
-            vQoH."Inventory Value Before" += ILE."Cost Amount (Expected)";
+            vQoH."Inventory Value" += ILE."Cost Amount (Expected)";
         if vQoH."Qty On Hand" <> 0 then
-            vQoH."Unit Cost Before" := vQoH."Inventory Value Before" / vQoH."Qty On Hand";
+            vQoH."Unit Cost" := vQoH."Inventory Value" / vQoH."Qty On Hand";
+
+        vQoH."Item Qty On Hand Before" := ItemQtyOnHandBefore;
+        vQoH."Item Unit Cost Before" := ItemUnitCostBefore;
+        vQoH."Item Inventory Value Before" := ItemInventoryValueBefore;
+    end;
+
+    var
+        ItemQtyOnHandBefore: Decimal;
+        ItemUnitCostBefore: Decimal;
+        ItemInventoryValueBefore: Decimal;
+
+    local procedure GetItemValuationBefore(vItem: Record Item)
+    var
+        vILE: Record "Item Ledger Entry";
+        ItemValuationComparison: Record "AQDLC Item Valuation Comparisn";
+    begin
+        ItemQtyOnHandBefore := 0;
+        ItemUnitCostBefore := 0;
+        ItemInventoryValueBefore := 0;
+
+        vILE.SetRange("Item No.", vItem."No.");
+        vILE.SetFilter("Posting Date", '<=%1', MaxPostingDate);
+        if vILE.FindSet() then
+            repeat
+                vILE.CalcFields("Cost Amount (Expected)", "Cost Amount (Actual)");
+                ItemQtyOnHandBefore += vILE.Quantity;
+                if vILE."Cost Amount (Actual)" <> 0 then
+                    ItemInventoryValueBefore += vILE."Cost Amount (Actual)"
+                else
+                    ItemInventoryValueBefore += vILE."Cost Amount (Expected)";
+            until vILE.Next() = 0;
+        if ItemQtyOnHandBefore <> 0 then
+            ItemUnitCostBefore := ItemInventoryValueBefore / ItemQtyOnHandBefore;
+
+        if not ItemValuationComparison.Get(CompressionRegNo, vItem."No.") then begin
+            ItemValuationComparison.Init();
+            ItemValuationComparison."Register No." := CompressionRegNo;
+            ItemValuationComparison."Item No." := vItem."No.";
+            ItemValuationComparison."Item Description" := vItem.Description;
+            ItemValuationComparison."Cut-off Date" := MaxPostingDate;
+            ItemValuationComparison."Remaining Qty Before" := ItemQtyOnHandBefore;
+            ItemValuationComparison."Unit Cost Before" := ItemUnitCostBefore;
+            ItemValuationComparison."Inventory Value Before" := ItemInventoryValueBefore;
+            ItemValuationComparison.Insert();
+        end else begin
+            ItemValuationComparison."Remaining Qty Before" := ItemQtyOnHandBefore;
+            ItemValuationComparison."Unit Cost Before" := ItemUnitCostBefore;
+            ItemValuationComparison."Inventory Value Before" := ItemInventoryValueBefore;
+            ItemValuationComparison.Modify();
+        end;
     end;
 
     procedure TransferCompletelyReceived(var vILE: Record "Item Ledger Entry"): Boolean

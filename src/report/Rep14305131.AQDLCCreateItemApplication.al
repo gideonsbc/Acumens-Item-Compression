@@ -3,7 +3,6 @@ report 14305131 "AQDLC Create Item Application"
     Caption = 'Create Item Application';
     ProcessingOnly = true;
     ApplicationArea = All;
-    UsageCategory = Administration;
 
     Permissions = tabledata "Item Application Entry" = rimd,
                     tabledata "Item Ledger Entry" = rimd,

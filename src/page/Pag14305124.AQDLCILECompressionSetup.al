@@ -110,6 +110,14 @@ page 14305124 "AQDLC ILE Compression Setup"
                     RunObject = Page "AQDLC Quantity on Hand";
                     ToolTip = 'View Quantity on Hand';
                 }
+                action("&Valuation Comparison")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Valuation Comparison';
+                    Image = List;
+                    RunObject = Page "AQDLC Item Valuation Comparisn";
+                    ToolTip = 'View Item Valuation Comparison';
+                }
             }
             group(ItemCostAdjustment)
             {
@@ -130,6 +138,14 @@ page 14305124 "AQDLC ILE Compression Setup"
                     Image = PostDocument;
                     RunObject = Report "Post Inventory Cost to G/L";
                     ToolTip = 'Run Post Inventory Cost to G/L';
+                }
+                action("&Inventory Valuation")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Inventory Valuation Report';
+                    Image = PostDocument;
+                    RunObject = Report "Inventory Valuation";
+                    ToolTip = 'Run Inventory Valuation Report';
                 }
             }
         }
@@ -155,6 +171,9 @@ page 14305124 "AQDLC ILE Compression Setup"
                 actionref(CompressionRegisters_Promoted; "&Compression Registers")
                 {
                 }
+                actionref(ValuationComparison_Promoted; "&Valuation Comparison")
+                {
+                }
                 actionref(QoH_Promoted; "&Quantity on Hand")
                 {
                 }
@@ -163,6 +182,9 @@ page 14305124 "AQDLC ILE Compression Setup"
                 {
                 }
                 actionref(PostInventoryCosttoGL_Promoted; "&Post Inventory Cost to G/L")
+                {
+                }
+                actionref(InventoryValuation_Promoted; "&Inventory Valuation")
                 {
                 }
             }

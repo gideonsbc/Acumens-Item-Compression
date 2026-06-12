@@ -3,7 +3,6 @@ report 14305129 "AQDLC Dlt Orphn Itm Apl Entry"
     Caption = 'Delete Orphan Item Appl. Entry';
     ProcessingOnly = true;
     ApplicationArea = All;
-    UsageCategory = Administration;
 
     Permissions = tabledata "Item Application Entry" = rimd;
     dataset

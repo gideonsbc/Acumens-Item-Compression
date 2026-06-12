@@ -228,6 +228,71 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC ILE Compression Setup - Field Primary Key - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 51522877 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 2690893824 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cut-off Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Cut-off Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 1213388271 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Value After</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Inventory Value After - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 1734096924 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Value Before</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Inventory Value Before - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 2842094365 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Item Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 336016970 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity Variance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Quantity Variance - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 2542492690 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Register No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Register No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 1649420192 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Remaining Qty After</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Remaining Qty After - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 2152277555 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Remaining Qty Before</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Remaining Qty Before - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 1661115603 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unit Cost After</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Unit Cost After - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 1288810904 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unit Cost Before</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Unit Cost Before - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 51522877 - Field 2783065938 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valuation Variance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Valuation Comparisn - Field Valuation Variance - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 2374036503 - Field 3087706269 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Applied Quanty</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -238,20 +303,55 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Entry No. - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 2374036503 - Field 1213388271 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Inventory Value After</source>
+        <trans-unit id="Table 2374036503 - Field 1539106347 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Value</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Inventory Value After - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Inventory Value - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 2374036503 - Field 1734096924 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Inventory Value Before</source>
+        <trans-unit id="Table 2374036503 - Field 3246648308 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Inventory Value After</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Inventory Value Before - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Item Inventory Value After - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2374036503 - Field 2040558719 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Inventory Value Before</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Item Inventory Value Before - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2374036503 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2374036503 - Field 3970111193 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Qty On Hand After</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Item Qty On Hand After - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2374036503 - Field 964245318 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Qty On Hand Before</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Item Qty On Hand Before - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2374036503 - Field 3272601405 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Quantity Variance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Item Quantity Variance - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2374036503 - Field 3924024448 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Unit Cost After</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Item Unit Cost After - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2374036503 - Field 2475514451 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Unit Cost Before</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Item Unit Cost Before - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2374036503 - Field 490428445 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Valuation Variance</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Item Valuation Variance - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2374036503 - Field 2818869259 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Last Puchase/ +Ve Unit Cost</source>
@@ -288,16 +388,6 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Qty On Hand - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 2374036503 - Field 3912900078 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Qty On Hand After</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Qty On Hand After - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Table 2374036503 - Field 336016970 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Quantity Variance</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Quantity Variance - Property Caption</note>
-        </trans-unit>
         <trans-unit id="Table 2374036503 - Field 2542492690 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Register No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -318,20 +408,10 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Shortcut Dimension 6 Code - Property Caption</note>
         </trans-unit>
-        <trans-unit id="Table 2374036503 - Field 1661115603 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Unit Cost After</source>
+        <trans-unit id="Table 2374036503 - Field 381961415 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unit Cost</source>
           <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Unit Cost After - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Table 2374036503 - Field 1288810904 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Unit Cost Before</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Unit Cost Before - Property Caption</note>
-        </trans-unit>
-        <trans-unit id="Table 2374036503 - Field 2783065938 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Valuation Variance</source>
-          <note from="Developer" annotates="general" priority="2"></note>
-          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Valuation Variance - Property Caption</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Unit Cost - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2374036503 - Field 3450651614 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Variant Code</source>
@@ -483,6 +563,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Register - Control ModifiedRecords - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 457541344 - Action 554952520 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View Item Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Register - Action &amp;Valuation Comparison - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 457541344 - Action 554952520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Register - Action &amp;Valuation Comparison - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 457541344 - Action 2540978709 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Ledgers</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -537,6 +627,16 @@
           <source>Specifies the value of the Status field.</source>
           <note from="Developer" annotates="general" priority="2">%</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Regs - Control Status - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 895465706 - Action 554952520 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View Item Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Regs - Action &amp;Valuation Comparison - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 895465706 - Action 554952520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Regs - Action &amp;Valuation Comparison - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 895465706 - Action 2540978709 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Ledgers</source>
@@ -628,6 +728,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Run Item Selection - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1385577590 - Action 554952520 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View Item Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Valuation Comparison - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1385577590 - Action 554952520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Valuation Comparison - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1385577590 - Action 3007351963 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Performs init operations</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -653,6 +763,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Adjust Cost - Item Entries - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1385577590 - Action 2727808129 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Inventory Valuation Report</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Inventory Valuation - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1385577590 - Action 2727808129 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Valuation Report</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Inventory Valuation - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1385577590 - Action 2392344812 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Run Post Inventory Cost to G/L</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -672,6 +792,71 @@
           <source>Home</source>
           <note from="Developer" annotates="general" priority="2">Generated from the PromotedActionCategories property index 3.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action HOME - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 2690893824 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Cut-off Date field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Cut-off Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 1213388271 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Inventory Value After field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Inventory Value After - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 1734096924 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Inventory Value Before field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Inventory Value Before - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 2842094365 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item Description field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Item Description - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Item No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 336016970 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Quantity Variance field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Quantity Variance - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 2542492690 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Register No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Register No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 1649420192 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Remaining Qty After field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Remaining Qty After - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 2152277555 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Remaining Qty Before field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Remaining Qty Before - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 1661115603 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Unit Cost After field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Unit Cost After - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 1288810904 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Unit Cost Before field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Unit Cost Before - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 51522877 - Control 2783065938 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Valuation Variance field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Valuation Comparisn - Control Valuation Variance - Property ToolTip</note>
         </trans-unit>
         <trans-unit id="Page 503045606 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Quantity on Hand</source>
@@ -742,6 +927,16 @@
           <source>Specifies the value of the Variant Code field.</source>
           <note from="Developer" annotates="general" priority="2">%</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Quantity on Hand - Control Variant Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 503045606 - Action 554952520 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>View Item Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Quantity on Hand - Action &amp;Valuation Comparison - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 503045606 - Action 554952520 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Valuation Comparison</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Quantity on Hand - Action &amp;Valuation Comparison - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 503045606 - Action 2540978709 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Ledgers</source>
