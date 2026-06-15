@@ -16,18 +16,6 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
                 if ShowDialog then
                     Window.Open(Text001);
 
-                //ILE.SETRANGE("Posting Date", ProcessDate);
-                /*if ILE.FindLast() then
-                    ILEEntryNo := ILE."Entry No." + 1
-                else
-                    ILEEntryNo := 1000;*/
-
-                //VE.SETRANGE("Posting Date", ProcessDate);
-                /*if VE.FindLast() then
-                    VEEntryNo := VE."Entry No." + 1
-                else
-                    VEEntryNo := 1000;*/
-
                 ILE.Reset();
                 VE.Reset();
                 if ProcessDate = 0D then
@@ -80,11 +68,17 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
 
     procedure SetRunParameters(vStartingILENumber: Integer; vStartingVLENumber: Integer; vMaxPostingDate: Date; vCompressionRegNo: Integer; vPostingDateRunNo: Integer; vShowDialog: Boolean)
     begin
+    end;
+
+    procedure SetRunParameters(vStartingILENumber: Integer; vStartingVLENumber: Integer; vMaxPostingDate: Date; vCompressionRegNo: Integer; vPostingDateRunNo: Integer; vCompressionScheduleNo: Integer; vScheduleDescr: Text; vShowDialog: Boolean)
+    begin
         ILEEntryNo := vStartingILENumber;
         VEEntryNo := vStartingVLENumber;
         ProcessDate := vMaxPostingDate;
         CompressionRegNo := vCompressionRegNo;
         PostingDateRunNo := vPostingDateRunNo;
+        CompressionScheduleNo := vCompressionScheduleNo;
+        ScheduleDescription := vScheduleDescr;
         ShowDialog := vShowDialog;
 
         //If the starting entry was a QOH, then it wasn't deleted
@@ -115,6 +109,8 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         PostingDateRunNo: Integer;
         ILECreatedCount: Integer;
         VECreatedCount: Integer;
+        CompressionScheduleNo: Integer;
+        ScheduleDescription: Text;
 
     local procedure CreateILE()
     begin
@@ -149,7 +145,7 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         ILE."Completely Invoiced" := TRUE;
         ILE."Last Invoice Date" := ProcessDate;
         ILE.Open := TRUE;
-        ILE.Description := 'Date Compressed';
+        ILE.Description := ScheduleDescription;
 
         ILE.Insert();
         ILECreatedCount += 1;
@@ -194,7 +190,7 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         VE.Inventoriable := TRUE;
         VE."Valuation Date" := ProcessDate;
         VE."Entry Type" := VE."Entry Type"::"Direct Cost";
-        VE.Description := 'Date Compressed';
+        VE.Description := ScheduleDescription;
 
         VE.Insert();
         VECreatedCount += 1;

@@ -49,14 +49,17 @@ page 14305125 "AQDLC Quantity on Hand"
                 field("Lot No."; Rec."Lot No.")
                 {
                     ToolTip = 'Specifies the value of the Lot No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Serial No."; Rec."Serial No.")
                 {
                     ToolTip = 'Specifies the value of the Serial No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Package No."; Rec."Package No.")
                 {
                     ToolTip = 'Specifies the value of the Package No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Qty On Hand"; Rec."Qty On Hand")
                 {

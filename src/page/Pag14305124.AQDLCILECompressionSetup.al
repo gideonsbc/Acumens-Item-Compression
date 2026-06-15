@@ -16,7 +16,13 @@ page 14305124 "AQDLC ILE Compression Setup"
             {
                 Caption = 'General';
                 field("Enable App"; Rec."Enable App")
-                { }
+                {
+                    trigger OnValidate()
+                    begin
+                        if Rec."Enable App" then
+                            InitializeApp(false);
+                    end;
+                }
 
                 field("Cut-off Period"; Rec."Cut-off Period")
                 {
@@ -38,12 +44,30 @@ page 14305124 "AQDLC ILE Compression Setup"
                 { }
                 field("Group by Variant Code"; Rec."Group by Variant Code")
                 { }
+                field(PlaceHolder1; '')
+                {
+                    ShowCaption = false;
+                }
+                field(PlaceHolder2; '')
+                {
+                    ShowCaption = false;
+                }
+                field(PlaceHolder3; '')
+                {
+                    ShowCaption = false;
+                }
                 field("Group by Lot No."; Rec."Group by Lot No.")
-                { }
+                {
+                    Visible = false;
+                }
                 field("Group by Serial No."; Rec."Group by Serial No.")
-                { }
+                {
+                    Visible = false;
+                }
                 field("Group by Package No."; Rec."Group by Package No.")
-                { }
+                {
+                    Visible = false;
+                }
             }
         }
     }
@@ -211,13 +235,13 @@ page 14305124 "AQDLC ILE Compression Setup"
 
     trigger OnOpenPage()
     var
-        //TariffsLicenseMgt: Codeunit "AQD Tariffs License Mgt";
+        CompressionLicenseMgt: Codeunit "AQDLCC Compressions Licens Mgt";
         UserPermissions: Codeunit "User Permissions";
     begin
         if not UserPermissions.IsSuper(UserSecurityId()) then
             Error('Access denied. This page is restricted to system administrators.');
 
-        //TariffsLicenseMgt.CheckAppAccess();
+        CompressionLicenseMgt.CheckAppAccess();
         if not Rec.Get() then begin
             Rec.Init();
             if Confirm('Do you want to activate Acumens Item Ledger Compression Defaults?' + '\' + 'This may cause errors if the setup is not completed.') then
@@ -296,6 +320,7 @@ page 14305124 "AQDLC ILE Compression Setup"
 
         CompressionSchedule.Init();
         CompressionSchedule."Entry No." := 1;
+        CompressionSchedule.Year := Date2DMY(Rec."Latest Valid December 31", 3);
         CompressionSchedule.Validate("Cut-off Date", Rec."Latest Valid December 31");
         CompressionSchedule.Insert(true);
     end;

@@ -63,6 +63,7 @@ table 14305126 "AQDLC ILE Compression Setup"
         {
             MinValue = 0;
             DecimalPlaces = 0 : 10;
+            InitValue = 10;
         }
     }
     keys

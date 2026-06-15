@@ -1,7 +1,7 @@
 page 14305131 "AQDLC ILE Compression Schedule"
 {
     ApplicationArea = All;
-    Caption = 'ILE Compression Schedules';
+    Caption = 'Item Compression Schedule';
     PageType = List;
     SourceTable = "AQDLC ILE Compression Schedule";
     SourceTableView = sorting("Entry No.") order(descending);
@@ -17,6 +17,12 @@ page 14305131 "AQDLC ILE Compression Schedule"
                 field("Entry No."; Rec."Entry No.")
                 {
                     ToolTip = 'Specifies the value of the Entry No. field.', Comment = '%';
+                }
+                field(Year; Rec.Year)
+                {
+                    ShowMandatory = true;
+                    NotBlank = true;
+                    Editable = not Rec.Processed;
                 }
                 field("Cut-off Date"; Rec."Cut-off Date")
                 {
@@ -75,4 +81,10 @@ page 14305131 "AQDLC ILE Compression Schedule"
             }
         }
     }
+
+    trigger OnAfterGetRecord()
+    begin
+        if (Rec.Year = 0) and (Rec."Cut-off Date" <> 0D) then
+            Rec.Year := Date2DMY(Rec."Cut-off Date", 3);
+    end;
 }

@@ -1,6 +1,6 @@
 table 14305131 "AQDLC ILE Compression Schedule"
 {
-    Caption = 'ILE Compression Schedule';
+    Caption = 'Item Compression Schedule';
     DataClassification = CustomerContent;
     LookupPageId = "AQDLC ILE Compression Schedule";
     DrillDownPageId = "AQDLC ILE Compression Schedule";
@@ -15,14 +15,13 @@ table 14305131 "AQDLC ILE Compression Schedule"
         }
         field(2; "Cut-off Date"; Date)
         {
-            Caption = 'Cut-off Date';
+            Caption = 'End Date';
             NotBlank = true;
 
             trigger OnValidate()
             begin
                 if ("Cut-off Date" <> 0D) then begin
                     PreventDuplicateSchedules();
-                    Description := Format(Date2DMY("Cut-off Date", 3)) + ' Compression';
                 end;
             end;
         }
@@ -32,6 +31,7 @@ table 14305131 "AQDLC ILE Compression Schedule"
 
             trigger OnValidate()
             begin
+                TestField(Year);
                 TestField("Cut-off Date");
             end;
         }
@@ -44,6 +44,20 @@ table 14305131 "AQDLC ILE Compression Schedule"
         {
             FieldClass = FlowField;
             CalcFormula = count(Item where("AQDLC Last Compression No." = field("Entry No.")));
+        }
+        field(6; Year; Integer)
+        {
+            MinValue = 0;
+
+            trigger OnValidate()
+            begin
+                Description := '';
+                "Cut-off Date" := 0D;
+                if Year <> 0 then begin
+                    Description := Format(Year) + ' Compression';
+                    Validate("Cut-off Date", DMY2Date(31, 12, Year));
+                end;
+            end;
         }
     }
     keys
@@ -103,11 +117,11 @@ table 14305131 "AQDLC ILE Compression Schedule"
         ILECompressionSetup.TestField("Cut-off Period");
         MaxCutoffDate := CalcDate(ILECompressionSetup."Cut-off Period", Today);
         if "Cut-off Date" > MaxCutoffDate then
-            Error('The cut-off date %1 is not valid. The latest allowed cut-off date is %2.', "Cut-off Date", MaxCutoffDate);
+            Error('The End-Date date %1 is not valid. The latest allowed End-Date date is %2.', "Cut-off Date", MaxCutoffDate);
 
         CompressionSchedule.SetRange("Cut-off Date", "Cut-off Date");
         CompressionSchedule.SetFilter("Entry No.", '<>%1', "Entry No.");
         if CompressionSchedule.Find('-') then
-            Error('There exists another schedule (No. %1) for Cut-off Date %2', CompressionSchedule."Entry No.", "Cut-off Date");
+            Error('There exists another schedule (No. %1) for End-Date Date %2', CompressionSchedule."Entry No.", "Cut-off Date");
     end;
 }

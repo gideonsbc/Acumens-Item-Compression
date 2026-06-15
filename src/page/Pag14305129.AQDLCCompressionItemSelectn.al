@@ -31,6 +31,8 @@ page 14305129 "AQDLC Compression Item Selectn"
                 {
                     ToolTip = 'Specifies the value of the As at Date field.', Comment = '%';
                 }
+                field("Order By"; Rec."Order By")
+                { }
                 field("OrderBy Value"; Rec."OrderBy Value")
                 {
                     ToolTip = 'Specifies the value of the OrderBy Value field.', Comment = '%';

@@ -23,11 +23,12 @@ table 14305129 "AQDLC Compression Item Selectn"
         }
         field(4; "OrderBy Value"; Decimal)
         {
-            //Caption = 'OrderBy Value';
-            CaptionClass = FnOrderByValCaption();
+            Caption = 'Count/Amount';
+            //CaptionClass = FnOrderByValCaption();
         }
         field(5; "Order By"; Option)
         {
+            Caption = 'Criteria';
             OptionMembers = "No. of Entries",Quantity,Sales;
         }
         field(6; "As of Date"; Date)

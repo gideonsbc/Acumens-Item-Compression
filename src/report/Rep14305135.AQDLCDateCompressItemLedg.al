@@ -31,8 +31,16 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                     Window.Update(1, '..' + Format(EndingDate));
 
                 SomethingCompressed := false;
-                if (CompressionScheduleNo <> 0) and SkipCompressedItems then
-                    SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
+                if (CompressionScheduleNo <> 0) then begin
+                    if SkipCompressedItems then
+                        SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
+                    if ScheduleDescription = '' then begin
+                        if (CompressionSchedule.Get(CompressionScheduleNo) and (CompressionSchedule.Description <> '')) then
+                            ScheduleDescription := CompressionSchedule.Description
+                        else
+                            ScheduleDescription := 'Date Compressed';
+                    end;
+                end;
             end;
 
             trigger OnAfterGetRecord()
@@ -117,7 +125,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 QoH.SetRange("Posting Date", EndingDate);
                 QoH.SetRange("Register No.", RegNo);
                 RptCrateILEEntriesUsingQoH.SetTableView(QoH);
-                RptCrateILEEntriesUsingQoH.SetRunParameters(StartingILENumber, StartingVENumber, EndingDate, RegNo, PostingDateRunNo, false);
+                RptCrateILEEntriesUsingQoH.SetRunParameters(StartingILENumber, StartingVENumber, EndingDate, RegNo, PostingDateRunNo, CompressionScheduleNo, ScheduleDescription, false);
                 RptCrateILEEntriesUsingQoH.UseRequestPage := false;
                 RptCrateILEEntriesUsingQoH.RunModal();
                 RptCrateILEEntriesUsingQoH.GetCreatedCount(CreatedILEs, CreatedVEs);
@@ -330,6 +338,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         CreatedVEs: Integer;
         ExecutionSummaryTxt: Text;
         SomethingCompressed: Boolean;
+        ScheduleDescription: Text;
 
     local procedure CheckItemCostAdjustment(vItem: Record Item; var vErrorMsg: Text): Boolean
     begin
@@ -501,9 +510,10 @@ report 14305135 "AQDLC Date Compress Item Ledg"
             CompressionScheduleNo := CompressionSchedule."Entry No.";
     end;
 
-    local procedure MarkScheduleAsProcessed()
     var
         CompressionSchedule: Record "AQDLC ILE Compression Schedule";
+
+    local procedure MarkScheduleAsProcessed()
     begin
         if CompressionScheduleNo = 0 then exit;
         if CompressionSchedule.Get(CompressionScheduleNo) and (not CompressionSchedule.Processed) then begin
