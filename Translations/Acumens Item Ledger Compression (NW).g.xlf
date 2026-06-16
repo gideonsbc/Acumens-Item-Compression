@@ -528,6 +528,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Variant Code - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Codeunit 3988054447 - NamedType 1310296204" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compressing Item Ledger Entries\Period: #1#####\Processing Item: #2#####\Status: #3#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Codeunit AQDLC Item Ledger Compression - NamedType Txt000</note>
+        </trans-unit>
         <trans-unit id="Codeunit 3704631423 - NamedType 598091896" size-unit="char" translate="yes" xml:space="preserve">
           <source>a35db766-52e7-429a-94e1-847851f1944a</source>
           <note from="Developer" annotates="general" priority="2"></note>

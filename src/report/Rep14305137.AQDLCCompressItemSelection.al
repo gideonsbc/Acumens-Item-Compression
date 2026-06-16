@@ -137,8 +137,10 @@ report 14305137 "AQDLC Compress Item Selection"
     var
         vItemSelection: Record "AQDLC Compression Item Selectn";
     begin
-        vItemSelection.Reset();
-        Page.Run(Page::"AQDLC Compression Item Selectn", vItemSelection);
+        if GuiAllowed then begin
+            vItemSelection.Reset();
+            Page.Run(Page::"AQDLC Compression Item Selectn", vItemSelection);
+        end;
     end;
 
     var
