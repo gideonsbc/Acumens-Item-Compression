@@ -3,6 +3,51 @@
   <file datatype="xml" source-language="en-US" target-language="en-US" original="Acumens Item Ledger Compression (NW)">
     <body>
       <group id="body">
+        <trans-unit id="Table 2032485557 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compression Analysis Result</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Analysis Res - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2032485557 - Field 3810610217 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>As of Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Analysis Res - Field As of Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2032485557 - Field 3461834954 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Description</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Analysis Res - Field Description - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2032485557 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Analysis Res - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2032485557 - Field 4168959539 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Issue Type</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Analysis Res - Field Issue Type - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2032485557 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Analysis Res - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2032485557 - Field 2127159326 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Schedule No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Analysis Res - Field Schedule No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2032485557 - Field 518407003 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Count</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Analysis Res - Field Total Count - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2032485557 - Field 830213579 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Total Value</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Analysis Res - Field Total Value - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 1699157095 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Compression Cues</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -92,6 +137,11 @@
           <source>Count/Amount</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Item Selectn - Field OrderBy Value - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2002067010 - Field 2127159326 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Schedule No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Compression Item Selectn - Field Schedule No. - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2894207471 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>AQD ILE Compression Log Entry</source>
@@ -613,6 +663,36 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC About ILE Compression - Control Version1 - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 418029042 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compression Analysis Results</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 418029042 - Control 883711285 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Entry No field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Control Entry No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 418029042 - Control 4168959539 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Issue Type field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Control Issue Type - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 418029042 - Control 2127159326 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Schedule No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Control Schedule No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 418029042 - Control 518407003 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Total Count field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Control Total Count - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 418029042 - Control 830213579 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Total Value field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Control Total Value - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 1699157095 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Compression Cues</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -662,6 +742,16 @@
           <source>Run Compression</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Item Selectn - Action &amp;Run Compression - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 2002067010 - Action 1287448501 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Item Selectn - Action &amp;Run Compression Data Analysis - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 2002067010 - Action 1287448501 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Compression Data Analysis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Item Selectn - Action &amp;Run Compression Data Analysis - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 2002067010 - Action 1170052478 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Run Compression Item Selection</source>
@@ -723,6 +813,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compressions RC - Action &amp;Post Inventory Cost to G/L - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 4071570193 - Action 33582407 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compressions RC - Action RunCompressionDataAnalysis - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4071570193 - Action 33582407 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Compression Data Analysis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compressions RC - Action RunCompressionDataAnalysis - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 4071570193 - Action 2322799465 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Run Item Ledger Compression</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -732,6 +832,16 @@
           <source>Run Item Selection</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compressions RC - Action RunItemSelection - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 4071570193 - Action 2513179648 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compressions RC - Action CompressionAnalysis - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4071570193 - Action 2513179648 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compression Analysis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compressions RC - Action CompressionAnalysis - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 4071570193 - Action 6054192 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Executes the Compression Registers action.</source>
@@ -1458,6 +1568,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compressions RC - Action ILECompressions - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 4071570193 - Action 4206045103 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compressions RC - Action CompressionAnalysis1 - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 4071570193 - Action 4206045103 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compression Analysis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compressions RC - Action CompressionAnalysis1 - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 4071570193 - Action 3994929407 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Executes the Compression Registers action.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1943,6 +2063,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action CompressResults1 - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 1385577590 - Action 627597254 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Compression Analysis - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1385577590 - Action 627597254 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compression Analysis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Compression Analysis - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Page 1385577590 - Action 3467221222 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>View ILE Compression Registers</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -1992,6 +2122,16 @@
           <source>Run Compression</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Run Compression - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 1385577590 - Action 1287448501 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Run Compression Data Analysis - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 1385577590 - Action 1287448501 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Run Compression Data Analysis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action &amp;Run Compression Data Analysis - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1385577590 - Action 1170052478 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
           <source>Run Compression Item Selection</source>
@@ -2228,6 +2368,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compress Item Selection - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Report 1185612 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Item No.  ########1#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compress Item Selection - NamedType Text001</note>
+        </trans-unit>
         <trans-unit id="Report 1185612 - Control 4105281732 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Options</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -2267,6 +2412,46 @@
           <source>Skip Compressed Items</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compress Item Selection - Control SkipCompressedItems - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3689826919 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compression Data Analysis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compression Data Analys - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3689826919 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Processing Item No.  ########1#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compression Data Analys - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 3689826919 - Control 4105281732 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Options</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compression Data Analys - Control GroupName - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3689826919 - Control 3144493105 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>As at Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compression Data Analys - Control AsOfDate - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3689826919 - Control 2501848366 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>The compression schedule to be executed after this analysis</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compression Data Analys - Control CompressionScheduleNo - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 3689826919 - Control 2501848366 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Schedule No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compression Data Analys - Control CompressionScheduleNo - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 3689826919 - Control 4038577956 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Items already compressed in the selected schedule will be skipped</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compression Data Analys - Control SkipCompressedItems - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Report 3689826919 - Control 4038577956 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Skip Compressed Items</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compression Data Analys - Control SkipCompressedItems - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 1159430930 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Create ILE Entries using QoH</source>
@@ -2462,6 +2647,26 @@
           <source>Acumens Compressions</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Profile AQDLC Compressions - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 507369922 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Compression Analysis Issues</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum AQDLC Compression Analysis Iss - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 507369922 - EnumValue 1369592714 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Remaining Qty &amp; ILE Qty Mismatch</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum AQDLC Compression Analysis Iss - EnumValue Remaining Qty &amp; ILE Qty Mismatch - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 507369922 - EnumValue 2071588635 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Unvoiced ILE</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum AQDLC Compression Analysis Iss - EnumValue Unvoiced ILE - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Enum 507369922 - EnumValue 3395232590 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Zero Quantity Non-Zero Value</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Enum AQDLC Compression Analysis Iss - EnumValue Zero Quantity Non-Zero Value - Property Caption</note>
         </trans-unit>
         <trans-unit id="PermissionSet 884509751 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Acumens Item Ledger Compression</source>

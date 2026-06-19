@@ -76,8 +76,47 @@ page 14305129 "AQDLC Compression Item Selectn"
                     ItemRec.Reset();
                     ItemRec.SetFilter("No.", ItemNosFilter);
                     if ItemRec.Find('-') then begin
+                        RptCompressIle.SetRunParameters(Rec."Schedule No.");
                         RptCompressIle.SetTableView(ItemRec);
                         RptCompressIle.Run();
+                    end;
+                end;
+            }
+            action("&Run Compression Data Analysis")
+            {
+                ApplicationArea = All;
+                Caption = 'Run Compression Data Analysis';
+                Image = Process;
+                ToolTip = 'Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.';
+                trigger OnAction()
+                var
+                    ItemNosFilter: Text;
+                    RptCompressionAnalysis: Report "AQDLC Compression Data Analys";
+                    ItemSelection: Record "AQDLC Compression Item Selectn";
+                    ItemRec: Record Item;
+                begin
+                    if Rec.IsEmpty then
+                        Error('There are no selected items!');
+
+                    ItemNosFilter := '';
+                    ItemSelection.Reset();
+                    if ItemSelection.FindSet() then
+                        repeat
+                            if ItemNosFilter = '' then
+                                ItemNosFilter := ItemSelection."Item No."
+                            else
+                                ItemNosFilter += '|' + ItemSelection."Item No.";
+                        until ItemSelection.Next() = 0;
+
+                    if ItemNosFilter = '' then
+                        Error('There are no selected items!');
+
+                    ItemRec.Reset();
+                    ItemRec.SetFilter("No.", ItemNosFilter);
+                    if ItemRec.Find('-') then begin
+                        RptCompressionAnalysis.SetRunParameters(Rec."Schedule No.");
+                        RptCompressionAnalysis.SetTableView(ItemRec);
+                        RptCompressionAnalysis.Run();
                     end;
                 end;
             }
@@ -88,6 +127,7 @@ page 14305129 "AQDLC Compression Item Selectn"
                 Image = SelectReport;
                 RunObject = Report "AQDLC Compress Item Selection";
                 ToolTip = 'Run Compression Item Selection';
+                Visible = false;
             }
         }
         area(Promoted)
@@ -97,6 +137,9 @@ page 14305129 "AQDLC Compression Item Selectn"
                 Caption = 'Home', Comment = 'Generated from the PromotedActionCategories property index 3.';
 
                 actionref(RunCompression_Promoted; "&Run Compression")
+                {
+                }
+                actionref(RunCompressionDataAnalysis_Promoted; "&Run Compression Data Analysis")
                 {
                 }
                 actionref(RunItemSelection_Promoted; "&Run Item Selection")

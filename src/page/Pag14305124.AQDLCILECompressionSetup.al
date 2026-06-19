@@ -122,6 +122,22 @@ page 14305124 "AQDLC ILE Compression Setup"
                     RunObject = Page "AQDLC Compression Item Selectn";
                     ToolTip = 'View Compression Item Selection';
                 }
+                action("&Run Compression Data Analysis")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Run Compression Data Analysis';
+                    Image = Process;
+                    RunObject = Report "AQDLC Compression Data Analys";
+                    ToolTip = 'Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.';
+                }
+                action("&Compression Analysis")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Compression Analysis';
+                    Image = AnalysisView;
+                    RunObject = Page "AQDLC Compression Analysis Rs";
+                    ToolTip = 'Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.';
+                }
                 action("&Run Compression")
                 {
                     ApplicationArea = All;
@@ -202,6 +218,11 @@ page 14305124 "AQDLC ILE Compression Setup"
                 {
                 }
                 actionref(ItemSelection_Promoted; "&Item Selection")
+                { }
+                actionref(RunCompressionDataAnalysis_Promoted; "&Run Compression Data Analysis")
+                {
+                }
+                actionref(CompressionAnalysis_Promoted; "&Compression Analysis")
                 { }
                 separator("Compression") { }
                 actionref(RunCompression_Promoted; "&Run Compression")

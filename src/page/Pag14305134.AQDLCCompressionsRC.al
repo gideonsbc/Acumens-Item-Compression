@@ -39,6 +39,12 @@ page 14305134 "AQDLC Compressions RC"
                 ToolTip = 'Executes the ItemSelections action.';
                 Caption = 'Compression Item Selections';
             }
+            action(CompressionAnalysis)
+            {
+                Caption = 'Compression Analysis';
+                RunObject = Page "AQDLC Compression Analysis Rs";
+                ToolTip = 'Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.';
+            }
             action(CompressionRegisters)
             {
                 RunObject = page "AQDLC ILE Compression Regs";
@@ -152,6 +158,15 @@ page 14305134 "AQDLC Compressions RC"
                     ToolTip = 'Executes the ItemSelections action.';
                     Caption = 'Compression Item Selections';
                     Image = ListPage;
+                }
+
+                action(CompressionAnalysis1)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Compression Analysis';
+                    RunObject = Page "AQDLC Compression Analysis Rs";
+                    ToolTip = 'Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.';
+                    Image = AnalysisView;
                 }
                 action(CompressionRegisters1)
                 {
@@ -626,6 +641,15 @@ page 14305134 "AQDLC Compressions RC"
                 Caption = 'Run Item Selection';
                 Image = Report;
                 RunObject = Report "AQDLC Compress Item Selection";
+            }
+
+            action(RunCompressionDataAnalysis)
+            {
+                ApplicationArea = All;
+                Caption = 'Run Compression Data Analysis';
+                Image = Process;
+                RunObject = Report "AQDLC Compression Data Analys";
+                ToolTip = 'Analyzes inventory data prior to compression and identifies potential data integrity issues that may affect compression results.';
             }
             action(RunILECompression)
             {

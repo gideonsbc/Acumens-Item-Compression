@@ -39,6 +39,11 @@ table 14305129 "AQDLC Compression Item Selectn"
         {
             Caption = 'Number of Items';
         }
+        field(8; "Schedule No."; Integer)
+        {
+            TableRelation = "AQDLC ILE Compression Schedule";
+            Editable = false;
+        }
     }
     keys
     {

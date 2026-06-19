@@ -16,11 +16,11 @@ permissionset 14305125 "AQDLC ILE Comprs Usr"
         report "AQDLC Compress Item Selection" = X,
         report "AQDLC Create ILE Entrs frm QoH" = X,
         report "AQDLC Create Item Application" = X,
-        report "AQDLC Date Compress Item Ledg" = X,
         report "AQDLC Delete ILE and VLE" = X,
         report "AQDLC Dlt Orphn Itm Apl Entry" = X,
         report "AQDLC Generate Qty On Hand" = X,
         report "AQDLC Post-Compress Invt. Val" = X,
+        codeunit "AQDLC Item Ledger Compression" = X,
         page "AQDLC Compression Item Selectn" = X,
         page "AQDLC ILE Compress Log Entries" = X,
         page "AQDLC ILE Compression Register" = X,
@@ -39,5 +39,9 @@ permissionset 14305125 "AQDLC ILE Comprs Usr"
         page "AQDLC Compressions RC" = X,
         codeunit "AQDLCC Compressions Licens Mgt" = X,
         codeunit "AQDLC ILE Compress Single Inst" = X,
-        codeunit "AQDLC ILE Compression Evt Subs" = X;
+        codeunit "AQDLC ILE Compression Evt Subs" = X,
+        tabledata "AQDLC Compression Analysis Res" = RIMD,
+        table "AQDLC Compression Analysis Res" = X,
+        page "AQDLC Compression Analysis Rs" = X,
+        report "AQDLC Compression Data Analys" = X;
 }

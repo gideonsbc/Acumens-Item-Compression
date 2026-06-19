@@ -16,9 +16,12 @@ report 14305137 "AQDLC Compress Item Selection"
             begin
                 if AsOfDate = 0D then
                     AsOfDate := Today;
+                if ShowDialog then
+                    Window.Open(Text001);
 
                 if (CompressionScheduleNo <> 0) and SkipCompressedItems then
                     SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
+                StartTime := Time;
             end;
 
             trigger OnAfterGetRecord()
@@ -26,6 +29,9 @@ report 14305137 "AQDLC Compress Item Selection"
                 OrderedVal: Decimal;
                 ItemLedgers: Record "Item Ledger Entry";
             begin
+                if ShowDialog then
+                    Window.Update(1, "No." + ' => ' + Description);
+
                 OrderedVal := 0;
                 ItemLedgers.SetRange("Item No.", "No.");
                 ItemLedgers.SetFilter("Posting Date", '<=%1', AsOfDate);
@@ -46,6 +52,9 @@ report 14305137 "AQDLC Compress Item Selection"
             trigger OnPostDataItem()
             begin
                 OrderSelectedItems();
+                if not ShowDialog then exit;
+                Window.Close();
+                Message('Process completed\Start Time: %1 End Time: %2', StartTime, TIME);
             end;
         }
     }
@@ -153,6 +162,10 @@ report 14305137 "AQDLC Compress Item Selection"
         EntryNo: Integer;
         CompressionScheduleNo: Integer;
         SkipCompressedItems: Boolean;
+        StartTime: Time;
+        Window: Dialog;
+        Text001: Label 'Processing Item No.  ########1#####';
+        ShowDialog: Boolean;
 
     local procedure UpdateItemSelectionBuffer(vItem: Record Item; OrderByVal: Decimal)
     var
@@ -183,6 +196,7 @@ report 14305137 "AQDLC Compress Item Selection"
                 ItemSelection.Init();
                 ItemSelection."Entry No." := vEntryNo;
                 ItemSelection."Item No." := _ItemSelectionBuf."Item No.";
+                ItemSelection."Schedule No." := CompressionScheduleNo;
                 ItemSelection.Description := _ItemSelectionBuf.Description;
                 ItemSelection."Order By" := OrderBy;
                 ItemSelection."OrderBy Value" := _ItemSelectionBuf."OrderBy Value";

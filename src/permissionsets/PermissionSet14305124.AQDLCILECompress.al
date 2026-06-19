@@ -41,5 +41,9 @@ permissionset 14305124 "AQDLC ILE Compress"
         page "AQDLC Compressions RC" = X,
         codeunit "AQDLCC Compressions Licens Mgt" = X,
         codeunit "AQDLC ILE Compress Single Inst" = X,
-        codeunit "AQDLC ILE Compression Evt Subs" = X;
+        codeunit "AQDLC ILE Compression Evt Subs" = X,
+        tabledata "AQDLC Compression Analysis Res" = RIMD,
+        table "AQDLC Compression Analysis Res" = X,
+        page "AQDLC Compression Analysis Rs" = X,
+        report "AQDLC Compression Data Analys" = X;
 }

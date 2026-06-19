@@ -16,6 +16,7 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
                 SetRange("Register No.", CompressionRegNo);
                 if ShowDialog then
                     Window.Open(Text001);
+                StartTime := Time;
             end;
 
             trigger OnAfterGetRecord();
@@ -64,8 +65,8 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
         ILEEntryNo: Integer;
         VEEntryNo: Integer;
         ILE: Record "Item Ledger Entry";
-        VE: Record 5802;
-        Item: Record 27;
+        VE: Record "Value Entry";
+        Item: Record Item;
         Window: Dialog;
         Text001: Label 'Processing Item No.  ########1#####';
         Counter: Integer;
