@@ -20,5 +20,11 @@ tableextension 14305124 "AQDLC Item Ledger Entry" extends "Item Ledger Entry"
             DataClassification = CustomerContent;
             Editable = false;
         }
+        field(14305127; "AQDLC Skip Compressing"; Boolean)
+        {
+            Caption = 'Skip Compressing';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 }

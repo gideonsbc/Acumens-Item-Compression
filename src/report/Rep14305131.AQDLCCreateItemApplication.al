@@ -32,7 +32,7 @@ report 14305131 "AQDLC Create Item Application"
                 //NextItemLdgrEntryNo := 85000;
                 //NextValueEntryNo := 85000;
 
-                StartTime := TIME;
+                StartTime := CurrentDateTime;
             end;
 
             trigger OnAfterGetRecord();
@@ -96,7 +96,7 @@ report 14305131 "AQDLC Create Item Application"
             trigger OnPostDataItem();
             begin
                 if not ShowDialog then exit;
-                Message('Item Application Created %1 Modified %2\Start Time: %3 End Time: %4', ItemApplicationCreated, ItemApplicationUpdated, StartTime, TIME);
+                Message('Item Application Created %1 Modified %2\Start Time: %3 End Time: %4 (%5)', ItemApplicationCreated, ItemApplicationUpdated, StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -119,7 +119,8 @@ report 14305131 "AQDLC Create Item Application"
         PositiveVLE: Record 5802;
         NextItemLdgrEntryNo: Integer;
         NextValueEntryNo: Integer;
-        StartTime: Time;
+        StartTime: DateTime;
+        ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         MaxPostingDate: Date;
         ShowDialog: Boolean;
         CompressionRegNo: Integer;

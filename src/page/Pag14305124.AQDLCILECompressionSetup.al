@@ -266,10 +266,12 @@ page 14305124 "AQDLC ILE Compression Setup"
         if not Rec.Get() then begin
             Rec.Init();
             if Confirm('Do you want to activate Acumens Item Ledger Compression Defaults?' + '\' + 'This may cause errors if the setup is not completed.') then
-                InitializeApp(true);
-            Evaluate(Rec."Cut-off Period", '-7Y');
-            Rec.Validate("Cut-off Period");
-            Rec.Insert();
+                InitializeApp(true)
+            else begin
+                Evaluate(Rec."Cut-off Period", '-7Y');
+                Rec.Validate("Cut-off Period");
+                Rec.Insert();
+            end;
         end;
         if Format(Rec."Cut-off Period") = '' then begin
             Evaluate(Rec."Cut-off Period", '-7Y');

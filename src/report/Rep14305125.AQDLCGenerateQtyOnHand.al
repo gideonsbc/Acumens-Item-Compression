@@ -21,12 +21,21 @@ report 14305125 "AQDLC Generate Qty On Hand"
                 trigger OnAfterGetRecord()
                 var
                     VLE: Record "Value Entry";
+                    InvtValue: Decimal;
                 begin
                     if ("Entry Type" = "Entry Type"::Transfer) and ("Document Type" = "Document Type"::"Transfer Shipment") then
                         if not TransferCompletelyReceived(ItemLedgerEntry) then
                             CurrReport.Skip();
 
                     CalcFields("Cost Amount (Expected)", "Cost Amount (Actual)");
+                    InvtValue := "Cost Amount (Actual)";
+                    if "Cost Amount (Actual)" = 0 then
+                        InvtValue := "Cost Amount (Expected)";
+                    if (Quantity = 0) and (InvtValue <> 0) then begin
+                        "AQDLC Skip Compressing" := true;
+                        Modify();
+                        CurrReport.Skip();
+                    end;
                     QoH.Reset();
                     QoH.SetRange("Item No.", "Item No.");
                     QoH.SetRange("Register No.", CompressionRegNo);
@@ -112,16 +121,23 @@ report 14305125 "AQDLC Generate Qty On Hand"
 
                 if ShowDialog then
                     Window.Open(Text001);
-                StartTime := TIME;
+                StartTime := CurrentDateTime;
                 Counter := 0;
             end;
 
             trigger OnAfterGetRecord()
+            var
+                ILEMod: Record "Item Ledger Entry";
             begin
                 if ShowDialog then begin
                     if (Counter MOD 1000) = 0 then
                         Window.Update(1, Format((Counter DIV 1000)) + '->' + Item."No.");
                 end;
+
+                ILEMod.SetRange("Item No.", "No.");
+                ILEMod.SetRange("AQDLC Skip Compressing", true);
+                if ILEMod.Find('-') then
+                    ILEMod.ModifyAll("AQDLC Skip Compressing", false);
 
                 QoH.Reset();
                 QoH.SetRange("Item No.", Item."No.");
@@ -137,9 +153,8 @@ report 14305125 "AQDLC Generate Qty On Hand"
                 if not ShowDialog then exit;
                 Window.Close();
                 Message(
-                  'Batch process execution is completed - 1 Generate Quantity On Hand\Start Time: %1 End Time: %2',
-                  StartTime,
-                  TIME);
+                  'Batch process execution is completed - 1 Generate Quantity On Hand\Start Time: %1 End Time: %2\%3',
+                  StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -170,7 +185,8 @@ report 14305125 "AQDLC Generate Qty On Hand"
         LastQoHEntryNo: Integer;
         Counter: Integer;
         MaxPostingDate: Date;
-        StartTime: Time;
+        StartTime: DateTime;
+        ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
 
         // UI / messages
         Window: Dialog;

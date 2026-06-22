@@ -13,7 +13,7 @@ report 14305129 "AQDLC Dlt Orphn Itm Apl Entry"
             begin
                 if ShowDialog then
                     Window.Open(Text001);
-                StartTime := TIME;
+                StartTime := CurrentDateTime;
                 SetFilter("Posting Date", '<=%1', MaxPostingDate);
             end;
 
@@ -52,7 +52,7 @@ report 14305129 "AQDLC Dlt Orphn Itm Apl Entry"
             begin
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Item Application Check and Orphan Records Deleted: %1\Start Time: %2 End Time: %3', DeleteCount, StartTime, TIME);
+                Message('Item Application Check and Orphan Records Deleted: %1\Start Time: %2 End Time: %3 (%4)', DeleteCount, StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -70,7 +70,8 @@ report 14305129 "AQDLC Dlt Orphn Itm Apl Entry"
         DeleteCount: Integer;
         Text001: Label 'Processing Entry No. ########1#####';
         Window: Dialog;
-        StartTime: Time;
+        StartTime: DateTime;
+        ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         MaxPostingDate: Date;
         ShowDialog: Boolean;
         CompressionRegNo: Integer;

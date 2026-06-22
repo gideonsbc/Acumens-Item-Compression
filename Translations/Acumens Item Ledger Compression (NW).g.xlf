@@ -383,6 +383,86 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC ILE Compression Setup - Field Primary Key - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 3261426344 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Quantity vs Remaining</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 3581858122 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Applied Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Applied Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 3810610217 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>As of Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field As of Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 503024588 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Comments</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Comments - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 365542049 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Difference</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Difference - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 1539106347 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Inventory Value</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Inventory Value - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 568743302 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Item No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 2161572060 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Location Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Location Code - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 1482668068 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Lot No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Lot No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 4240543679 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Package No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Package No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 2704404533 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 2367056265 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Remaining Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Remaining Quantity - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 2127159326 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Schedule No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Schedule No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 47037625 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Serial No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Serial No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 3261426344 - Field 3450651614 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Variant Code</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Item Quantity vs Remn - Field Variant Code - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 51522877 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Valuation Comparison</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -692,6 +772,21 @@
           <source>Specifies the value of the Total Value field.</source>
           <note from="Developer" annotates="general" priority="2">%</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Control Total Value - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 418029042 - Action 3464687669 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Open ILE Quantity vs Remaining Quantity page</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Action &amp;ILEQtyVsRemaining - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 418029042 - Action 3464687669 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>ILE Qty vs Remaining Qty</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Action &amp;ILEQtyVsRemaining - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 418029042 - Action 1675737353 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Home</source>
+          <note from="Developer" annotates="general" priority="2">Generated from the PromotedActionCategories property index 3.</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Compression Analysis Rs - Action HOME - Property Caption</note>
         </trans-unit>
         <trans-unit id="Page 1699157095 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Compression Cues</source>
@@ -2203,6 +2298,61 @@
           <note from="Developer" annotates="general" priority="2">Generated from the PromotedActionCategories property index 3.</note>
           <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC ILE Compression Setup - Action HOME - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Page 3261426344 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Item Quantity vs Remaining Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 3810610217 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the As of Date field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control As of Date - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 365542049 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Quantity - Remaining Quantity</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control Difference - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 883711285 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Entry No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control Entry No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 1539106347 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Inventory Value field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control Inventory Value - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 568743302 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Item No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control Item No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 2161572060 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Location Code field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control Location Code - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 2704404533 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Quantity field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 2367056265 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Remaining Quantity field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control Remaining Quantity - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 2127159326 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Schedule No. field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control Schedule No. - Property ToolTip</note>
+        </trans-unit>
+        <trans-unit id="Page 3261426344 - Control 3450651614 - Property 1295455071" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Specifies the value of the Variant Code field.</source>
+          <note from="Developer" annotates="general" priority="2">%</note>
+          <note from="Xliff Generator" annotates="general" priority="3">Page AQDLC Item Quantity vs Remn - Control Variant Code - Property ToolTip</note>
+        </trans-unit>
         <trans-unit id="Page 51522877 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Item Valuation Comparison</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -2612,6 +2762,11 @@
           <source>QoH Entry No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">TableExtension AQDLC Item Ledger Entry - Field AQDLC QoH Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="TableExtension 1038220857 - Field 19948528 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 4089294192">
+          <source>Skip Compressing</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">TableExtension AQDLC Item Ledger Entry - Field AQDLC Skip Compressing - Property Caption</note>
         </trans-unit>
         <trans-unit id="TableExtension 860819925 - Field 3520001925 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Table 3908626460">
           <source>Skipped</source>

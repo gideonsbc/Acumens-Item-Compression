@@ -16,7 +16,7 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
                 SetRange("Register No.", CompressionRegNo);
                 if ShowDialog then
                     Window.Open(Text001);
-                StartTime := Time;
+                StartTime := CurrentDateTime;
             end;
 
             trigger OnAfterGetRecord();
@@ -49,7 +49,7 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
             begin
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Batch process execution is completed - Post-compression valuation\Start Time: %1 End Time: %2', StartTime, TIME);
+                Message('Batch process execution is completed - Post-compression valuation\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -70,7 +70,8 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
         Window: Dialog;
         Text001: Label 'Processing Item No.  ########1#####';
         Counter: Integer;
-        StartTime: Time;
+        StartTime: DateTime;
+        ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         ProcessDate: Date;
         ShowDialog: Boolean;
         ILECompressionSetup: Record "AQDLC ILE Compression Setup";

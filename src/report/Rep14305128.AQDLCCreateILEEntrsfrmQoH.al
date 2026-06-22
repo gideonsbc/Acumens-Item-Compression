@@ -20,7 +20,7 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
                 VE.Reset();
                 if ProcessDate = 0D then
                     ProcessDate := DMY2DATE(5, 1, 2015); // set process date (adjust if needed)
-                StartTime := TIME;
+                StartTime := CurrentDateTime;
                 Counter := 0;
             end;
 
@@ -61,7 +61,7 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
             begin
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Batch process execution is completed - 4 Create ILE Entries using QoH\Start Time: %1 End Time: %2', StartTime, TIME);
+                Message('Batch process execution is completed - 4 Create ILE Entries using QoH\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -102,7 +102,8 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         Window: Dialog;
         Text001: Label 'Processing Item No.  ########1#####';
         Counter: Integer;
-        StartTime: Time;
+        StartTime: DateTime;
+        ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         ProcessDate: Date;
         ShowDialog: Boolean;
         CompressionRegNo: Integer;

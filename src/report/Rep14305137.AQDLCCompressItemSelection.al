@@ -21,7 +21,7 @@ report 14305137 "AQDLC Compress Item Selection"
 
                 if (CompressionScheduleNo <> 0) and SkipCompressedItems then
                     SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
-                StartTime := Time;
+                StartTime := CurrentDateTime;
             end;
 
             trigger OnAfterGetRecord()
@@ -54,7 +54,7 @@ report 14305137 "AQDLC Compress Item Selection"
                 OrderSelectedItems();
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Process completed\Start Time: %1 End Time: %2', StartTime, TIME);
+                Message('Process completed\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -135,6 +135,7 @@ report 14305137 "AQDLC Compress Item Selection"
 
         if CompressionScheduleNo <> 0 then
             SkipCompressedItems := true;
+        ShowDialog := GuiAllowed;
     end;
 
     trigger OnPreReport()
@@ -162,7 +163,8 @@ report 14305137 "AQDLC Compress Item Selection"
         EntryNo: Integer;
         CompressionScheduleNo: Integer;
         SkipCompressedItems: Boolean;
-        StartTime: Time;
+        StartTime: DateTime;
+        ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         Window: Dialog;
         Text001: Label 'Processing Item No.  ########1#####';
         ShowDialog: Boolean;

@@ -20,7 +20,7 @@ report 14305126 "AQDLC Delete ILE and VLE"
 
             dataitem(ItemLedgerEntry; "Item Ledger Entry")
             {
-                DataItemTableView = SORTING("Item No.", "Posting Date") where("Completely Invoiced" = filter(true));
+                DataItemTableView = SORTING("Item No.", "Posting Date") where("Completely Invoiced" = filter(true), "AQDLC Skip Compressing" = filter(false));
                 DataItemLink = "Item No." = FIELD("No.");
 
                 trigger OnPreDataItem()
@@ -68,7 +68,7 @@ report 14305126 "AQDLC Delete ILE and VLE"
                 if ShowDialog then
                     Window.Open(Text001);
                 Counter := 0;
-                StartTime := TIME;
+                StartTime := CurrentDateTime;
             end;
 
             trigger OnAfterGetRecord();
@@ -100,8 +100,8 @@ report 14305126 "AQDLC Delete ILE and VLE"
 
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Batch process execution is completed - 2 Delete ILE and VLE\Start Time: %1 End Time: %2' +
-                  '\\Deleted ILE Count %3\\VLE Count %4', StartTime, TIME, ILEDeleteCount, VEDeleteCount);
+                Message('Batch process execution is completed - 2 Delete ILE and VLE\Start Time: %1 End Time: %2 (%5)' +
+                  '\\Deleted ILE Count %3\\VLE Count %4', StartTime, CurrentDateTime, ILEDeleteCount, VEDeleteCount, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -138,7 +138,8 @@ report 14305126 "AQDLC Delete ILE and VLE"
         VEDeleteCount: Integer;
         Text003: Label 'Deleted ILE Count %1\VLE Count %2';
         Counter: Integer;
-        StartTime: Time;
+        StartTime: DateTime;
+        ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         ShowDialog: Boolean;
         CompressionRegNo: Integer;
         PostingDateRunNo: Integer;

@@ -21,8 +21,8 @@ report 14305127 "AQDLC Compression Data Analys"
 
                 if (CompressionScheduleNo <> 0) and SkipCompressedItems then
                     SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
-                StartTime := Time;
-                //SimulateIssues(false);
+                StartTime := CurrentDateTime;
+                SimulateIssues(false);
             end;
 
             trigger OnAfterGetRecord()
@@ -48,21 +48,24 @@ report 14305127 "AQDLC Compression Data Analys"
                         if not ItemLedgers."Completely Invoiced" then
                             CreateCompressionAnalysisResultEntry(Item, IssueType::"Unvoiced ILE", InvtValue);
 
-                        if ItemLedgers.Quantity <> ItemLedgers."Remaining Quantity" then
-                            CreateCompressionAnalysisResultEntry(Item, IssueType::"Remaining Qty & ILE Qty Mismatch", InvtValue);
+                        /*if ItemLedgers.Quantity <> ItemLedgers."Remaining Quantity" then
+                            CreateCompressionAnalysisResultEntry(Item, IssueType::"Remaining Qty & ILE Qty Mismatch", InvtValue);*/
+                        CreateAndUpdateItemQtyVsRemaining(Item, ItemLedgers, InvtValue);
 
                         if (ItemLedgers.Quantity = 0) and (InvtValue <> 0) then
                             CreateCompressionAnalysisResultEntry(Item, IssueType::"Zero Quantity Non-Zero Value", InvtValue);
 
                     until ItemLedgers.Next() = 0;
+
+                CheckItemRemQuantities(Item);
             end;
 
             trigger OnPostDataItem()
             begin
-                //SimulateIssues(true);
+                SimulateIssues(true);
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Process completed. %1 issue(s) found!\Start Time: %2 End Time: %3', TotalIssuesFound, StartTime, TIME);
+                Message('Process completed. %1 issue(s) found!\Start Time: %2 End Time: %3 (%4)', Format(TotalIssuesFound), StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -142,8 +145,8 @@ report 14305127 "AQDLC Compression Data Analys"
             SkipCompressedItems := true;
             if CompressionSchedule.Get(CompressionScheduleNo) then
                 AsOfDate := CompressionSchedule."Cut-off Date";
-            ShowDialog := GuiAllowed;
         end;
+        ShowDialog := GuiAllowed;
 
     end;
 
@@ -170,7 +173,8 @@ report 14305127 "AQDLC Compression Data Analys"
     var
         ILECompressionSetup: Record "AQDLC ILE Compression Setup";
         CompressionSchedule: Record "AQDLC ILE Compression Schedule";
-        StartTime: Time;
+        StartTime: DateTime;
+        ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         CompressionScheduleNo: Integer;
         SkipCompressedItems: Boolean;
         AsOfDate: Date;
@@ -193,14 +197,34 @@ report 14305127 "AQDLC Compression Data Analys"
             CompressionScheduleNo := CompressionSchedule."Entry No.";
     end;
 
+    var
+        ItemILEQty: Decimal;
+        ItemILERemQty: Decimal;
+        ItemInvtVal: Decimal;
+
+    local procedure ClearItemQtyValues()
+    begin
+        ItemILEQty := 0;
+        ItemILERemQty := 0;
+        ItemInvtVal := 0;
+    end;
+
     local procedure DeleteItemPreviousAnalysisResults(vItem: Record Item)
     var
         CompAnalysisResult: Record "AQDLC Compression Analysis Res";
+        ItemQtyvsRemn: Record "AQDLC Item Quantity vs Remn";
     begin
         CompAnalysisResult.SetRange("Item No.", vItem."No.");
         CompAnalysisResult.SetRange("Schedule No.", CompressionScheduleNo);
         CompAnalysisResult.SetRange("As of Date", AsOfDate);
         CompAnalysisResult.DeleteAll();
+
+        ItemQtyvsRemn.SetRange("Item No.", vItem."No.");
+        ItemQtyvsRemn.SetRange("Schedule No.", CompressionScheduleNo);
+        ItemQtyvsRemn.SetRange("As of Date", AsOfDate);
+        ItemQtyvsRemn.DeleteAll();
+
+        ClearItemQtyValues();
     end;
 
     local procedure CreateCompressionAnalysisResultEntry(vItem: Record Item; vIssueType: Enum "AQDLC Compression Analysis Iss"; InvtValue: Decimal)
@@ -227,6 +251,84 @@ report 14305127 "AQDLC Compression Data Analys"
             CompAnalysisResult."Total Value" := InvtValue;
             CompAnalysisResult.Insert(true);
         end;
+    end;
+
+    local procedure CreateAndUpdateItemQtyVsRemaining(vitem: Record Item; vitemLedger: Record "Item Ledger Entry"; vInvtValue: Decimal)
+    var
+        ItemQtyvsRemn: Record "AQDLC Item Quantity vs Remn";
+    begin
+        ItemILEQty += vitemLedger.Quantity;
+        ItemILERemQty += vitemLedger."Remaining Quantity";
+        ItemInvtVal += vInvtValue;
+
+        ItemQtyvsRemn.SetRange("Item No.", vitemLedger."Item No.");
+        ItemQtyvsRemn.SetRange("Schedule No.", CompressionScheduleNo);
+        if ILECompressionSetup."Group by Location Code" then
+            ItemQtyvsRemn.SetRange("Location Code", vitemLedger."Location Code");
+        if ILECompressionSetup."Group by Variant Code" then
+            ItemQtyvsRemn.SetRange("Variant Code", vitemLedger."Variant Code");
+        if ILECompressionSetup."Group by Lot No." then
+            ItemQtyvsRemn.SetRange("Lot No.", vitemLedger."Lot No.");
+        if ILECompressionSetup."Group by Serial No." then
+            ItemQtyvsRemn.SetRange("Serial No.", vitemLedger."Serial No.");
+        if ILECompressionSetup."Group by Package No." then
+            ItemQtyvsRemn.SetRange("Package No.", vitemLedger."Package No.");
+        ItemQtyvsRemn.SetRange("Location Code");
+        if ItemQtyvsRemn.Find('-') then begin
+            ItemQtyvsRemn.Quantity += vitemLedger.Quantity;
+            ItemQtyvsRemn."Remaining Quantity" += vitemLedger."Remaining Quantity";
+            ItemQtyvsRemn."Inventory Value" += vInvtValue;
+            ItemQtyvsRemn.Difference := ItemQtyvsRemn.Quantity - ItemQtyvsRemn."Remaining Quantity";
+            ItemQtyvsRemn.Modify();
+        end else begin
+            ItemQtyvsRemn.Init();
+            ItemQtyvsRemn."Item No." := vitemLedger."Item No.";
+            ItemQtyvsRemn."Schedule No." := CompressionScheduleNo;
+            ItemQtyvsRemn."As of Date" := AsOfDate;
+            if ILECompressionSetup."Group by Location Code" then
+                ItemQtyvsRemn."Location Code" := vitemLedger."Location Code";
+            if ILECompressionSetup."Group by Variant Code" then
+                ItemQtyvsRemn."Variant Code" := vitemLedger."Variant Code";
+            if ILECompressionSetup."Group by Lot No." then
+                ItemQtyvsRemn."Lot No." := vitemLedger."Lot No.";
+            if ILECompressionSetup."Group by Serial No." then
+                ItemQtyvsRemn."Serial No." := vitemLedger."Serial No.";
+            if ILECompressionSetup."Group by Package No." then
+                ItemQtyvsRemn."Package No." := vitemLedger."Package No.";
+            ItemQtyvsRemn.Quantity += vitemLedger.Quantity;
+            ItemQtyvsRemn."Remaining Quantity" += vitemLedger."Remaining Quantity";
+            ItemQtyvsRemn."Inventory Value" += vInvtValue;
+            ItemQtyvsRemn.Difference := ItemQtyvsRemn.Quantity - ItemQtyvsRemn."Remaining Quantity";
+            ItemQtyvsRemn.Insert(true);
+        end;
+    end;
+
+    local procedure CheckItemRemQuantities(vItem: Record Item)
+    var
+        ItemQtyvsRemn: Record "AQDLC Item Quantity vs Remn";
+        UnitCost: Decimal;
+        Diff: Decimal;
+    begin
+        if ItemILEQty = ItemILERemQty then begin
+            ItemQtyvsRemn.SetRange("Item No.", vItem."No.");
+            ItemQtyvsRemn.SetRange("Schedule No.", CompressionScheduleNo);
+            ItemQtyvsRemn.SetRange("As of Date", AsOfDate);
+            ItemQtyvsRemn.DeleteAll();
+        end else begin
+            Diff := ItemILEQty - ItemILERemQty;
+            if ItemILEQty <> 0 then
+                UnitCost := Abs(ItemInvtVal / ItemILEQty)
+            else begin
+                if ItemILERemQty <> 0 then
+                    UnitCost := Abs(ItemInvtVal / ItemILERemQty);
+            end;
+            if Diff <> 0 then
+                ItemInvtVal := Abs(Diff * UnitCost)
+            else
+                ItemInvtVal := 0;
+            CreateCompressionAnalysisResultEntry(vItem, IssueType::"Remaining Qty & ILE Qty Mismatch", ItemInvtVal);
+        end;
+        ClearItemQtyValues();
     end;
 
     local procedure SimulateIssues(Revert: Boolean)

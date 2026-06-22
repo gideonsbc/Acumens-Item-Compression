@@ -43,7 +43,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 ExecutionStartDt := CurrentDateTime;
                 ILECompressionCU.CreateILECompressionLog(GetFilters, EndingDate, ExecutionStartDt, CalledFromRegisterNo, RegNo, CompressionScheduleNo, PostingDateRunNo);
                 StartTimeoutCountDown(ExecutionStartDt);
-                StartTime := Time;
+                StartTime := CurrentDateTime;
                 OpenWindow();
                 ILECompressionSingleInst.SetILECompressionParams(EndingDate, PostingDateRunNo, RegNo, CalledFromRegisterNo, ScheduleDescription);
             end;
@@ -83,7 +83,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 if ExecutionTimeOut then
                     ExecutionSummaryTxt := ExecutionTimeOutMsg + '\\' + ExecutionSummaryTxt;
 
-                Message('Item Ledger Compression Ended! Please review logs for details.\Start Time: %1 End Time: %2\\' + ExecutionSummaryTxt, StartTime, TIME);
+                Message('Item Ledger Compression Ended! Please review logs for details.\Start Time: %1 End Time: %2 (%3)\\' + ExecutionSummaryTxt, StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
                 CloseWindow();
             end;
         }
@@ -211,7 +211,8 @@ report 14305135 "AQDLC Date Compress Item Ledg"
 
     var
         ILECompressionSetup: Record "AQDLC ILE Compression Setup";
-        StartTime: Time;
+        StartTime: DateTime;
+        ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         StartingDate: Date;
         EndingDate: Date;
         Window: Dialog;

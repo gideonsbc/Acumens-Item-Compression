@@ -110,5 +110,7 @@ table 14305125 "AQDLC Qty on Hand"
         {
             Clustered = false;
         }
+        key(key2; "Item No.", "Register No.", "Location Code", "Variant Code")
+        { }
     }
 }

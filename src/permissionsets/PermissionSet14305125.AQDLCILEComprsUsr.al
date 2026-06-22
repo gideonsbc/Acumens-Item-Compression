@@ -43,5 +43,8 @@ permissionset 14305125 "AQDLC ILE Comprs Usr"
         tabledata "AQDLC Compression Analysis Res" = RIMD,
         table "AQDLC Compression Analysis Res" = X,
         page "AQDLC Compression Analysis Rs" = X,
-        report "AQDLC Compression Data Analys" = X;
+        report "AQDLC Compression Data Analys" = X,
+        tabledata "AQDLC Item Quantity vs Remn" = RIMD,
+        table "AQDLC Item Quantity vs Remn" = X,
+        page "AQDLC Item Quantity vs Remn" = X;
 }
