@@ -2,6 +2,8 @@ table 14305124 "AQDLC Item Quantity vs Remn"
 {
     Caption = 'Item Quantity vs Remaining';
     DataClassification = CustomerContent;
+    LookupPageId = "AQDLC Item Quantity vs Remn";
+    DrillDownPageId = "AQDLC Item Quantity vs Remn";
 
     fields
     {

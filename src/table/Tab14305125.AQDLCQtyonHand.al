@@ -1,6 +1,8 @@
 table 14305125 "AQDLC Qty on Hand"
 {
     DataClassification = CustomerContent;
+    DrillDownPageId = "AQDLC Quantity on Hand";
+    LookupPageId = "AQDLC Quantity on Hand";
 
     fields
     {

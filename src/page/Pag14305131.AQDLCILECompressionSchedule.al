@@ -43,6 +43,8 @@ page 14305131 "AQDLC ILE Compression Schedule"
                 }
                 field("Items Compressed"; Rec."Items Compressed")
                 { }
+                field("Posted Documents Compressed"; Rec."Posted Documents Compressed")
+                { }
             }
         }
     }

@@ -51,10 +51,10 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
     begin
         OpenWindow();
         UpdateWindow(2, vItem."No." + ' - ' + vItem.Description);
-        UpdateWindow(3, 'Checking cost adjustments (1/7)');
+        UpdateWindow(3, 'Checking Cost Adjustments (1/7)');
         LogLineNo := 0;
         ClearRecordsCount();
-        UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Check cost adjustment', '', 0, 0, 0, 0, 0);
+        UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Check Cost Adjustment', '', 0, 0, 0, 0, 0);
         if not CheckItemCostAdjustment(vItem, ErrorMsg) then begin
             UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Check Cost Adjustment', ErrorMsg, 1, 0, 0, 0, 0);
             Error(ErrorMsg);
@@ -91,9 +91,9 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
         GenerateQoHRpt.RunModal();
         UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Generate Quantity on Hand', '', 2, 0, 0, 0, 0);
 
-        UpdateWindow(3, 'Deleting Item Ledger and Value Entries (3/7)');
+        UpdateWindow(3, 'Deleting Item Ledger, Value Entries and Related Records (3/7)');
         LogLineNo := 0;
-        UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Delete Item Ledger and Value Entries', '', 0, 0, 0, 0, 0);
+        UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Delete Item Ledger, Value Entries and Related Records', '', 0, 0, 0, 0, 0);
         Clear(RptDeleteILEandVLE);
         ILE.SetRange("Item No.", vItem."No.");
         ILE.SetFilter("Posting Date", '<=%1', EndingDate);
@@ -105,7 +105,7 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
         RptDeleteILEandVLE.UseRequestPage := false;
         RptDeleteILEandVLE.RunModal();
         RptDeleteILEandVLE.GetDeleteCount(DeletedILEs, DeletedVEs);
-        UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Delete Item Ledger and Value Entries', '', 2, DeletedILEs, DeletedVEs, 0, 0);
+        UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Delete Item Ledger, Value Entries and Related Records', '', 2, DeletedILEs, DeletedVEs, 0, 0);
 
         /*UpdateWindow(3, 'Delete Orphan Item Application Entries (4/7)');
         LogLineNo := 0;
@@ -285,7 +285,7 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
         if vAction = vAction::Update then begin
             IleCompressionEntry.SetRange("Log No.", RegNo);
             IleCompressionEntry.SetRange("Line No.", IleLogLineNo);
-            if IleCompressionEntry.FindFirst() then begin
+            if IleCompressionEntry.Find('-') then begin
                 IleCompressionEntry."End Date/Time" := CurrentDateTime;
                 IleCompressionEntry."Error Message" := CopyStr(ErrorMessage, 1, 2000);
                 IleCompressionEntry.Status := vStatus;
@@ -318,11 +318,11 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
     local procedure CompressAdditionalRecs()
     begin
         LogLineNo := 0;
-        UpdateCompressionLogEntry(0, LogLineNo, '', 'Compress Related Tables', '', 0, 0, 0, 0, 0);
+        UpdateCompressionLogEntry(0, LogLineNo, '', 'Compress Additional Tables like Registers', '', 0, 0, 0, 0, 0);
         RptCompressAdditionalTablesRec.SetRunParameters(EndingDate, RegNo, GuiAllowed);
         RptCompressAdditionalTablesRec.UseRequestPage := false;
         RptCompressAdditionalTablesRec.RunModal();
-        UpdateCompressionLogEntry(1, LogLineNo, '', 'Compress Related Tables', '', 2, 0, 0, 0, 0);
+        UpdateCompressionLogEntry(1, LogLineNo, '', 'Compress Additional Tables like Registers', '', 2, 0, 0, 0, 0);
     end;
 
 

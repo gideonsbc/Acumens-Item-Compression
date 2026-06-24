@@ -2,6 +2,8 @@ table 14305130 "AQDLC Item Valuation Comparisn"
 {
     Caption = 'Item Valuation Comparison';
     DataClassification = CustomerContent;
+    LookupPageId = "AQDLC Item Valuation Comparisn";
+    DrillDownPageId = "AQDLC Item Valuation Comparisn";
 
     fields
     {

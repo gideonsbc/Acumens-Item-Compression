@@ -59,6 +59,11 @@ table 14305131 "AQDLC ILE Compression Schedule"
                 end;
             end;
         }
+        field(7; "Posted Documents Compressed"; Integer)
+        {
+            FieldClass = FlowField;
+            CalcFormula = count("AQDLC Posted Docs Compress Log" where("Schedule No." = field("Entry No.")));
+        }
     }
     keys
     {

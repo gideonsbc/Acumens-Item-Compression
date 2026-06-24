@@ -1,7 +1,7 @@
 report 14305130 "AQDLC Compress Add. Tables Rec"
 {
 
-    Caption = 'Compress Additional Tables Rec';
+    Caption = 'Compress Additional Tables like Registers';
     ProcessingOnly = true;
     ApplicationArea = All;
 
@@ -10,7 +10,11 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
                     tabledata "Item Register" = rimd,
                     tabledata "Item Journal Line" = rimd,
                     tabledata "Planning Assignment" = rimd,
-                    tabledata "G/L Entry" = rimd;
+                    tabledata "G/L Entry" = rimd,
+                    tabledata "Warehouse Register" = rimd,
+                    tabledata "Warehouse Entry" = rimd,
+                    tabledata "Phys. Inventory Ledger Entry" = rimd,
+                    tabledata "Capacity Ledger Entry" = rimd;
     dataset
     {
     }
@@ -30,9 +34,7 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
         if DateToFilter = 0D then
             DateToFilter := DMY2DATE(1, 1, 2015);
 
-        /*ItemRegister.Reset(); //handled when deleting ILE
-        ItemRegister.SetFilter("Creation Date", '<=%1', DateToFilter);
-        ItemRegister.DeleteAll();
+        /*
 
         ItemJnlLine.DeleteAll();*/
 
@@ -49,18 +51,6 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
         //         end;
         //     until LedgerEntryDimension.Next() = 0;
         // end;
-
-        // JnlLineDimension.Reset();
-        // JnlLineDimension.SetRange("Table ID", 83);
-        // if JnlLineDimension.FindFirst() then begin
-        //     repeat
-        //         if not ItemJnlLine.Get(JnlLineDimension."Journal Template Name", JnlLineDimension."Journal Batch Name",
-        //           JnlLineDimension."Journal Line No.") then
-        //             JnlLineDimension.Delete();
-        //     until JnlLineDimension.Next() = 0;
-        // end;
-
-        // ,Transfer Order,Posted Transfer Shipment,Posted Transfer Receipt
         InventoryCommentLine.Reset();
         if InventoryCommentLine.FindFirst() then begin
             repeat
@@ -83,6 +73,46 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
                 end;
             until InventoryCommentLine.Next() = 0;
         end;
+
+        WhseRegister.SetCurrentKey("No.");
+        WhseRegister.SetFilter("Creation Date", '<=%1', MaxPostingDate);
+        if WhseRegister.FindSet() then
+            repeat
+                WhseEntry.SetRange("Entry No.", WhseRegister."From Entry No.", WhseRegister."To Entry No.");
+                WhseEntry.SetFilter("Warehouse Register No.", '%1|%2', 0, WhseRegister."No.");
+                if WhseEntry.IsEmpty() then
+                    WhseRegister.Delete();
+            until WhseRegister.Next() = 0;
+
+        ItemRegister.SetCurrentKey("Creation Date");
+        ItemRegister.SetFilter("Creation Date", '<=%1', DateToFilter);
+        if ItemRegister.FindSet() then
+            repeat
+                DeleteRecord := true;
+                ItemLdgrEntry.SetRange("Entry No.", ItemRegister."From Entry No.", ItemRegister."To Entry No.");
+                ItemLdgrEntry.SetFilter("Item Register No.", '0|%1', ItemRegister."No.");
+                ItemLdgrEntry.SetFilter("AQDLC Comp. Reg No.", '<>%1', CompressionRegNo);
+                ItemLdgrEntry.SetFilter("Posting Date", '<=%1', DateToFilter);
+                ValueEntry.SetRange("Entry No.", ItemRegister."From Entry No.", ItemRegister."To Entry No.");
+                ValueEntry.SetFilter("Item Register No.", '0|%1', ItemRegister."No.");
+                ValueEntry.SetFilter("AQDLC Comp. Reg No", '<>%1', CompressionRegNo);
+                ValueEntry.SetFilter("Posting Date", '<=%1', DateToFilter);
+                PhysInvtLedgEntry.SetRange("Entry No.", ItemRegister."From Phys. Inventory Entry No.", ItemRegister."To Phys. Inventory Entry No.");
+                PhysInvtLedgEntry.SetFilter("Item Register No.", '0|%1', ItemRegister."No.");
+                CapLedgEntry.SetRange("Entry No.", ItemRegister."From Capacity Entry No.", ItemRegister."To Capacity Entry No.");
+                CapLedgEntry.SetFilter("Item Register No.", '0|%1', ItemRegister."No.");
+                if not ItemLdgrEntry.IsEmpty() then
+                    DeleteRecord := false
+                else if not ValueEntry.IsEmpty() then
+                    DeleteRecord := false
+                else if not PhysInvtLedgEntry.IsEmpty() then
+                    DeleteRecord := false
+                else if not CapLedgEntry.IsEmpty() then
+                    DeleteRecord := false;
+
+                if DeleteRecord then
+                    ItemRegister.Delete();
+            until ItemRegister.Next() = 0;
 
         // Not Want to Delete
         //AvgCostAdjmtEntryPoint.RESET;
@@ -137,7 +167,11 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
         TransferLine: Record 5741;
         TransferShptLine: Record 5745;
         TransferRcptLine: Record 5747;
+        PhysInvtLedgEntry: Record "Phys. Inventory Ledger Entry";
+        CapLedgEntry: Record "Capacity Ledger Entry";
         GLEntry: Record 17;
+        WhseRegister: Record "Warehouse Register";
+        WhseEntry: Record "Warehouse Entry";
         DeleteRecord: Boolean;
         Window: Dialog;
         StartTime: DateTime;

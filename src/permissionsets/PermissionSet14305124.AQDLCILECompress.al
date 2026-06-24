@@ -49,5 +49,9 @@ permissionset 14305124 "AQDLC ILE Compress"
         tabledata "AQDLC Item Quantity vs Remn" = RIMD,
         table "AQDLC Item Quantity vs Remn" = X,
         page "AQDLC Item Quantity vs Remn" = X,
-        report "AQDLC Posted Documents Compres" = X;
+        report "AQDLC Posted Documents Compres" = X,
+        codeunit "AQDLC Posted Documents Comp" = X,
+        tabledata "AQDLC Posted Docs Compress Log" = RIMD,
+        table "AQDLC Posted Docs Compress Log" = X,
+        page "AQDLC Posted Docs Compress Log" = X;
 }

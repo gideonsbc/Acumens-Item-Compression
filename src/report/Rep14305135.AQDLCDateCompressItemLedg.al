@@ -60,7 +60,11 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                     SomethingCompressed := true;
                     Commit();
                 end else begin
-                    UpdateExecutionSummary(GetLastErrorText)
+                    if not GuiAllowed then
+                        AcumensErrorReportingCU.AddErrorLogNoAttachmentV2('ILE Compression', 'Date Compress Item Ledger', 3, Report::"AQDLC Date Compress Item Ledg"
+                        , 'Date Compress Item Ledger' + ' Error: Register No.' + Format(RegNo), 'developer@sbcdynamicserp.com', '', '', GetLastErrorText)
+                    else
+                        UpdateExecutionSummary(GetLastErrorText);
                 end;
             end;
 
@@ -259,6 +263,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
         ExpectedExecutionEndDt: DateTime;
         MaxRunTimeHrs: Decimal;
         ExecutionTimeOutMsg: Text;
+        AcumensErrorReportingCU: Codeunit "AQD Error Reporting Functions";
 
 
     local procedure StartTimeoutCountDown(ExecutionStartDt: DateTime)

@@ -200,6 +200,23 @@ page 14305124 "AQDLC ILE Compression Setup"
                     ToolTip = 'Run Inventory Valuation Report';
                 }
             }
+            action("&Run Posted Documents Compression")
+            {
+                ApplicationArea = All;
+                Caption = 'Run Posted Documents Compression';
+                Image = Compress;
+                RunObject = Report "AQDLC Posted Documents Compres";
+                ToolTip = 'Date-Compresses Posted Documents';
+            }
+            action("&PostedDocsCompLog")
+            {
+                ApplicationArea = All;
+                Caption = 'Posted Documents Compression Logs';
+                Image = ListPage;
+                RunObject = Page "AQDLC Posted Docs Compress Log";
+                ToolTip = 'Posted Documents Compression Results';
+            }
+
         }
         area(Promoted)
         {
@@ -245,6 +262,12 @@ page 14305124 "AQDLC ILE Compression Setup"
                 {
                 }
                 actionref(InventoryValuation_Promoted; "&Inventory Valuation")
+                {
+                }
+                actionref(RunPostedDocumentsCompression_Promoted; "&Run Posted Documents Compression")
+                {
+                }
+                actionref(PostedDocsCompLog_Promoted; "&PostedDocsCompLog")
                 {
                 }
             }

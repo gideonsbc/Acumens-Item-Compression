@@ -8,6 +8,8 @@ page 14305135 "AQDLC Compression Analysis Rs"
     Editable = false;
     SourceTableView = sorting("Entry No.") order(descending);
 
+    Permissions = tabledata "Item Ledger Entry" = rimd;
+
     layout
     {
         area(Content)
@@ -83,6 +85,40 @@ page 14305135 "AQDLC Compression Analysis Rs"
                         Error('No records found!');
                 end;
             }
+            action("Item Ledgers")
+            {
+                Image = ItemLedger;
+                ApplicationArea = All;
+                Caption = 'Item Ledgers';
+
+                trigger OnAction()
+                var
+                    ItemLedgers: Record "Item Ledger Entry";
+                    ItemNosFilter: Text;
+                    CompAnalysisRs: Record "AQDLC Compression Analysis Res";
+                begin
+                    if Rec.IsEmpty then
+                        Error('Nothing selected!');
+
+                    ItemNosFilter := '';
+                    CurrPage.SetSelectionFilter(CompAnalysisRs);
+                    if CompAnalysisRs.FindSet() then
+                        repeat
+                            if ItemNosFilter = '' then
+                                ItemNosFilter := CompAnalysisRs."Item No."
+                            else
+                                ItemNosFilter += '|' + CompAnalysisRs."Item No.";
+                        until CompAnalysisRs.Next() = 0;
+
+                    if ItemNosFilter = '' then
+                        Error('Nothing selected!');
+
+                    ItemLedgers.Reset();
+                    ItemLedgers.SetFilter("Item No.", ItemNosFilter);
+                    ItemLedgers.SetFilter("Posting Date", '<=%1', Rec."As of Date");
+                    Page.Run(Page::"Item Ledger Entries", ItemLedgers);
+                end;
+            }
         }
         area(Promoted)
         {
@@ -91,6 +127,9 @@ page 14305135 "AQDLC Compression Analysis Rs"
                 Caption = 'Home', Comment = 'Generated from the PromotedActionCategories property index 3.';
 
                 actionref(ILEQtyVsRemaining_Promoted; "&ILEQtyVsRemaining")
+                {
+                }
+                actionref(ItemLedgers_Promoted; "Item Ledgers")
                 {
                 }
             }

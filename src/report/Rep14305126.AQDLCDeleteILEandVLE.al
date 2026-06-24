@@ -5,7 +5,9 @@ report 14305126 "AQDLC Delete ILE and VLE"
     tabledata "Item Register" = rimd,
     tabledata "G/L - Item Ledger Relation" = rimd,
     tabledata "G/L Entry" = rimd,
-    tabledata "Item Application Entry" = rimd;
+    tabledata "Item Application Entry" = rimd,
+    tabledata "Tracking Specification" = rimd,
+    tabledata "Warehouse Entry" = rimd;
 
     Caption = 'Delete ILE and VLE';
     ProcessingOnly = true;
@@ -56,18 +58,18 @@ report 14305126 "AQDLC Delete ILE and VLE"
                         ILEsFilterText += '|' + Format("Entry No.");
                     ILEsBatchDeleteCounter += 1;
 
-                    if "Item Register No." <> 0 then begin
+                    /*if "Item Register No." <> 0 then begin
                         if ItemRegisterFilterText = '' then
                             ItemRegisterFilterText := Format("Item Register No.")
                         else
                             ItemRegisterFilterText += '|' + Format("Item Register No.");
-                    end;
+                    end;*/
 
                     if ILEsBatchDeleteCounter = 1000 then begin
                         DeleteEntriesInBatches();
 
                         Clear(ILEsFilterText);
-                        Clear(ItemRegisterFilterText);
+                        //Clear(ItemRegisterFilterText);
                         ILEsBatchDeleteCounter := 0;
                     end;
 
@@ -96,6 +98,10 @@ report 14305126 "AQDLC Delete ILE and VLE"
                 if ShowDialog then begin
                     Window.Update(1, "No." + ' => ' + Description);
                 end;
+
+                WhseEntry.SetRange("Item No.", "No.");
+                WhseEntry.SetFilter("Registering Date", '<=%1', MaxPostingDate);
+                WhseEntry.DeleteAll();
             end;
 
             trigger OnPostDataItem();
@@ -153,6 +159,8 @@ report 14305126 "AQDLC Delete ILE and VLE"
         ItemRegister: Record "Item Register";
         RptGenerateQtyOnHand: Report "AQDLC Generate Qty On Hand";
         GLItemLedgerRelation: Record "G/L - Item Ledger Relation";
+        TrackingSpecification: Record "Tracking Specification";
+        WhseEntry: Record "Warehouse Entry";
         GLEntry: Record "G/L Entry";
         DeleteRecord: Boolean;
         TotalItems: Integer;
@@ -175,9 +183,12 @@ report 14305126 "AQDLC Delete ILE and VLE"
         //VEDeleteCount += ValueEntry.Count();
         ValueEntry.DeleteAll(true); //to delete item ledger relations
 
-        ItemRegister.SetCurrentKey("No.");
-        ItemRegister.SetFilter("No.", ItemRegisterFilterText);
-        ItemRegister.DeleteAll();
+        TrackingSpecification.SetFilter("Item Ledger Entry No.", ILEsFilterText);
+        TrackingSpecification.DeleteAll();
+
+        //ItemRegister.SetCurrentKey("No.");
+        //ItemRegister.SetFilter("No.", ItemRegisterFilterText);
+        //ItemRegister.DeleteAll();
 
         ItemApplnEntry.SetFilter("Item Ledger Entry No.", ILEsFilterText);
         ItemApplnEntry.DeleteAll();

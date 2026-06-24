@@ -2,6 +2,8 @@ table 14305133 "AQDLC Compression Analysis Res"
 {
     Caption = 'Compression Analysis Result';
     DataClassification = CustomerContent;
+    DrillDownPageId = "AQDLC Compression Analysis Rs";
+    LookupPageId = "AQDLC Compression Analysis Rs";
 
     fields
     {

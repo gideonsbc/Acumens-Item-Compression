@@ -268,6 +268,7 @@ report 14305127 "AQDLC Compression Data Analys"
         ItemILERemQty += vitemLedger."Remaining Quantity";
         ItemInvtVal += vInvtValue;
 
+        ItemQtyvsRemn.SetCurrentKey("Item No.", "Schedule No.", "Location Code", "Variant Code");
         ItemQtyvsRemn.SetRange("Item No.", vitemLedger."Item No.");
         ItemQtyvsRemn.SetRange("Schedule No.", CompressionScheduleNo);
         if ILECompressionSetup."Group by Location Code" then

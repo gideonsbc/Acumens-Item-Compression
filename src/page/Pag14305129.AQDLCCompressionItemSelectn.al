@@ -61,7 +61,7 @@ page 14305129 "AQDLC Compression Item Selectn"
                         Error('There are no selected items!');
 
                     ItemNosFilter := '';
-                    ItemSelection.Reset();
+                    CurrPage.SetSelectionFilter(ItemSelection);
                     if ItemSelection.FindSet() then
                         repeat
                             if ItemNosFilter = '' then
@@ -99,7 +99,7 @@ page 14305129 "AQDLC Compression Item Selectn"
                         Error('There are no selected items!');
 
                     ItemNosFilter := '';
-                    ItemSelection.Reset();
+                    CurrPage.SetSelectionFilter(ItemSelection);
                     if ItemSelection.FindSet() then
                         repeat
                             if ItemNosFilter = '' then

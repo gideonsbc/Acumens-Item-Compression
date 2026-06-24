@@ -57,6 +57,13 @@ page 14305134 "AQDLC Compressions RC"
                 ToolTip = 'Executes the Valuation Comparisons action.';
                 Caption = 'Valuation Comparison';
             }
+            action(PostedDocsCompLog)
+            {
+                ApplicationArea = All;
+                Caption = 'Posted Documents Compression Logs';
+                RunObject = Page "AQDLC Posted Docs Compress Log";
+                ToolTip = 'Posted Documents Compression Results';
+            }
             action(QuantityOnHand)
             {
                 RunObject = page "AQDLC Quantity on Hand";
@@ -183,6 +190,14 @@ page 14305134 "AQDLC Compressions RC"
                     ToolTip = 'Executes the Valuation Comparisons action.';
                     Caption = 'Valuation Comparison';
                     Image = ListPage;
+                }
+                action(PostedDocsCompLog1)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Posted Documents Compression Logs';
+                    Image = ListPage;
+                    RunObject = Page "AQDLC Posted Docs Compress Log";
+                    ToolTip = 'Posted Documents Compression Results';
                 }
                 action(QuantityOnHand1)
                 {
@@ -657,6 +672,14 @@ page 14305134 "AQDLC Compressions RC"
                 Caption = 'Run Item Ledger Compression';
                 Image = Report;
                 RunObject = Report "AQDLC Date Compress Item Ledg";
+            }
+            action(RunPostedDocumentsCompression)
+            {
+                ApplicationArea = All;
+                Caption = 'Run Posted Documents Compression';
+                Image = Compress;
+                RunObject = Report "AQDLC Posted Documents Compres";
+                ToolTip = 'Date-Compresses Posted Documents';
             }
         }
         area(processing)
