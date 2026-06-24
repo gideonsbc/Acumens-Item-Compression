@@ -13,8 +13,9 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
 
             trigger OnPreDataItem();
             begin
-                if ShowDialog then
+                if ShowDialog then begin
                     Window.Open(Text001);
+                end;
 
                 ILE.Reset();
                 VE.Reset();
@@ -27,8 +28,9 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
             trigger OnAfterGetRecord();
             begin
                 if ShowDialog then begin
-                    if Counter MOD 1000 = 0 then
-                        Window.Update(1, Format(Counter DIV 1000) + ' -> ' + "Item No.");
+                    Counter += 1;
+                    if (Counter MOD 1000) = 0 then
+                        Window.Update(1, Format("Entry No.") + ' => ' + "Item No." + ' (' + Format((Counter DIV 1000)) + ',000)');
                 end;
 
                 if not Item.Get(QoH."Item No.") then
@@ -61,7 +63,7 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
             begin
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Batch process execution is completed - 4 Create ILE Entries using QoH\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+                //Message('Batch process execution is completed - 4 Create ILE Entries using QoH\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -100,8 +102,9 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
         Item: Record 27;
         LED: Record 355;
         Window: Dialog;
-        Text001: Label 'Processing Item No.  ########1#####';
+        Text001: Label '[4/7] Creating ILE Entries from QoH for QoH No.  ########1#####';
         Counter: Integer;
+        TotalCount: Integer;
         StartTime: DateTime;
         ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         ProcessDate: Date;

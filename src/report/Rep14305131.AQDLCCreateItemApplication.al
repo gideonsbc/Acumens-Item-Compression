@@ -11,7 +11,7 @@ report 14305131 "AQDLC Create Item Application"
     {
         dataitem(ILE; "Item Ledger Entry")
         {
-            DataItemTableView = SORTING("Document No.", "Posting Date"); // WHERE(PostDate, Document No. filter applied in request in NAV — handled by RequestPage or runtime filters)
+            DataItemTableView = SORTING("Item No.", "Posting Date"); // WHERE(PostDate, Document No. filter applied in request in NAV — handled by RequestPage or runtime filters)
 
             trigger OnPreDataItem();
             begin
@@ -33,10 +33,19 @@ report 14305131 "AQDLC Create Item Application"
                 //NextValueEntryNo := 85000;
 
                 StartTime := CurrentDateTime;
+                if ShowDialog then begin
+                    Window.Open(Text001);
+                    Counter := 0;
+                end;
             end;
 
             trigger OnAfterGetRecord();
             begin
+                if ShowDialog then begin
+                    Counter += 1;
+                    if (Counter MOD 1000) = 0 then
+                        Window.Update(1, Format("Entry No.") + ' (' + Format((Counter DIV 1000)) + ',000)');
+                end;
                 "Document Type" := "Document Type"::" ";
                 "Document Line No." := 0;
                 Positive := Quantity > 0;
@@ -96,7 +105,8 @@ report 14305131 "AQDLC Create Item Application"
             trigger OnPostDataItem();
             begin
                 if not ShowDialog then exit;
-                Message('Item Application Created %1 Modified %2\Start Time: %3 End Time: %4 (%5)', ItemApplicationCreated, ItemApplicationUpdated, StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+                Window.Close();
+                //Message('Item Application Created %1 Modified %2\Start Time: %3 End Time: %4 (%5)', ItemApplicationCreated, ItemApplicationUpdated, StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -124,4 +134,8 @@ report 14305131 "AQDLC Create Item Application"
         MaxPostingDate: Date;
         ShowDialog: Boolean;
         CompressionRegNo: Integer;
+        Counter: Integer;
+        TotalCount: Integer;
+        Window: Dialog;
+        Text001: Label '[5/7] Creating Item Application for ILE No. ###########1######';
 }

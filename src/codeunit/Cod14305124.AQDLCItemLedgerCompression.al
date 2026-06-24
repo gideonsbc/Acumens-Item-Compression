@@ -51,16 +51,16 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
     begin
         OpenWindow();
         UpdateWindow(2, vItem."No." + ' - ' + vItem.Description);
-        UpdateWindow(3, 'Checking cost adjustments (1/8)');
+        UpdateWindow(3, 'Checking cost adjustments (1/7)');
         LogLineNo := 0;
         ClearRecordsCount();
         UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Check cost adjustment', '', 0, 0, 0, 0, 0);
         if not CheckItemCostAdjustment(vItem, ErrorMsg) then begin
-            UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Check cost adjustment', ErrorMsg, 1, 0, 0, 0, 0);
+            UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Check Cost Adjustment', ErrorMsg, 1, 0, 0, 0, 0);
             Error(ErrorMsg);
             exit;
         end else
-            UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Check cost adjustment', '', 2, 0, 0, 0, 0);
+            UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Check Cost Adjustment', '', 2, 0, 0, 0, 0);
 
         StartingILENumber := 0;
         StartingVENumber := 0;
@@ -76,7 +76,7 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
         if VE.FindFirst() then
             StartingVENumber := VE."Entry No.";
 
-        UpdateWindow(3, 'Generating Quantity on Hand (2/8)');
+        UpdateWindow(3, 'Generating Quantity on Hand (2/7)');
         LogLineNo := 0;
         UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Generate Quantity on Hand', '', 0, 0, 0, 0, 0);
         Clear(GenerateQoHRpt);
@@ -86,12 +86,12 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
         GenerateQoHRpt.SetTableView(ILE);
         ItemRec.SetRange("No.", vItem."No.");
         GenerateQoHRpt.SetTableView(ItemRec);
-        GenerateQoHRpt.SetRunParameters(EndingDate, RegNo, CompressionScheduleNo, false);
+        GenerateQoHRpt.SetRunParameters(EndingDate, RegNo, CompressionScheduleNo, GuiAllowed);
         GenerateQoHRpt.UseRequestPage := false;
         GenerateQoHRpt.RunModal();
         UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Generate Quantity on Hand', '', 2, 0, 0, 0, 0);
 
-        UpdateWindow(3, 'Deleting Item Ledger and Value Entries (3/8)');
+        UpdateWindow(3, 'Deleting Item Ledger and Value Entries (3/7)');
         LogLineNo := 0;
         UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Delete Item Ledger and Value Entries', '', 0, 0, 0, 0, 0);
         Clear(RptDeleteILEandVLE);
@@ -100,26 +100,26 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
         ILE.SetRange("Completely Invoiced", true);
         RptDeleteILEandVLE.SetTableView(ILE);
         ItemRec.SetRange("No.", vItem."No.");
-        GenerateQoHRpt.SetTableView(ItemRec);
-        RptDeleteILEandVLE.SetRunParameters(EndingDate, RegNo, PostingDateRunNo, false);
+        RptDeleteILEandVLE.SetTableView(ItemRec);
+        RptDeleteILEandVLE.SetRunParameters(EndingDate, RegNo, PostingDateRunNo, GuiAllowed);
         RptDeleteILEandVLE.UseRequestPage := false;
         RptDeleteILEandVLE.RunModal();
         RptDeleteILEandVLE.GetDeleteCount(DeletedILEs, DeletedVEs);
         UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Delete Item Ledger and Value Entries', '', 2, DeletedILEs, DeletedVEs, 0, 0);
 
-        UpdateWindow(3, 'Delete Orphan Item Application Entries (4/8)');
+        /*UpdateWindow(3, 'Delete Orphan Item Application Entries (4/7)');
         LogLineNo := 0;
         UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Delete Orphan Item Application Entries', '', 0, 0, 0, 0, 0);
         Clear(RptDeleteOrphanItemApplEntry);
         ItemApplicationEntry.SetRange("Item No.", vItem."No.");
         ItemApplicationEntry.SetFilter("Posting Date", '<=%1', EndingDate);
         RptDeleteOrphanItemApplEntry.SetTableView(ItemApplicationEntry);
-        RptDeleteOrphanItemApplEntry.SetRunParameters(EndingDate, RegNo, false);
+        RptDeleteOrphanItemApplEntry.SetRunParameters(EndingDate, RegNo, GuiAllowed);
         RptDeleteOrphanItemApplEntry.UseRequestPage := false;
         RptDeleteOrphanItemApplEntry.RunModal();
-        UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Delete Orphan Item Application Entries', '', 2, 0, 0, 0, 0);
+        UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Delete Orphan Item Application Entries', '', 2, 0, 0, 0, 0);*/
 
-        UpdateWindow(3, 'Create Item Ledger Entries using Quantity on Hand (5/8)');
+        UpdateWindow(3, 'Create Item Ledger Entries using Quantity on Hand (4/7)');
         LogLineNo := 0;
         UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Create Item Ledger Entries using Quantity on Hand', '', 0, 0, 0, 0, 0);
         Clear(RptCrateILEEntriesUsingQoH);
@@ -127,13 +127,13 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
         QoH.SetRange("Posting Date", EndingDate);
         QoH.SetRange("Register No.", RegNo);
         RptCrateILEEntriesUsingQoH.SetTableView(QoH);
-        RptCrateILEEntriesUsingQoH.SetRunParameters(StartingILENumber, StartingVENumber, EndingDate, RegNo, PostingDateRunNo, CompressionScheduleNo, ScheduleDescription, false);
+        RptCrateILEEntriesUsingQoH.SetRunParameters(StartingILENumber, StartingVENumber, EndingDate, RegNo, PostingDateRunNo, CompressionScheduleNo, ScheduleDescription, GuiAllowed);
         RptCrateILEEntriesUsingQoH.UseRequestPage := false;
         RptCrateILEEntriesUsingQoH.RunModal();
         RptCrateILEEntriesUsingQoH.GetCreatedCount(CreatedILEs, CreatedVEs);
         UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Create Item Ledger Entries using Quantity on Hand', '', 2, 0, 0, CreatedILEs, CreatedVEs);
 
-        UpdateWindow(3, 'Create Item Application Entries (6/8)');
+        UpdateWindow(3, 'Create Item Application Entries (5/7)');
         LogLineNo := 0;
         UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Create Item Application Entries', '', 0, 0, 0, 0, 0);
         Clear(RptCreateItemApplication);
@@ -141,12 +141,12 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
         ILE.SetFilter("Posting Date", '<=%1', EndingDate);
         ILE.SetRange("Completely Invoiced", true);
         RptCreateItemApplication.SetTableView(ILE);
-        RptCreateItemApplication.SetRunParameters(EndingDate, RegNo, false);
+        RptCreateItemApplication.SetRunParameters(EndingDate, RegNo, GuiAllowed);
         RptCreateItemApplication.UseRequestPage := false;
         RptCreateItemApplication.RunModal();
         UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Create Item Application Entries', '', 2, 0, 0, 0, 0);
 
-        UpdateWindow(3, 'Running Post-Compression Inventory Valuation (7/8)');
+        UpdateWindow(3, 'Running Post-Compression Inventory Valuation (6/7)');
         LogLineNo := 0;
         UpdateCompressionLogEntry(0, LogLineNo, vItem."No.", 'Run Post-Compression Inventory Valuation', '', 0, 0, 0, 0, 0);
         Clear(RptPostCompressionInvtValuation);
@@ -154,7 +154,7 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
         ItemValuationComparison.SetRange("Cut-off Date", EndingDate);
         ItemValuationComparison.SetRange("Register No.", RegNo);
         RptPostCompressionInvtValuation.SetTableView(ItemValuationComparison);
-        RptPostCompressionInvtValuation.SetRunParameters(EndingDate, RegNo, false);
+        RptPostCompressionInvtValuation.SetRunParameters(EndingDate, RegNo, GuiAllowed);
         RptPostCompressionInvtValuation.UseRequestPage := false;
         RptPostCompressionInvtValuation.RunModal();
         UpdateCompressionLogEntry(1, LogLineNo, vItem."No.", 'Run Post-Compression Inventory Valuation', '', 2, 0, 0, 0, 0);
@@ -319,7 +319,7 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
     begin
         LogLineNo := 0;
         UpdateCompressionLogEntry(0, LogLineNo, '', 'Compress Related Tables', '', 0, 0, 0, 0, 0);
-        RptCompressAdditionalTablesRec.SetRunParameters(EndingDate, RegNo, false);
+        RptCompressAdditionalTablesRec.SetRunParameters(EndingDate, RegNo, GuiAllowed);
         RptCompressAdditionalTablesRec.UseRequestPage := false;
         RptCompressAdditionalTablesRec.RunModal();
         UpdateCompressionLogEntry(1, LogLineNo, '', 'Compress Related Tables', '', 2, 0, 0, 0, 0);

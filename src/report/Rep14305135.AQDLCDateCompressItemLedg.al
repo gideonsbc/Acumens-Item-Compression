@@ -68,7 +68,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
             begin
                 UpdateWindow(1, '');
                 if SomethingCompressed then begin
-                    UpdateWindow(3, 'Compress Related Tables (8/8)');
+                    UpdateWindow(3, 'Compress Related Tables (7/7)');
                     ILECompressionSingleInst.SetILECompressionTask('CompressAdditionalRecs');
                     ClearLastError();
                     if Codeunit.Run(Codeunit::"AQDLC Item Ledger Compression", Item) then
@@ -83,7 +83,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 if ExecutionTimeOut then
                     ExecutionSummaryTxt := ExecutionTimeOutMsg + '\\' + ExecutionSummaryTxt;
 
-                Message('Item Ledger Compression Ended! Please review logs for details.\Start Time: %1 End Time: %2 (%3)\\' + ExecutionSummaryTxt, StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+                Message('Item Ledger Compression Ended! Please review logs for details.\Start Time: %1 End Time: %2\Duration: %3\\' + ExecutionSummaryTxt, StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
                 CloseWindow();
             end;
         }

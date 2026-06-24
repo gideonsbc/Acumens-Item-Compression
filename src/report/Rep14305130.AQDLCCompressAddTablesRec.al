@@ -25,7 +25,7 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
         DeleteRecord: Boolean;
     begin
         if ShowDialog then
-            Window.Open('Checking and Deleting Records...');
+            Window.Open('[7/7] Compressing Related Tables...');
         DateToFilter := MaxPostingDate;
         if DateToFilter = 0D then
             DateToFilter := DMY2DATE(1, 1, 2015);
@@ -112,7 +112,7 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
     begin
         if not ShowDialog then exit;
         Window.Close();
-        Message('Report processing is completed.\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+        //Message('Report processing is completed.\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
     end;
 
     procedure SetRunParameters(vMaxPostingDate: Date; vCompressionRegNo: Integer; vShowDialog: Boolean)

@@ -11,18 +11,21 @@ report 14305129 "AQDLC Dlt Orphn Itm Apl Entry"
         {
             trigger OnPreDataItem();
             begin
-                if ShowDialog then
-                    Window.Open(Text001);
-                StartTime := CurrentDateTime;
                 SetFilter("Posting Date", '<=%1', MaxPostingDate);
+                if ShowDialog then begin
+                    Window.Open(Text001);
+                    Counter := 0;
+                end;
+                StartTime := CurrentDateTime;
             end;
 
             trigger OnAfterGetRecord();
             begin
                 RecordDeleted := false;
                 if ShowDialog then begin
-                    if (ItemApplnEntry."Entry No." MOD 1000) = 0 then
-                        Window.Update(1, Format(ItemApplnEntry."Entry No." DIV 1000) + '->' + Format(ItemApplnEntry."Entry No."));
+                    Counter += 1;
+                    if (Counter MOD 1000) = 0 then
+                        Window.Update(1, Format("Entry No.") + ' (' + Format((Counter DIV 1000)) + ',000)');
                 end;
 
                 if not ItemLedgerEntry.Get(ItemApplnEntry."Item Ledger Entry No.") then begin
@@ -52,7 +55,7 @@ report 14305129 "AQDLC Dlt Orphn Itm Apl Entry"
             begin
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Item Application Check and Orphan Records Deleted: %1\Start Time: %2 End Time: %3 (%4)', DeleteCount, StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+                //Message('Item Application Check and Orphan Records Deleted: %1\Start Time: %2 End Time: %3 (%4)', DeleteCount, StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -68,7 +71,9 @@ report 14305129 "AQDLC Dlt Orphn Itm Apl Entry"
         ItemLedgerEntry: Record "Item Ledger Entry";
         RecordDeleted: Boolean;
         DeleteCount: Integer;
-        Text001: Label 'Processing Entry No. ########1#####';
+        Text001: Label '[4/8] Deleting Orphaned Item Application Entry No. ########1#####';
+        Counter: Integer;
+        TotalCount: Integer;
         Window: Dialog;
         StartTime: DateTime;
         ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";

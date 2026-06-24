@@ -16,8 +16,9 @@ report 14305137 "AQDLC Compress Item Selection"
             begin
                 if AsOfDate = 0D then
                     AsOfDate := Today;
-                if ShowDialog then
+                if ShowDialog then begin
                     Window.Open(Text001);
+                end;
 
                 if (CompressionScheduleNo <> 0) and SkipCompressedItems then
                     SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
@@ -29,10 +30,14 @@ report 14305137 "AQDLC Compress Item Selection"
                 OrderedVal: Decimal;
                 ItemLedgers: Record "Item Ledger Entry";
             begin
-                if ShowDialog then
-                    Window.Update(1, "No." + ' => ' + Description);
+                if ShowDialog then begin
+                    Counter += 1;
+                    if (Counter MOD 100) = 0 then
+                        Window.Update(1, "No." + ' => ' + Description + ' (' + Format((Counter DIV 100)) + '00)');
+                end;
 
                 OrderedVal := 0;
+                ItemLedgers.SetCurrentKey("Item No.", "Posting Date");
                 ItemLedgers.SetRange("Item No.", "No.");
                 ItemLedgers.SetFilter("Posting Date", '<=%1', AsOfDate);
                 if ItemLedgers.FindSet() then
@@ -54,7 +59,7 @@ report 14305137 "AQDLC Compress Item Selection"
                 OrderSelectedItems();
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Process completed\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+                Message('Item Selection Completed\Start Time: %1 End Time: %2\Duration: %3', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -83,6 +88,10 @@ report 14305137 "AQDLC Compress Item Selection"
                         Caption = 'Order By';
                         ApplicationArea = All;
                     }
+                    field(SortingOrder; SortingOrder)
+                    {
+                        Caption = 'Sorting Order';
+                    }
                     field(CompressionScheduleNo; CompressionScheduleNo)
                     {
                         Caption = 'Schedule No.';
@@ -96,6 +105,7 @@ report 14305137 "AQDLC Compress Item Selection"
                             if CompressionScheduleNo = 0 then exit;
 
                             if CompressionSchedule.Get(CompressionScheduleNo) then begin
+                                AsOfDate := CompressionSchedule."Cut-off Date";
                                 SkipCompressedItems := true;
                                 CurrReport.RequestOptionsPage.Update(false);
                             end;
@@ -127,7 +137,12 @@ report 14305137 "AQDLC Compress Item Selection"
     begin
         if not (ILECompressionSetup.Get() and ILECompressionSetup."Enable App") then
             Error('Acumens Item Ledger Compression App is not enabled');
-        AsOfDate := Today;
+        ILECompressionSetup.TestField("Cut-off Period");
+
+        ILECompressionSetup.UpdateLatestValidDec31();
+        AsOfDate := ILECompressionSetup."Latest Valid December 31";
+        if AsOfDate = 0D then
+            AsOfDate := CalcDate(ILECompressionSetup."Cut-off Period", Today);
         NoOfItems := 3;
 
         if CompressionScheduleNo = 0 then
@@ -168,6 +183,10 @@ report 14305137 "AQDLC Compress Item Selection"
         Window: Dialog;
         Text001: Label 'Processing Item No.  ########1#####';
         ShowDialog: Boolean;
+        TotalCount: Integer;
+        Counter: Integer;
+        SortingOrder: Option "Ascending (Top N)","Descending (Bottom N)";
+
 
     local procedure UpdateItemSelectionBuffer(vItem: Record Item; OrderByVal: Decimal)
     var
@@ -189,7 +208,8 @@ report 14305137 "AQDLC Compress Item Selection"
         ItemSelection.DeleteAll();
 
         _ItemSelectionBuf.SetCurrentKey("OrderBy Value");
-        _ItemSelectionBuf.SetAscending("OrderBy Value", false);
+        if SortingOrder = SortingOrder::"Ascending (Top N)" then
+            _ItemSelectionBuf.SetAscending("OrderBy Value", false);
         _ItemSelectionBuf.SetFilter("OrderBy Value", '<>%1', 0);
         if _ItemSelectionBuf.FindSet() then
             repeat

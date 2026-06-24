@@ -15,7 +15,7 @@ report 14305125 "AQDLC Generate Qty On Hand"
 
             dataitem(ItemLedgerEntry; "Item Ledger Entry")
             {
-                DataItemTableView = SORTING("Item No.", "Posting Date") where("Completely Invoiced" = filter(true));
+                DataItemTableView = SORTING("Item No.", "Posting Date");// where("Completely Invoiced" = filter(true));
                 DataItemLink = "Item No." = FIELD("No.");
 
                 trigger OnAfterGetRecord()
@@ -23,20 +23,30 @@ report 14305125 "AQDLC Generate Qty On Hand"
                     VLE: Record "Value Entry";
                     InvtValue: Decimal;
                 begin
-                    if ("Entry Type" = "Entry Type"::Transfer) and ("Document Type" = "Document Type"::"Transfer Shipment") then
-                        if not TransferCompletelyReceived(ItemLedgerEntry) then
-                            CurrReport.Skip();
+                    if ShowDialog then begin
+                        Counter += 1;
+                        if (Counter MOD 1000) = 0 then
+                            Window.Update(2, Format("Entry No.") + ' (' + Format((Counter DIV 1000)) + ',000)');
+                    end;
 
                     CalcFields("Cost Amount (Expected)", "Cost Amount (Actual)");
                     InvtValue := "Cost Amount (Actual)";
                     if "Cost Amount (Actual)" = 0 then
                         InvtValue := "Cost Amount (Expected)";
+                    GetItemValuationBefore(Item, Quantity, InvtValue, false);
+
+                    if not "Completely Invoiced" then CurrReport.Skip();
+                    if ("Entry Type" = "Entry Type"::Transfer) and ("Document Type" = "Document Type"::"Transfer Shipment") then
+                        if not TransferCompletelyReceived(ItemLedgerEntry) then
+                            CurrReport.Skip();
+
                     if (Quantity = 0) and (InvtValue <> 0) then begin
                         "AQDLC Skip Compressing" := true;
                         Modify();
                         CurrReport.Skip();
                     end;
                     QoH.Reset();
+                    QoH.SetCurrentKey("Item No.", "Register No.", "Location Code", "Variant Code");
                     QoH.SetRange("Item No.", "Item No.");
                     QoH.SetRange("Register No.", CompressionRegNo);
                     if ILECompressionSetup."Group by Location Code" then
@@ -50,7 +60,7 @@ report 14305125 "AQDLC Generate Qty On Hand"
                     if ILECompressionSetup."Group by Package No." then
                         QoH.SetRange("Package No.", "Package No.");
 
-                    if QoH.FindFirst() then begin
+                    if QoH.Find('-') then begin
                         QoH."Qty On Hand" += Quantity;
 
                         if "Entry Type" in ["Entry Type"::Purchase, "Entry Type"::"Positive Adjmt."] then begin
@@ -96,6 +106,7 @@ report 14305125 "AQDLC Generate Qty On Hand"
 
                 trigger OnPostDataItem()
                 begin
+                    GetItemValuationBefore(Item, 0, 0, true);
                     QoH.Reset();
                     QoH.SetRange("Item No.", Item."No.");
                     QoH.SetRange("Qty On Hand", 0);
@@ -106,6 +117,9 @@ report 14305125 "AQDLC Generate Qty On Hand"
                 begin
                     ILECompressionSetup.Get();
                     ItemLedgerEntry.SetFilter("Posting Date", '<=%1', MaxPostingDate);
+                    if ShowDialog then begin
+                        Counter := 0;
+                    end;
                 end;
             }
             trigger OnPreDataItem()
@@ -119,10 +133,10 @@ report 14305125 "AQDLC Generate Qty On Hand"
                 else
                     LastQoHEntryNo := 1;
 
-                if ShowDialog then
-                    Window.Open(Text001);
+                if ShowDialog then begin
+                    Window.Open(Text001 + Text007);
+                end;
                 StartTime := CurrentDateTime;
-                Counter := 0;
             end;
 
             trigger OnAfterGetRecord()
@@ -130,14 +144,14 @@ report 14305125 "AQDLC Generate Qty On Hand"
                 ILEMod: Record "Item Ledger Entry";
             begin
                 if ShowDialog then begin
-                    if (Counter MOD 1000) = 0 then
-                        Window.Update(1, Format((Counter DIV 1000)) + '->' + Item."No.");
+                    Window.Update(1, "No." + ' => ' + Description);
                 end;
 
+                ILEMod.SetCurrentKey("Item No.", "Posting Date");
                 ILEMod.SetRange("Item No.", "No.");
+                ILEMod.SetFilter("Posting Date", '<=%1', MaxPostingDate);
                 ILEMod.SetRange("AQDLC Skip Compressing", true);
-                if ILEMod.Find('-') then
-                    ILEMod.ModifyAll("AQDLC Skip Compressing", false);
+                ILEMod.ModifyAll("AQDLC Skip Compressing", false);
 
                 QoH.Reset();
                 QoH.SetRange("Item No.", Item."No.");
@@ -145,16 +159,15 @@ report 14305125 "AQDLC Generate Qty On Hand"
                 QoH.DeleteAll();
                 Counter += 1;
 
-                GetItemValuationBefore(Item);
             end;
 
             trigger OnPostDataItem()
             begin
                 if not ShowDialog then exit;
                 Window.Close();
-                Message(
-                  'Batch process execution is completed - 1 Generate Quantity On Hand\Start Time: %1 End Time: %2\%3',
-                  StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+                //Message(
+                //'Batch process execution is completed - 1 Generate Quantity On Hand\Start Time: %1 End Time: %2\%3',
+                //StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -163,8 +176,8 @@ report 14305125 "AQDLC Generate Qty On Hand"
     begin
         // Check Item Ledger Entry, Value Entry or Item Application Entry backup are taken
         if not ShowDialog then exit;
-        if not Confirm(Text005, false) then
-            Error(Text006);
+        //if not Confirm(Text005, false) then
+        //Error(Text006);
     end;
 
     procedure SetRunParameters(vMaxPostingDate: Date; vCompressionRegNo: Integer; vCompressionScheduleNo: Integer; vShowDialog: Boolean)
@@ -190,7 +203,7 @@ report 14305125 "AQDLC Generate Qty On Hand"
 
         // UI / messages
         Window: Dialog;
-        Text001: Label 'Processing Item No. ###########1######';
+        Text001: Label '[1/7] Generating Qty on Hand for Item No. ###########1######';
         Text002: Label 'Item Ledger Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.';
         Text003: Label 'Value Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.';
         Text004: Label 'Item Application Entry Backup is not taken. Please take Item Ledger Entry Backup before starting Process.';
@@ -199,6 +212,9 @@ report 14305125 "AQDLC Generate Qty On Hand"
         ShowDialog: Boolean;
         CompressionRegNo: Integer;
         CompressionScheduleNo: Integer;
+        Text007: Label 'ILE No.  ########2#####';
+        TotalItems: Integer;
+        TotalILEs: Integer;
 
     local procedure UpdateInventoryValueAndUnitCost(var vQoH: Record "AQDLC Qty on Hand"; var ILE: Record "Item Ledger Entry")
     begin
@@ -219,35 +235,37 @@ report 14305125 "AQDLC Generate Qty On Hand"
         ItemQtyOnHandBefore: Decimal;
         ItemUnitCostBefore: Decimal;
         ItemInventoryValueBefore: Decimal;
+        CurrItemNo: Code[20];
+        CurrItemDesc: Text;
 
-    local procedure GetItemValuationBefore(vItem: Record Item)
+    local procedure GetItemValuationBefore(vItem: Record Item; vQty: Decimal; vInvtVal: Decimal; FinalCall: Boolean)
     var
         vILE: Record "Item Ledger Entry";
         ItemValuationComparison: Record "AQDLC Item Valuation Comparisn";
     begin
-        ItemQtyOnHandBefore := 0;
-        ItemUnitCostBefore := 0;
-        ItemInventoryValueBefore := 0;
+        if CurrItemNo = '' then begin
+            CurrItemNo := vItem."No.";
+            CurrItemDesc := vItem.Description;
 
-        vILE.SetRange("Item No.", vItem."No.");
-        vILE.SetFilter("Posting Date", '<=%1', MaxPostingDate);
-        if vILE.FindSet() then
-            repeat
-                vILE.CalcFields("Cost Amount (Expected)", "Cost Amount (Actual)");
-                ItemQtyOnHandBefore += vILE.Quantity;
-                if vILE."Cost Amount (Actual)" <> 0 then
-                    ItemInventoryValueBefore += vILE."Cost Amount (Actual)"
-                else
-                    ItemInventoryValueBefore += vILE."Cost Amount (Expected)";
-            until vILE.Next() = 0;
+            ItemQtyOnHandBefore := 0;
+            ItemUnitCostBefore := 0;
+            ItemInventoryValueBefore := 0;
+        end;
+
+        if (CurrItemNo = vItem."No.") and (not FinalCall) then begin
+            ItemQtyOnHandBefore += vQty;
+            ItemUnitCostBefore := 0;
+            ItemInventoryValueBefore += vInvtVal;
+            exit;
+        end;
         if ItemQtyOnHandBefore <> 0 then
             ItemUnitCostBefore := ItemInventoryValueBefore / ItemQtyOnHandBefore;
 
-        if not ItemValuationComparison.Get(CompressionRegNo, vItem."No.") then begin
+        if not ItemValuationComparison.Get(CompressionRegNo, CurrItemNo) then begin
             ItemValuationComparison.Init();
             ItemValuationComparison."Register No." := CompressionRegNo;
-            ItemValuationComparison."Item No." := vItem."No.";
-            ItemValuationComparison."Item Description" := vItem.Description;
+            ItemValuationComparison."Item No." := CurrItemNo;
+            ItemValuationComparison."Item Description" := CurrItemDesc;
             ItemValuationComparison."Cut-off Date" := MaxPostingDate;
             ItemValuationComparison."Remaining Qty Before" := ItemQtyOnHandBefore;
             ItemValuationComparison."Unit Cost Before" := ItemUnitCostBefore;
@@ -260,6 +278,9 @@ report 14305125 "AQDLC Generate Qty On Hand"
             ItemValuationComparison."Inventory Value Before" := ItemInventoryValueBefore;
             ItemValuationComparison.Modify();
         end;
+        ItemQtyOnHandBefore := vQty;
+        ItemUnitCostBefore := 0;
+        ItemInventoryValueBefore := vInvtVal;
     end;
 
     procedure TransferCompletelyReceived(var vILE: Record "Item Ledger Entry"): Boolean

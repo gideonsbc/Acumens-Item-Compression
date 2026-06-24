@@ -16,13 +16,14 @@ report 14305127 "AQDLC Compression Data Analys"
             begin
                 if AsOfDate = 0D then
                     AsOfDate := Today;
-                if ShowDialog then
-                    Window.Open(Text001);
 
                 if (CompressionScheduleNo <> 0) and SkipCompressedItems then
                     SetFilter("AQDLC Last Compression No.", '<>%1', CompressionScheduleNo);
                 StartTime := CurrentDateTime;
-                SimulateIssues(false);
+                if ShowDialog then begin
+                    Window.Open(Text001);
+                end;
+                //SimulateIssues(false);
             end;
 
             trigger OnAfterGetRecord()
@@ -30,11 +31,15 @@ report 14305127 "AQDLC Compression Data Analys"
                 ItemLedgers: Record "Item Ledger Entry";
                 InvtValue: Decimal;
             begin
-                if ShowDialog then
-                    Window.Update(1, "No." + ' => ' + Description);
+                if ShowDialog then begin
+                    Counter += 1;
+                    if (Counter MOD 100) = 0 then
+                        Window.Update(1, "No." + ' => ' + Description + ' (' + Format((Counter DIV 100)) + '00)');
+                end;
 
                 DeleteItemPreviousAnalysisResults(Item);
 
+                ItemLedgers.SetCurrentKey("Item No.", "Posting Date");
                 ItemLedgers.SetRange("Item No.", "No.");
                 ItemLedgers.SetFilter("Posting Date", '<=%1', AsOfDate);
                 if ItemLedgers.FindSet() then
@@ -62,10 +67,10 @@ report 14305127 "AQDLC Compression Data Analys"
 
             trigger OnPostDataItem()
             begin
-                SimulateIssues(true);
+                //SimulateIssues(true);
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Process completed. %1 issue(s) found!\Start Time: %2 End Time: %3 (%4)', Format(TotalIssuesFound), StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+                Message('Compression analysis completed. %1 issue(s) found!\Start Time: %2 End Time: %3\Duration: %4', Format(TotalIssuesFound), StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -183,6 +188,8 @@ report 14305127 "AQDLC Compression Data Analys"
         Text001: Label 'Processing Item No.  ########1#####';
         ShowDialog: Boolean;
         TotalIssuesFound: Integer;
+        TotalCount: Integer;
+        Counter: Integer;
 
     local procedure GetApplicableCompressionSchedule()
     var

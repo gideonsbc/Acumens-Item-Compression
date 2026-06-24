@@ -4,7 +4,8 @@ report 14305126 "AQDLC Delete ILE and VLE"
     tabledata "Value Entry" = RIMD,
     tabledata "Item Register" = rimd,
     tabledata "G/L - Item Ledger Relation" = rimd,
-    tabledata "G/L Entry" = rimd;
+    tabledata "G/L Entry" = rimd,
+    tabledata "Item Application Entry" = rimd;
 
     Caption = 'Delete ILE and VLE';
     ProcessingOnly = true;
@@ -26,92 +27,97 @@ report 14305126 "AQDLC Delete ILE and VLE"
                 trigger OnPreDataItem()
                 begin
                     SetFilter("Posting Date", '<=%1', MaxPostingDate);
+                    if ShowDialog then begin
+                        Counter := 0;
+                    end;
+                    ILEsBatchDeleteCounter := 0;
+                    Clear(ILEsFilterText);
+                    Clear(ItemRegisterFilterText);
                 end;
 
                 trigger OnAfterGetRecord();
+                var
                 begin
+                    if ShowDialog then begin
+                        Counter += 1;
+                        if (Counter MOD 1000) = 0 then
+                            Window.Update(2, Format("Entry No.") + ' (' + Format((Counter DIV 1000)) + ',000)');
+                        //Window.Update(2, Format("Entry No.") + ' (' + Format((Counter)) + ')');
+                    end;
                     if "Document No." in ['QOH-' + Format(MaxPostingDate) + '-' + Format(PostingDateRunNo), 'MILE-' + Format(MaxPostingDate) + '-' + Format(PostingDateRunNo)] then
                         CurrReport.Skip();
                     if ("Entry Type" = "Entry Type"::Transfer) and ("Document Type" = "Document Type"::"Transfer Shipment") then
                         if not RptGenerateQtyOnHand.TransferCompletelyReceived(ItemLedgerEntry) then
                             CurrReport.Skip();
 
-                    ValueEntry.Reset();
-                    ValueEntry.SetCurrentKey("Item Ledger Entry No.", "Entry Type");
-                    ValueEntry.SetRange("Item Ledger Entry No.", "Entry No.");
-                    ValueEntry.SetFilter("Posting Date", '<=%1', MaxPostingDate);
-                    VEDeleteCount += ValueEntry.Count();
-                    ValueEntry.DeleteAll();
+                    if ILEsFilterText = '' then
+                        ILEsFilterText := Format("Entry No.")
+                    else
+                        ILEsFilterText += '|' + Format("Entry No.");
+                    ILEsBatchDeleteCounter += 1;
 
                     if "Item Register No." <> 0 then begin
-                        ItemRegister.SetRange("No.", "Item Register No.");
-                        ItemRegister.DeleteAll();
+                        if ItemRegisterFilterText = '' then
+                            ItemRegisterFilterText := Format("Item Register No.")
+                        else
+                            ItemRegisterFilterText += '|' + Format("Item Register No.");
                     end;
 
-                    Delete();
+                    if ILEsBatchDeleteCounter = 1000 then begin
+                        DeleteEntriesInBatches();
+
+                        Clear(ILEsFilterText);
+                        Clear(ItemRegisterFilterText);
+                        ILEsBatchDeleteCounter := 0;
+                    end;
+
                     ILEDeleteCount += 1;
                 end;
 
                 trigger OnPostDataItem();
                 begin
-                    // ValueEntry.Reset();
-                    // ValueEntry.SetRange("Item No.", Item."No.");
-                    // ValueEntry.SetRange(Quantity, 0);
-                    // ValueEntry.DeleteAll();
+                    DeleteEntriesInBatches();
+                    DeleteItemApplns(true);
                 end;
             }
             trigger OnPreDataItem();
             begin
                 if MaxPostingDate = 0D then
-                    MaxPostingDate := DMY2DATE(1, 1, 2025);
+                    Error('Max Posting Date is required!');
 
-                if ShowDialog then
-                    Window.Open(Text001);
-                Counter := 0;
+                if ShowDialog then begin
+                    Window.Open(Text001 + Text004);
+                end;
                 StartTime := CurrentDateTime;
             end;
 
             trigger OnAfterGetRecord();
             begin
                 if ShowDialog then begin
-                    if Counter MOD 1000 = 0 then
-                        Window.Update(1, Format(Counter DIV 1000) + '->' + Item."No.");
+                    Window.Update(1, "No." + ' => ' + Description);
                 end;
-                Counter += 1;
             end;
 
             trigger OnPostDataItem();
             begin
-                //Clear these entries here before new VEs are created
-                GLItemLedgerRelation.Reset();
-                if GLItemLedgerRelation.FindSet() then begin
-                    repeat
-                        DeleteRecord := false;
-
-                        if not GLEntry.Get(GLItemLedgerRelation."G/L Entry No.") then
-                            DeleteRecord := true;
-                        if not ValueEntry.Get(GLItemLedgerRelation."Value Entry No.") then
-                            DeleteRecord := true;
-
-                        if DeleteRecord then
-                            GLItemLedgerRelation.Delete();
-                    until GLItemLedgerRelation.Next() = 0;
-                end;
+                ILECompressionSingleInst.GetVEDeleteCount(VEDeleteCount);
 
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Batch process execution is completed - 2 Delete ILE and VLE\Start Time: %1 End Time: %2 (%5)' +
-                  '\\Deleted ILE Count %3\\VLE Count %4', StartTime, CurrentDateTime, ILEDeleteCount, VEDeleteCount, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+                //Message('Batch process execution is completed - 2 Delete ILE and VLE\Start Time: %1 End Time: %2 (%5)' +
+                //'\\Deleted ILE Count %3\\VLE Count %4', StartTime, CurrentDateTime, ILEDeleteCount, VEDeleteCount, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
     trigger OnPreReport();
     begin
+        ILECompressionSingleInst.SetVEDeleteCount(0);
+        ILECompressionSingleInst.ResetVEDeleteFilter();
         if not ShowDialog then exit;
-        if not Confirm(Text002 + Item.GetFilters() + '\' + "ItemLedgerEntry".GetFilters()) then begin
+        /*if not Confirm(Text002 + Item.GetFilters() + '\' + "ItemLedgerEntry".GetFilters()) then begin
             Error('Report is aborted');
             CurrReport.Break();
-        end;
+        end;*/
     end;
 
     procedure SetRunParameters(vMaxPostingDate: Date; vCompressionRegNo: Integer; vPostingDateRunNo: Integer; vShowDialog: Boolean)
@@ -129,7 +135,8 @@ report 14305126 "AQDLC Delete ILE and VLE"
     end;
 
     var
-        Text001: Label 'Processing Item No.  ########1#####';
+        Text001: Label '[2/7] Deleting Entries for Item No.  ########1#####\\';
+        Text004: Label 'ILE No.  ########2#####';
         ValueEntry: Record "Value Entry";
         Window: Dialog;
         MaxPostingDate: Date;
@@ -148,4 +155,61 @@ report 14305126 "AQDLC Delete ILE and VLE"
         GLItemLedgerRelation: Record "G/L - Item Ledger Relation";
         GLEntry: Record "G/L Entry";
         DeleteRecord: Boolean;
+        TotalItems: Integer;
+        TotalILEs: Integer;
+        ILEsFilterText: Text;
+        ItemRegisterFilterText: Text;
+        ILEsBatchDeleteCounter: Integer;
+        ILECompressionSingleInst: Codeunit "AQDLC ILE Compress Single Inst";
+
+    local procedure DeleteEntriesInBatches()
+    var
+        ILE: Record "Item Ledger Entry";
+        ItemApplnEntry: Record "Item Application Entry";
+    begin
+        if ILEsFilterText = '' then exit;
+
+        ValueEntry.SetCurrentKey("Item Ledger Entry No.", "Valuation Date", "Posting Date");
+        ValueEntry.SetFilter("Item Ledger Entry No.", ILEsFilterText);
+        //ValueEntry.SetFilter("Posting Date", '<=%1', MaxPostingDate);
+        //VEDeleteCount += ValueEntry.Count();
+        ValueEntry.DeleteAll(true); //to delete item ledger relations
+
+        ItemRegister.SetCurrentKey("No.");
+        ItemRegister.SetFilter("No.", ItemRegisterFilterText);
+        ItemRegister.DeleteAll();
+
+        ItemApplnEntry.SetFilter("Item Ledger Entry No.", ILEsFilterText);
+        ItemApplnEntry.DeleteAll();
+
+        ItemApplnEntry.Reset();
+        ItemApplnEntry.SetFilter("Inbound Item Entry No.", ILEsFilterText);
+        ItemApplnEntry.DeleteAll();
+
+        ItemApplnEntry.Reset();
+        ItemApplnEntry.SetFilter("Outbound Item Entry No.", ILEsFilterText);
+        ItemApplnEntry.DeleteAll();
+
+        ILE.SetCurrentKey("Entry No.");
+        ILE.SetFilter("Entry No.", ILEsFilterText);
+        ILE.DeleteAll();
+
+        DeleteItemApplns(false);
+    end;
+
+
+    local procedure DeleteItemApplns(FinalCall: Boolean)
+    var
+        VeCount: Integer;
+        VeFilter: Text;
+        GLItemLedgerRelation: Record "G/L - Item Ledger Relation";
+    begin
+        ILECompressionSingleInst.GetVEDeleteFilter(VeFilter, VeCount);
+        if VeFilter = '' then exit;
+        if (VeCount >= 1000) or (FinalCall) then begin
+            GLItemLedgerRelation.SetFilter("Value Entry No.", VeFilter);
+            GLItemLedgerRelation.DeleteAll();
+            ILECompressionSingleInst.ResetVEDeleteFilter();
+        end;
+    end;
 }

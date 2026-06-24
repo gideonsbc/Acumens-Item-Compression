@@ -14,18 +14,22 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
             trigger OnPreDataItem();
             begin
                 SetRange("Register No.", CompressionRegNo);
-                if ShowDialog then
+                if ShowDialog then begin
                     Window.Open(Text001);
+                    Counter := 0;
+                end;
                 StartTime := CurrentDateTime;
             end;
 
             trigger OnAfterGetRecord();
             begin
                 if ShowDialog then begin
-                    if Counter MOD 1000 = 0 then
-                        Window.Update(1, Format(Counter DIV 1000) + ' -> ' + "Item No.");
+                    Counter += 1;
+                    if (Counter MOD 10) = 0 then
+                        Window.Update(1, "Item No." + ' => ' + "Item Description" + ' (' + Format((Counter DIV 10)) + '0)');
                 end;
 
+                ILE.SetCurrentKey("Item No.", "Posting Date");
                 ILE.SetRange("Item No.", "Item No.");
                 ILE.SetFilter("Posting Date", '<=%1', "Cut-off Date");
                 if ILE.FindSet() then
@@ -49,7 +53,7 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
             begin
                 if not ShowDialog then exit;
                 Window.Close();
-                Message('Batch process execution is completed - Post-compression valuation\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+                //Message('Batch process execution is completed - Post-compression valuation\Start Time: %1 End Time: %2 (%3)', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
             end;
         }
     }
@@ -68,8 +72,9 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
         VE: Record "Value Entry";
         Item: Record Item;
         Window: Dialog;
-        Text001: Label 'Processing Item No.  ########1#####';
+        Text001: Label '[6/7] Running Post-Compression Valuation for Item No.  ########1#####';
         Counter: Integer;
+        TotalCount: Integer;
         StartTime: DateTime;
         ItemLedgerCompCU: Codeunit "AQDLC Item Ledger Compression";
         ProcessDate: Date;

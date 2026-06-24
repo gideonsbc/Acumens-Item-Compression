@@ -2563,6 +2563,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compress Item Selection - Control SkipCompressedItems - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Report 1185612 - Control 264576416 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Sorting Order</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Compress Item Selection - Control SortingOrder - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Report 3689826919 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Compression Data Analysis</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -2609,7 +2614,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Create ILE Entrs frm QoH - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 1159430930 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Processing Item No.  ########1#####</source>
+          <source>[4/7] Creating ILE Entries from QoH for QoH No.  ########1#####</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Create ILE Entrs frm QoH - NamedType Text001</note>
         </trans-unit>
@@ -2617,6 +2622,11 @@
           <source>Create Item Application</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Create Item Application - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Report 2235611988 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
+          <source>[5/7] Creating Item Application for ILE No. ###########1######</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Create Item Application - NamedType Text001</note>
         </trans-unit>
         <trans-unit id="Report 800029170 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Date Compress Item Ledger</source>
@@ -2674,7 +2684,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Delete ILE and VLE - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 1552120178 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Processing Item No.  ########1#####</source>
+          <source>[2/7] Deleting Entries for Item No.  ########1#####\\</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Delete ILE and VLE - NamedType Text001</note>
         </trans-unit>
@@ -2688,13 +2698,18 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Delete ILE and VLE - NamedType Text003</note>
         </trans-unit>
+        <trans-unit id="Report 1552120178 - NamedType 732759939" size-unit="char" translate="yes" xml:space="preserve">
+          <source>ILE No.  ########2#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Delete ILE and VLE - NamedType Text004</note>
+        </trans-unit>
         <trans-unit id="Report 4016213927 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Delete Orphan Item Appl. Entry</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Dlt Orphn Itm Apl Entry - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 4016213927 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Processing Entry No. ########1#####</source>
+          <source>[4/8] Deleting Orphaned Item Application Entry No. ########1#####</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Dlt Orphn Itm Apl Entry - NamedType Text001</note>
         </trans-unit>
@@ -2704,7 +2719,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Generate Qty On Hand - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 1972234290 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Processing Item No. ###########1######</source>
+          <source>[1/7] Generating Qty on Hand for Item No. ###########1######</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Generate Qty On Hand - NamedType Text001</note>
         </trans-unit>
@@ -2733,15 +2748,25 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Generate Qty On Hand - NamedType Text006</note>
         </trans-unit>
+        <trans-unit id="Report 1972234290 - NamedType 2645849790" size-unit="char" translate="yes" xml:space="preserve">
+          <source>ILE No.  ########2#####</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Generate Qty On Hand - NamedType Text007</note>
+        </trans-unit>
         <trans-unit id="Report 2162096596 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Post-Compression Inventory Valuation</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Post-Compress Invt. Val - Property Caption</note>
         </trans-unit>
         <trans-unit id="Report 2162096596 - NamedType 3114637384" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Processing Item No.  ########1#####</source>
+          <source>[6/7] Running Post-Compression Valuation for Item No.  ########1#####</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Post-Compress Invt. Val - NamedType Text001</note>
+        </trans-unit>
+        <trans-unit id="Report 3147624957 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Posted Documents Compression</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Report AQDLC Posted Documents Compres - Property Caption</note>
         </trans-unit>
         <trans-unit id="PageExtension 1270676366 - Control 303204993 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve" al-object-target="Page 1434786627">
           <source>Acumens Item Ledger Compression</source>
