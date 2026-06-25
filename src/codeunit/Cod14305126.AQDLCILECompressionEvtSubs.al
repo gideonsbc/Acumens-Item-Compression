@@ -19,17 +19,4 @@ codeunit 14305126 "AQDLC ILE Compression Evt Subs"
             PostValueEntryToGl.Modify();
         end;
     end;
-
-    [EventSubscriber(ObjectType::Table, Database::"Value Entry", OnAfterDeleteEvent, '', false, false)]
-    local procedure t5802_OnAfterDeleteEvent(var Rec: Record "Value Entry")
-    var
-        GLItemLedgerRelation: Record "G/L - Item Ledger Relation";
-    begin
-        if not (ILECompressionSetup.Get() and ILECompressionSetup."Enable App") then exit;
-        ILECompressionSingleInst.IncrementVEDeleteCount();
-
-        //GLItemLedgerRelation.SetRange("Value Entry No.", Rec."Entry No.");
-        //GLItemLedgerRelation.DeleteAll();
-        ILECompressionSingleInst.UpdateVEDeleteFilter(Rec."Entry No.");
-    end;
 }

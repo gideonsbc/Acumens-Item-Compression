@@ -21,6 +21,7 @@ codeunit 14305127 "AQDLC ILE Compress Single Inst"
         CalledFromRegisterNo: Integer;
         ScheduleDescription: Text;
         PostingDateRunNo: Integer;
+        CompressionScheduleNo: Integer;
 
     procedure SetILECompressionParams(vEndingDate: Date; vPostingDateRunNo: Integer; vRegNo: Integer; vCalledFromRegisterNo: Integer; vScheduleDescription: Text)
     begin
@@ -31,7 +32,15 @@ codeunit 14305127 "AQDLC ILE Compress Single Inst"
         ScheduleDescription := vScheduleDescription;
     end;
 
-
+    procedure SetILECompressionParams(vEndingDate: Date; vPostingDateRunNo: Integer; vRegNo: Integer; vCalledFromRegisterNo: Integer; vCompressionScheduleNo: Integer; vScheduleDescription: Text)
+    begin
+        EndingDate := vEndingDate;
+        PostingDateRunNo := vPostingDateRunNo;
+        RegNo := vRegNo;
+        CalledFromRegisterNo := vCalledFromRegisterNo;
+        CompressionScheduleNo := vCompressionScheduleNo;
+        ScheduleDescription := vScheduleDescription;
+    end;
 
     procedure GetILECompressionParams(var vEndingDate: Date; var vPostingDateRunNo: Integer; var vRegNo: Integer; var vCalledFromRegisterNo: Integer; var vScheduleDescription: Text)
     begin
@@ -42,46 +51,13 @@ codeunit 14305127 "AQDLC ILE Compress Single Inst"
         vScheduleDescription := ScheduleDescription;
     end;
 
-    var
-        VEDeleteCount: Integer;
-
-    procedure SetVEDeleteCount(vVEDeleteCount: Integer)
+    procedure GetILECompressionParams(var vEndingDate: Date; var vPostingDateRunNo: Integer; var vRegNo: Integer; var vCalledFromRegisterNo: Integer; var vCompressionScheduleNo: Integer; var vScheduleDescription: Text)
     begin
-        VEDeleteCount := vVEDeleteCount;
-    end;
-
-    procedure IncrementVEDeleteCount()
-    begin
-        VEDeleteCount += 1;
-    end;
-
-    procedure GetVEDeleteCount(var vVEDeleteCount: Integer)
-    begin
-        vVEDeleteCount := VEDeleteCount;
-    end;
-
-    var
-        VEsFilterText: Text;
-        VEDeleteCounter: Integer;
-
-    procedure ResetVEDeleteFilter()
-    begin
-        Clear(VEsFilterText);
-        Clear(VEDeleteCounter);
-    end;
-
-    procedure UpdateVEDeleteFilter(VeNo: Integer)
-    begin
-        VEDeleteCounter += 1;
-        if VEsFilterText = '' then
-            VEsFilterText := Format(VeNo)
-        else
-            VEsFilterText += '|' + Format(VeNo);
-    end;
-
-    procedure GetVEDeleteFilter(var vVEsFilterText: Text; var vVEDeleteCounter: Integer)
-    begin
-        vVEsFilterText := VEsFilterText;
-        vVEDeleteCounter := VEDeleteCounter;
+        vEndingDate := EndingDate;
+        vPostingDateRunNo := PostingDateRunNo;
+        vRegNo := RegNo;
+        vCalledFromRegisterNo := CalledFromRegisterNo;
+        vCompressionScheduleNo := CompressionScheduleNo;
+        vScheduleDescription := ScheduleDescription;
     end;
 }

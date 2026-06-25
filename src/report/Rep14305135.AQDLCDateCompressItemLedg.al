@@ -45,7 +45,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 StartTimeoutCountDown(ExecutionStartDt);
                 StartTime := CurrentDateTime;
                 OpenWindow();
-                ILECompressionSingleInst.SetILECompressionParams(EndingDate, PostingDateRunNo, RegNo, CalledFromRegisterNo, ScheduleDescription);
+                ILECompressionSingleInst.SetILECompressionParams(EndingDate, PostingDateRunNo, RegNo, CalledFromRegisterNo, CompressionScheduleNo, ScheduleDescription);
             end;
 
             trigger OnAfterGetRecord()

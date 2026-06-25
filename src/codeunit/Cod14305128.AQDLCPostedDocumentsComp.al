@@ -48,7 +48,7 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
 
     var
         Window: Dialog;
-        Txt000: Label 'Compressing Posted Documents\Period: #1##############################\Processing Table: #2##############################';
+        Txt000: Label 'Compressing Posted Documents\Period: #1##############################\Processing Table: #2##############################\No. of Records Deleted: #3##############################';
 
     local procedure OpenWindow()
     begin
@@ -86,8 +86,11 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
     local procedure CompressPostedDocs()
     var
         Counter: Integer;
-        FilterText: Text;
+        Counter2: Integer;
         MaxPostingDateTime: DateTime;
+        StartEntryNo: Integer;
+        LastEntryNo: Integer;
+        EndEntryNo: Integer;
     begin
         if MaxPostingDate = 0D then exit;
         OpenWindow();
@@ -100,7 +103,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
             UpdateCompressionLogEntry(0, LogEntryNo, Database::"Sales Invoice Header", 'Posted Sales Invoices (Headers + Lines)');
 
             Counter := 0;
-            FilterText := '';
             PostedSalesInvoices.SetCurrentKey("Posting Date");
             PostedSalesInvoices.SetFilter("Posting Date", '<=%1', MaxPostingDate);
             if PostedSalesInvoices.FindSet() then
@@ -108,21 +110,21 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     Counter += 1;
                     NoOfRecordsDeleted += 1;
 
-                    if FilterText = '' then
-                        FilterText := Format(PostedSalesInvoices."No.")
-                    else
-                        FilterText += '|' + Format(PostedSalesInvoices."No.");
+                    PostedSalesInvoiceLines.SetCurrentKey("Document No.", "Line No.");
+                    PostedSalesInvoiceLines.SetRange("Document No.", PostedSalesInvoices."No.");
+                    NoOfRecordsDeleted += PostedSalesInvoiceLines.Count;
+                    PostedSalesInvoiceLines.DeleteAll();
+
+                    PostedSalesInvoices.Delete();
 
                     if Counter = 1000 then begin
-                        DeletePostedSalesInvoices(FilterText);
-
-                        Clear(FilterText);
+                        UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedSalesInvoices.Next() = 0;
-            DeletePostedSalesInvoices(FilterText);
 
             UpdateCompressionLogEntry(1, LogEntryNo, Database::"Sales Invoice Header", PostedSalesInvoices.TableName);
             Commit();
@@ -138,7 +140,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
             UpdateCompressionLogEntry(0, LogEntryNo, Database::"Purch. Inv. Header", 'Posted Purchase Invoices (Headers and Lines)');
 
             Counter := 0;
-            FilterText := '';
             PostedPurchInvHdr.SetCurrentKey("Posting Date");
             PostedPurchInvHdr.SetFilter("Posting Date", '<=%1', MaxPostingDate);
             if PostedPurchInvHdr.FindSet() then
@@ -146,21 +147,21 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     Counter += 1;
                     NoOfRecordsDeleted += 1;
 
-                    if FilterText = '' then
-                        FilterText := Format(PostedPurchInvHdr."No.")
-                    else
-                        FilterText += '|' + Format(PostedPurchInvHdr."No.");
+                    PostedPurchInvLine.SetCurrentKey("Document No.", "Line No.");
+                    PostedPurchInvLine.SetRange("Document No.", PostedPurchInvHdr."No.");
+                    NoOfRecordsDeleted += PostedPurchInvLine.Count;
+                    PostedPurchInvLine.DeleteAll();
+
+                    PostedPurchInvHdr.Delete();
 
                     if Counter = 1000 then begin
-                        DeletePostedPurchaseInvoices(FilterText);
-
-                        Clear(FilterText);
+                        UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedPurchInvHdr.Next() = 0;
-            DeletePostedPurchaseInvoices(FilterText);
 
             UpdateCompressionLogEntry(1, LogEntryNo, Database::"Purch. Inv. Header", PostedPurchInvHdr.TableName);
             Commit();
@@ -176,7 +177,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
             UpdateCompressionLogEntry(0, LogEntryNo, Database::"Sales Shipment Header", 'Posted Sales Shipments (Headers and Lines)');
 
             Counter := 0;
-            FilterText := '';
             PostedSalesShipmentHdr.SetCurrentKey("Posting Date");
             PostedSalesShipmentHdr.SetFilter("Posting Date", '<=%1', MaxPostingDate);
             if PostedSalesShipmentHdr.FindSet() then
@@ -184,21 +184,21 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     Counter += 1;
                     NoOfRecordsDeleted += 1;
 
-                    if FilterText = '' then
-                        FilterText := Format(PostedSalesShipmentHdr."No.")
-                    else
-                        FilterText += '|' + Format(PostedSalesShipmentHdr."No.");
+                    PostedSalesShipmentLine.SetCurrentKey("Document No.", "Line No.");
+                    PostedSalesShipmentLine.SetRange("Document No.", PostedSalesShipmentHdr."No.");
+                    NoOfRecordsDeleted += PostedSalesShipmentLine.Count;
+                    PostedSalesShipmentLine.DeleteAll();
+
+                    PostedSalesShipmentHdr.Delete();
 
                     if Counter = 1000 then begin
-                        DeletePostedSalesShipments(FilterText);
-
-                        Clear(FilterText);
+                        UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedSalesShipmentHdr.Next() = 0;
-            DeletePostedSalesShipments(FilterText);
 
             UpdateCompressionLogEntry(1, LogEntryNo, Database::"Sales Shipment Header", PostedSalesShipmentHdr.TableName);
             Commit();
@@ -214,7 +214,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
             UpdateCompressionLogEntry(0, LogEntryNo, Database::"Transfer Shipment Header", 'Posted Transfer Shipments (Headers and Lines)');
 
             Counter := 0;
-            FilterText := '';
             PostedTransferShipmentHdr.SetCurrentKey("Posting Date");
             PostedTransferShipmentHdr.SetFilter("Posting Date", '<=%1', MaxPostingDate);
             if PostedTransferShipmentHdr.FindSet() then
@@ -222,21 +221,21 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     Counter += 1;
                     NoOfRecordsDeleted += 1;
 
-                    if FilterText = '' then
-                        FilterText := Format(PostedTransferShipmentHdr."No.")
-                    else
-                        FilterText += '|' + Format(PostedTransferShipmentHdr."No.");
+                    PostedTransferShipmentLine.SetCurrentKey("Document No.", "Line No.");
+                    PostedTransferShipmentLine.SetRange("Document No.", PostedTransferShipmentHdr."No.");
+                    NoOfRecordsDeleted += PostedTransferShipmentLine.Count;
+                    PostedTransferShipmentLine.DeleteAll();
+
+                    PostedTransferShipmentHdr.Delete();
 
                     if Counter = 1000 then begin
-                        DeletePostedTransferShipments(FilterText);
-
-                        Clear(FilterText);
+                        UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedTransferShipmentHdr.Next() = 0;
-            DeletePostedTransferShipments(FilterText);
 
             UpdateCompressionLogEntry(1, LogEntryNo, Database::"Transfer Shipment Header", PostedTransferShipmentHdr.TableName);
             Commit();
@@ -252,7 +251,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
             UpdateCompressionLogEntry(0, LogEntryNo, Database::"Transfer Receipt Header", 'Posted Transfer Receipts (Headers and Lines)');
 
             Counter := 0;
-            FilterText := '';
             PostedTransferRcptHdr.SetCurrentKey("Posting Date");
             PostedTransferRcptHdr.SetFilter("Posting Date", '<=%1', MaxPostingDate);
             if PostedTransferRcptHdr.FindSet() then
@@ -260,21 +258,21 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     Counter += 1;
                     NoOfRecordsDeleted += 1;
 
-                    if FilterText = '' then
-                        FilterText := Format(PostedTransferRcptHdr."No.")
-                    else
-                        FilterText += '|' + Format(PostedTransferRcptHdr."No.");
+                    PostedTransferRcptLine.SetCurrentKey("Document No.", "Line No.");
+                    PostedTransferRcptLine.SetRange("Document No.", PostedTransferRcptHdr."No.");
+                    NoOfRecordsDeleted += PostedTransferRcptLine.Count;
+                    PostedTransferRcptLine.DeleteAll();
+
+                    PostedTransferRcptHdr.Delete();
 
                     if Counter = 1000 then begin
-                        DeletePostedTransferReceipts(FilterText);
-
-                        Clear(FilterText);
+                        UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedTransferRcptHdr.Next() = 0;
-            DeletePostedTransferReceipts(FilterText);
 
             UpdateCompressionLogEntry(1, LogEntryNo, Database::"Transfer Receipt Header", PostedTransferRcptHdr.TableName);
             Commit();
@@ -290,7 +288,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
             UpdateCompressionLogEntry(0, LogEntryNo, Database::"Posted Whse. Shipment Header", 'Posted Warehouse Shipments (Headers and Lines)');
 
             Counter := 0;
-            FilterText := '';
             PostedWarehouseShipmentHdr.SetCurrentKey("Posting Date");
             PostedWarehouseShipmentHdr.SetFilter("Posting Date", '<=%1', MaxPostingDate);
             if PostedWarehouseShipmentHdr.FindSet() then
@@ -298,21 +295,21 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     Counter += 1;
                     NoOfRecordsDeleted += 1;
 
-                    if FilterText = '' then
-                        FilterText := Format(PostedWarehouseShipmentHdr."No.")
-                    else
-                        FilterText += '|' + Format(PostedWarehouseShipmentHdr."No.");
+                    PostedWarehouseShipmentLine.SetCurrentKey("No.", "Line No.");
+                    PostedWarehouseShipmentLine.SetRange("No.", PostedWarehouseShipmentHdr."No.");
+                    NoOfRecordsDeleted += PostedWarehouseShipmentLine.Count;
+                    PostedWarehouseShipmentLine.DeleteAll();
+
+                    PostedWarehouseShipmentHdr.Delete();
 
                     if Counter = 1000 then begin
-                        DeletePostedWhseShipments(FilterText);
-
-                        Clear(FilterText);
+                        UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedWarehouseShipmentHdr.Next() = 0;
-            DeletePostedWhseShipments(FilterText);
 
             UpdateCompressionLogEntry(1, LogEntryNo, Database::"Posted Whse. Shipment Header", PostedWarehouseShipmentHdr.TableName);
             Commit();
@@ -328,7 +325,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
             UpdateCompressionLogEntry(0, LogEntryNo, Database::"Posted Whse. Receipt Header", 'Posted Warehouse Receipts (Headers and Lines)');
 
             Counter := 0;
-            FilterText := '';
             PostedWhseRcptHdr.SetCurrentKey("Posting Date");
             PostedWhseRcptHdr.SetFilter("Posting Date", '<=%1', MaxPostingDate);
             if PostedWhseRcptHdr.FindSet() then
@@ -336,21 +332,21 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     Counter += 1;
                     NoOfRecordsDeleted += 1;
 
-                    if FilterText = '' then
-                        FilterText := Format(PostedWhseRcptHdr."No.")
-                    else
-                        FilterText += '|' + Format(PostedWhseRcptHdr."No.");
+                    PostedWhseRcptLine.SetCurrentKey("No.", "Line No.");
+                    PostedWhseRcptLine.SetRange("No.", PostedWhseRcptHdr."No.");
+                    NoOfRecordsDeleted += PostedWhseRcptLine.Count;
+                    PostedWhseRcptLine.DeleteAll();
+
+                    PostedWhseRcptHdr.Delete();
 
                     if Counter = 1000 then begin
-                        DeletePostedWhseReceipts(FilterText);
-
-                        Clear(FilterText);
+                        UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedWhseRcptHdr.Next() = 0;
-            DeletePostedWhseReceipts(FilterText);
 
             UpdateCompressionLogEntry(1, LogEntryNo, Database::"Posted Whse. Receipt Header", PostedWhseRcptHdr.TableName);
             Commit();
@@ -366,30 +362,33 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
             UpdateCompressionLogEntry(0, LogEntryNo, Database::"Job Queue Log Entry", 'Job Queue Log Entries');
 
             MaxPostingDateTime := CreateDateTime(CalcDate('<+1D>', MaxPostingDate), 000000T);
-            Counter := 0;
-            FilterText := '';
+            LastEntryNo := 0;
             JobQueueLogEntry.SetCurrentKey("Start Date/Time", ID);
             JobQueueLogEntry.SetFilter("Start Date/Time", '<%1', MaxPostingDateTime);
-            if JobQueueLogEntry.FindSet() then
+            if JobQueueLogEntry.FindLast() then
+                LastEntryNo := JobQueueLogEntry."Entry No.";
+
+            if LastEntryNo > 0 then begin
+                StartEntryNo := 0;
+                EndEntryNo := 0;
                 repeat
-                    Counter += 1;
-                    NoOfRecordsDeleted += 1;
+                    StartEntryNo := EndEntryNo + 1;
+                    EndEntryNo += 5000;
+                    if EndEntryNo >= LastEntryNo then
+                        EndEntryNo := LastEntryNo;
 
-                    if FilterText = '' then
-                        FilterText := Format(JobQueueLogEntry."Entry No.")
-                    else
-                        FilterText += '|' + Format(JobQueueLogEntry."Entry No.");
+                    JobQueueLogEntry.Reset();
+                    JobQueueLogEntry.SetRange("Entry No.", StartEntryNo, EndEntryNo);
+                    JobQueueLogEntry.DeleteAll(false);
 
-                    if Counter = 1000 then begin
-                        DeleteJobQEntries(FilterText);
+                    NoOfRecordsDeleted += EndEntryNo;
+                    UpdateWindow(3, Format(NoOfRecordsDeleted));
 
-                        Clear(FilterText);
-                        Counter := 0;
-                        CheckExecutionTimeOut();
-                    end;
+                    Commit();
+                    CheckExecutionTimeOut();
 
-                until JobQueueLogEntry.Next() = 0;
-            DeleteJobQEntries(FilterText);
+                until EndEntryNo >= LastEntryNo;
+            end;
 
             UpdateCompressionLogEntry(1, LogEntryNo, Database::"Job Queue Log Entry", JobQueueLogEntry.TableName);
             Commit();
@@ -397,114 +396,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
         //>>Job Queue Log Entries
 
         CloseWindow();
-    end;
-
-    local procedure DeletePostedSalesInvoices(DocNosFilter: Text)
-    var
-        SalesInvoiceHeader: Record "Sales Invoice Header";
-    begin
-        if DocNosFilter = '' then exit;
-
-        SalesInvoiceHeader.SetCurrentKey("No.");
-        SalesInvoiceHeader.SetFilter("No.", DocNosFilter);
-        SalesInvoiceHeader.DeleteAll();
-
-        PostedSalesInvoiceLines.SetCurrentKey("Document No.", "Line No.");
-        PostedSalesInvoiceLines.SetFilter("Document No.", DocNosFilter);
-        NoOfRecordsDeleted += PostedSalesInvoiceLines.Count;
-        PostedSalesInvoiceLines.DeleteAll();
-
-        Commit();
-    end;
-
-    local procedure DeletePostedPurchaseInvoices(DocNosFilter: Text)
-    var
-        PurchInvHdr: Record "Purch. Inv. Header";
-    begin
-        if DocNosFilter = '' then exit;
-
-        PurchInvHdr.SetCurrentKey("No.");
-        PurchInvHdr.SetFilter("No.", DocNosFilter);
-        PurchInvHdr.DeleteAll();
-
-        PostedPurchInvLine.SetCurrentKey("Document No.", "Line No.");
-        PostedPurchInvLine.SetFilter("Document No.", DocNosFilter);
-        NoOfRecordsDeleted += PostedPurchInvLine.Count;
-        PostedPurchInvLine.DeleteAll();
-
-        Commit();
-    end;
-
-    local procedure DeletePostedSalesShipments(DocNosFilter: Text)
-    var
-        SalesShipmentHdr: Record "Sales Shipment Header";
-    begin
-        if DocNosFilter = '' then exit;
-
-        SalesShipmentHdr.SetCurrentKey("No.");
-        SalesShipmentHdr.SetFilter("No.", DocNosFilter);
-        SalesShipmentHdr.DeleteAll();
-
-        PostedSalesShipmentLine.SetCurrentKey("Document No.", "Line No.");
-        PostedSalesShipmentLine.SetFilter("Document No.", DocNosFilter);
-        NoOfRecordsDeleted += PostedSalesShipmentLine.Count;
-        PostedSalesShipmentLine.DeleteAll();
-
-        Commit();
-    end;
-
-    local procedure DeletePostedTransferShipments(DocNosFilter: Text)
-    var
-        TransferShipmentHdr: Record "Transfer Shipment Header";
-    begin
-        if DocNosFilter = '' then exit;
-
-        TransferShipmentHdr.SetCurrentKey("No.");
-        TransferShipmentHdr.SetFilter("No.", DocNosFilter);
-        TransferShipmentHdr.DeleteAll();
-
-        PostedTransferShipmentLine.SetCurrentKey("Document No.", "Line No.");
-        PostedTransferShipmentLine.SetFilter("Document No.", DocNosFilter);
-        NoOfRecordsDeleted += PostedTransferShipmentLine.Count;
-        PostedTransferShipmentLine.DeleteAll();
-
-        Commit();
-    end;
-
-    local procedure DeletePostedTransferReceipts(DocNosFilter: Text)
-    var
-        TransferReceiptHdr: Record "Transfer Receipt Header";
-    begin
-        if DocNosFilter = '' then exit;
-
-        TransferReceiptHdr.SetCurrentKey("No.");
-        TransferReceiptHdr.SetFilter("No.", DocNosFilter);
-        TransferReceiptHdr.DeleteAll();
-
-        PostedTransferRcptLine.SetCurrentKey("Document No.", "Line No.");
-        PostedTransferRcptLine.SetFilter("Document No.", DocNosFilter);
-        NoOfRecordsDeleted += PostedTransferRcptLine.Count;
-        PostedTransferRcptLine.DeleteAll();
-
-        Commit();
-    end;
-
-    local procedure DeletePostedWhseShipments(DocNosFilter: Text)
-    var
-        PostedWhseShipmentHeader: Record "Posted Whse. Shipment Header";
-    begin
-        if DocNosFilter = '' then exit;
-
-        PostedWhseShipmentHeader.SetCurrentKey("No.");
-        PostedWhseShipmentHeader.SetFilter("No.", DocNosFilter);
-        PostedWhseShipmentHeader.DeleteAll();
-
-        PostedWarehouseShipmentLine.SetCurrentKey("No.", "Line No.");
-        PostedWarehouseShipmentLine.SetFilter("No.", DocNosFilter);
-        NoOfRecordsDeleted += PostedWarehouseShipmentLine.Count;
-        PostedWarehouseShipmentLine.DeleteAll();
-
-        Commit();
     end;
 
     local procedure DeletePostedWhseReceipts(DocNosFilter: Text)
@@ -516,11 +407,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
         PostedWhseReceiptHeader.SetCurrentKey("No.");
         PostedWhseReceiptHeader.SetFilter("No.", DocNosFilter);
         PostedWhseReceiptHeader.DeleteAll();
-
-        PostedWhseRcptLine.SetCurrentKey("No.", "Line No.");
-        PostedWhseRcptLine.SetFilter("No.", DocNosFilter);
-        NoOfRecordsDeleted += PostedWhseRcptLine.Count;
-        PostedWhseRcptLine.DeleteAll();
 
         Commit();
     end;

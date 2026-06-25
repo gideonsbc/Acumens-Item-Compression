@@ -341,7 +341,7 @@ codeunit 14305124 "AQDLC Item Ledger Compression"
 
     local procedure GetParams()
     begin
-        ILECompressionSingleInst.GetILECompressionParams(EndingDate, PostingDateRunNo, RegNo, CalledFromRegisterNo, ScheduleDescription);
+        ILECompressionSingleInst.GetILECompressionParams(EndingDate, PostingDateRunNo, RegNo, CalledFromRegisterNo, CompressionScheduleNo, ScheduleDescription);
     end;
 
     procedure getDuration(vStartDateTime: DateTime; vEndDateTime: DateTime): Duration

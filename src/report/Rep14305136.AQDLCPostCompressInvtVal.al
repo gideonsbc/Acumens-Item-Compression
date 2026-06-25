@@ -29,11 +29,17 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
                         Window.Update(1, "Item No." + ' => ' + "Item Description" + ' (' + Format(Counter) + ')');
                 end;
 
+                Counter2 := 0;
                 ILE.SetCurrentKey("Item No.", "Posting Date");
                 ILE.SetRange("Item No.", "Item No.");
                 ILE.SetFilter("Posting Date", '<=%1', "Cut-off Date");
                 if ILE.FindSet() then
                     repeat
+                        if ShowDialog then begin
+                            Counter2 += 1;
+                            if ((Counter2 MOD 1000) = 0) or (Counter2 = 1) then
+                                Window.Update(2, Format(ILE."Entry No.") + ' (' + Format(Counter2) + ')');
+                        end;
                         ILE.CalcFields("Cost Amount (Actual)", "Cost Amount (Expected)");
                         "Remaining Qty After" += ILE.Quantity;
                         if ILE."Cost Amount (Actual)" <> 0 then
@@ -72,7 +78,7 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
         VE: Record "Value Entry";
         Item: Record Item;
         Window: Dialog;
-        Text001: Label '[6/7] Running Post-Compression Valuation for Item No.  ########1#####';
+        Text001: Label '[6/7] Running Post-Compression Valuation for Item No.  ########1#####\ILE: ########2#####';
         Counter: Integer;
         TotalCount: Integer;
         StartTime: DateTime;
@@ -81,5 +87,6 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
         ShowDialog: Boolean;
         ILECompressionSetup: Record "AQDLC ILE Compression Setup";
         CompressionRegNo: Integer;
+        Counter2: Integer;
 
 }
