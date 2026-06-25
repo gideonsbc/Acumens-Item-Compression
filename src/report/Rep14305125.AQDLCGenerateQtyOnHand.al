@@ -25,8 +25,8 @@ report 14305125 "AQDLC Generate Qty On Hand"
                 begin
                     if ShowDialog then begin
                         Counter += 1;
-                        if (Counter MOD 1000) = 0 then
-                            Window.Update(2, Format("Entry No.") + ' (' + Format((Counter DIV 1000)) + ',000)');
+                        if ((Counter MOD 1000) = 0) or (Counter = 1) then
+                            Window.Update(2, Format("Entry No.") + ' (' + Format(Counter) + ')');
                     end;
 
                     CalcFields("Cost Amount (Expected)", "Cost Amount (Actual)");

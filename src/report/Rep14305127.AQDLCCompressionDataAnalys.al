@@ -23,7 +23,6 @@ report 14305127 "AQDLC Compression Data Analys"
                 if ShowDialog then begin
                     Window.Open(Text001);
                 end;
-                //SimulateIssues(false);
             end;
 
             trigger OnAfterGetRecord()
@@ -33,8 +32,8 @@ report 14305127 "AQDLC Compression Data Analys"
             begin
                 if ShowDialog then begin
                     Counter += 1;
-                    if (Counter MOD 100) = 0 then
-                        Window.Update(1, "No." + ' => ' + Description + ' (' + Format((Counter DIV 100)) + '00)');
+                    if ((Counter MOD 100) = 0) or (Counter = 1) then
+                        Window.Update(1, "No." + ' => ' + Description + ' (' + Format(Counter) + ')');
                 end;
 
                 DeleteItemPreviousAnalysisResults(Item);
@@ -44,6 +43,11 @@ report 14305127 "AQDLC Compression Data Analys"
                 ItemLedgers.SetFilter("Posting Date", '<=%1', AsOfDate);
                 if ItemLedgers.FindSet() then
                     repeat
+                        if ShowDialog then begin
+                            Counter2 += 1;
+                            if ((Counter2 MOD 1000) = 0) or (Counter2 = 1) then
+                                Window.Update(2, Format(ItemLedgers."Entry No.") + ' (' + Format(Counter2) + ')');
+                        end;
                         ItemLedgers.CalcFields("Cost Amount (Actual)", "Cost Amount (Expected)");//"Sales Amount (Actual)", "Sales Amount (Expected)",
                         if ItemLedgers."Cost Amount (Actual)" <> 0 then
                             InvtValue := ItemLedgers."Cost Amount (Actual)"
@@ -53,8 +57,6 @@ report 14305127 "AQDLC Compression Data Analys"
                         if not ItemLedgers."Completely Invoiced" then
                             CreateCompressionAnalysisResultEntry(Item, IssueType::"Unvoiced ILE", InvtValue);
 
-                        /*if ItemLedgers.Quantity <> ItemLedgers."Remaining Quantity" then
-                            CreateCompressionAnalysisResultEntry(Item, IssueType::"Remaining Qty & ILE Qty Mismatch", InvtValue);*/
                         CreateAndUpdateItemQtyVsRemaining(Item, ItemLedgers, InvtValue);
 
                         if (ItemLedgers.Quantity = 0) and (InvtValue <> 0) then
@@ -62,12 +64,27 @@ report 14305127 "AQDLC Compression Data Analys"
 
                     until ItemLedgers.Next() = 0;
 
+                //For Quantity mismatch we have to look at all entries - beyond the AsOfDate - look at remaining entries below
+                ItemLedgers.Reset();
+                ItemLedgers.SetCurrentKey("Item No.", "Posting Date");
+                ItemLedgers.SetRange("Item No.", "No.");
+                ItemLedgers.SetFilter("Posting Date", '>%1', AsOfDate);
+                if ItemLedgers.FindSet() then
+                    repeat
+                        if ShowDialog then begin
+                            Counter2 += 1;
+                            if ((Counter2 MOD 1000) = 0) or (Counter2 = 1) then
+                                Window.Update(2, Format(ItemLedgers."Entry No.") + ' (' + Format(Counter2) + ')');
+                        end;
+                        InvtValue := 0;
+                        CreateAndUpdateItemQtyVsRemaining(Item, ItemLedgers, InvtValue);
+                    until ItemLedgers.Next() = 0;
+
                 CheckItemRemQuantities(Item);
             end;
 
             trigger OnPostDataItem()
             begin
-                //SimulateIssues(true);
                 if not ShowDialog then exit;
                 Window.Close();
                 Message('Compression analysis completed. %1 issue(s) found!\Start Time: %2 End Time: %3\Duration: %4', Format(TotalIssuesFound), StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
@@ -108,7 +125,7 @@ report 14305127 "AQDLC Compression Data Analys"
                         Caption = 'As at Date';
                         ShowMandatory = true;
                         ApplicationArea = All;
-                        Editable = (CompressionScheduleNo <> 0);
+                        Editable = (CompressionScheduleNo = 0);
 
                         trigger OnValidate()
                         begin
@@ -185,11 +202,12 @@ report 14305127 "AQDLC Compression Data Analys"
         AsOfDate: Date;
         IssueType: Enum "AQDLC Compression Analysis Iss";
         Window: Dialog;
-        Text001: Label 'Processing Item No.  ########1#####';
+        Text001: Label 'Processing Item No.  ########1#####\ILE: ########2#####';
         ShowDialog: Boolean;
         TotalIssuesFound: Integer;
         TotalCount: Integer;
         Counter: Integer;
+        Counter2: Integer;
 
     local procedure GetApplicableCompressionSchedule()
     var
@@ -337,33 +355,6 @@ report 14305127 "AQDLC Compression Data Analys"
             CreateCompressionAnalysisResultEntry(vItem, IssueType::"Remaining Qty & ILE Qty Mismatch", ItemInvtVal);
         end;
         ClearItemQtyValues();
-    end;
-
-    local procedure SimulateIssues(Revert: Boolean)
-    var
-        ILE: Record "Item Ledger Entry";
-    begin
-        if not Revert then begin
-            if ILE.Get(3784) then begin
-                ILE."Remaining Quantity" -= 1;
-                ILE.Modify();
-            end;
-            if ILE.Get(3785) then begin
-                ILE.Quantity := 0;
-                ILE.Modify();
-            end;
-        end;
-
-        if Revert then begin
-            if ILE.Get(3784) then begin
-                ILE."Remaining Quantity" += 1;
-                ILE.Modify();
-            end;
-            if ILE.Get(3785) then begin
-                ILE.Quantity := ILE."Remaining Quantity";
-                ILE.Modify();
-            end;
-        end;
     end;
 
 }

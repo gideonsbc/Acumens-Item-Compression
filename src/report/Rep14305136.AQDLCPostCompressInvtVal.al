@@ -25,8 +25,8 @@ report 14305136 "AQDLC Post-Compress Invt. Val"
             begin
                 if ShowDialog then begin
                     Counter += 1;
-                    if (Counter MOD 10) = 0 then
-                        Window.Update(1, "Item No." + ' => ' + "Item Description" + ' (' + Format((Counter DIV 10)) + '0)');
+                    if ((Counter MOD 10) = 0) or (Counter = 1) then
+                        Window.Update(1, "Item No." + ' => ' + "Item Description" + ' (' + Format(Counter) + ')');
                 end;
 
                 ILE.SetCurrentKey("Item No.", "Posting Date");

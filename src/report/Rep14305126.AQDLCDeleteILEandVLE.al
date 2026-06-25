@@ -42,8 +42,8 @@ report 14305126 "AQDLC Delete ILE and VLE"
                 begin
                     if ShowDialog then begin
                         Counter += 1;
-                        if (Counter MOD 1000) = 0 then
-                            Window.Update(2, Format("Entry No.") + ' (' + Format((Counter DIV 1000)) + ',000)');
+                        if ((Counter MOD 1000) = 0) or (Counter = 1) then
+                            Window.Update(2, Format("Entry No.") + ' (' + Format(Counter) + ')');
                         //Window.Update(2, Format("Entry No.") + ' (' + Format((Counter)) + ')');
                     end;
                     if "Document No." in ['QOH-' + Format(MaxPostingDate) + '-' + Format(PostingDateRunNo), 'MILE-' + Format(MaxPostingDate) + '-' + Format(PostingDateRunNo)] then

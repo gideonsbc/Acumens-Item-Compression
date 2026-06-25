@@ -23,6 +23,7 @@ page 14305136 "AQDLC Item Quantity vs Remn"
                 field("As of Date"; Rec."As of Date")
                 {
                     ToolTip = 'Specifies the value of the As of Date field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Item No."; Rec."Item No.")
                 {
@@ -51,6 +52,7 @@ page 14305136 "AQDLC Item Quantity vs Remn"
                 field("Inventory Value"; Rec."Inventory Value")
                 {
                     ToolTip = 'Specifies the value of the Inventory Value field.', Comment = '%';
+                    Visible = false;
                 }
             }
         }

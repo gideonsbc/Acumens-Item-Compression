@@ -24,8 +24,8 @@ report 14305129 "AQDLC Dlt Orphn Itm Apl Entry"
                 RecordDeleted := false;
                 if ShowDialog then begin
                     Counter += 1;
-                    if (Counter MOD 1000) = 0 then
-                        Window.Update(1, Format("Entry No.") + ' (' + Format((Counter DIV 1000)) + ',000)');
+                    if ((Counter MOD 1000) = 0) or (Counter = 1) then
+                        Window.Update(1, Format("Entry No.") + ' (' + Format(Counter) + ')');
                 end;
 
                 if not ItemLedgerEntry.Get(ItemApplnEntry."Item Ledger Entry No.") then begin

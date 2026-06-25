@@ -32,8 +32,8 @@ report 14305137 "AQDLC Compress Item Selection"
             begin
                 if ShowDialog then begin
                     Counter += 1;
-                    if (Counter MOD 100) = 0 then
-                        Window.Update(1, "No." + ' => ' + Description + ' (' + Format((Counter DIV 100)) + '00)');
+                    if ((Counter MOD 100) = 0) or (Counter = 1) then
+                        Window.Update(1, "No." + ' => ' + Description + ' (' + Format(Counter) + ')');
                 end;
 
                 OrderedVal := 0;

@@ -43,8 +43,8 @@ report 14305131 "AQDLC Create Item Application"
             begin
                 if ShowDialog then begin
                     Counter += 1;
-                    if (Counter MOD 1000) = 0 then
-                        Window.Update(1, Format("Entry No.") + ' (' + Format((Counter DIV 1000)) + ',000)');
+                    if ((Counter MOD 1000) = 0) or (Counter = 1) then
+                        Window.Update(1, Format("Entry No.") + ' (' + Format(Counter) + ')');
                 end;
                 "Document Type" := "Document Type"::" ";
                 "Document Line No." := 0;

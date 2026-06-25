@@ -29,8 +29,8 @@ report 14305128 "AQDLC Create ILE Entrs frm QoH"
             begin
                 if ShowDialog then begin
                     Counter += 1;
-                    if (Counter MOD 1000) = 0 then
-                        Window.Update(1, Format("Entry No.") + ' => ' + "Item No." + ' (' + Format((Counter DIV 1000)) + ',000)');
+                    if ((Counter MOD 1000) = 0) or (Counter = 1) then
+                        Window.Update(1, Format("Entry No.") + ' => ' + "Item No." + ' (' + Format(Counter) + ')');
                 end;
 
                 if not Item.Get(QoH."Item No.") then
