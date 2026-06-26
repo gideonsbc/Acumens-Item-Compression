@@ -4,7 +4,7 @@ page 14305131 "AQDLC ILE Compression Schedule"
     Caption = 'Item Compression Schedule';
     PageType = List;
     SourceTable = "AQDLC ILE Compression Schedule";
-    SourceTableView = sorting("Entry No.") order(descending);
+    SourceTableView = sorting("Cut-off Date") order(ascending);
     UsageCategory = Lists;
     DelayedInsert = true;
 

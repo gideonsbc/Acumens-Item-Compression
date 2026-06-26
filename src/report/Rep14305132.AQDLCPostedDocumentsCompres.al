@@ -138,8 +138,8 @@ report 14305132 "AQDLC Posted Documents Compres"
         if ExecutionSummaryTxt = '' then
             ExecutionSummaryTxt := 'Successfully'
         else
-            ExecutionSummaryTxt := ' With Error: \\' + ExecutionSummaryTxt + '\\';
-        Message('Posted Documents Compression Ended ' + ExecutionSummaryTxt + '!\Start Time: %1 End Time: %2\Duration: %3', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
+            ExecutionSummaryTxt := ' With Error: \\' + ExecutionSummaryTxt;
+        Message('Posted Documents Compression Ended ' + ExecutionSummaryTxt + '\\Start Time: %1 End Time: %2\Duration: %3', StartTime, CurrentDateTime, ItemLedgerCompCU.getDuration(StartTime, CurrentDateTime));
 
         PostedDocsCompLog.SetRange("Schedule No.", CompressionScheduleNo);
         if PostedDocsCompLog.Find('-') then

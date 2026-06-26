@@ -43,6 +43,16 @@ table 14305134 "AQDLC Posted Docs Compress Log"
         {
             Caption = 'No. of Records Deleted';
         }
+        field(9; "Register No."; Integer)
+        {
+            TableRelation = "AQDLC Posted Docs Compress Reg";
+        }
+        field(10; Status; Option)
+        {
+            Caption = 'Status';
+            OptionMembers = Incomplete,Failed,Completed;
+            Editable = false;
+        }
     }
     keys
     {
@@ -50,7 +60,9 @@ table 14305134 "AQDLC Posted Docs Compress Log"
         {
             Clustered = true;
         }
-        key(key2; "Schedule No.", "As of Date", "Table ID")
+        key(key2; "Schedule No.", "As of Date", "Table ID", Status)
+        { }
+        key(key3; "Schedule No.", "As of Date", "Table ID", "Register No.")
         { }
     }
     trigger OnInsert()

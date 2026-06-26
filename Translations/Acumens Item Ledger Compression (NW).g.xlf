@@ -563,6 +563,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Log - Field No. of Records Deleted - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 2094030901 - Field 2542492690 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Register No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Log - Field Register No. - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 2094030901 - Field 2127159326 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Schedule No.</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -573,6 +578,11 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Log - Field Start Date/Time - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 2094030901 - Field 513339096 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Status</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Log - Field Status - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 2094030901 - Field 3135334477 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Table ID</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -582,6 +592,41 @@
           <source>Table Name</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Log - Field Table Name - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2293496145 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>AQD Posted Docs Comp Register</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Reg - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2293496145 - Field 2690893824 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Cut-off Date</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Reg - Field Cut-off Date - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2293496145 - Field 2359589773 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Deleted Records</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Reg - Field Deleted Records - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2293496145 - Field 883711285 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Entry No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Reg - Field Entry No. - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2293496145 - Field 1444395444 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Executed By</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Reg - Field Executed By - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2293496145 - Field 2223662438 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Executed On</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Reg - Field Executed On - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2293496145 - Field 2127159326 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>Schedule No.</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Posted Docs Compress Reg - Field Schedule No. - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 2374036503 - Field 3087706269 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>Applied Quanty</source>

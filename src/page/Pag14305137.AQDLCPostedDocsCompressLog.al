@@ -36,6 +36,8 @@ page 14305137 "AQDLC Posted Docs Compress Log"
                 }
                 field("No. of Records Deleted"; Rec."No. of Records Deleted")
                 { }
+                field(Status; Rec.Status)
+                { }
                 field("Start Date/Time"; Rec."Start Date/Time")
                 {
                     ToolTip = 'Specifies the value of the Start Date/Time field.', Comment = '%';

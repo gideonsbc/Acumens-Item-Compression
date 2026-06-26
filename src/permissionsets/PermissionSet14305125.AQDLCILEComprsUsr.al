@@ -50,5 +50,7 @@ permissionset 14305125 "AQDLC ILE Comprs Usr"
         codeunit "AQDLC Posted Documents Comp" = X,
         tabledata "AQDLC Posted Docs Compress Log" = RIMD,
         table "AQDLC Posted Docs Compress Log" = X,
-        page "AQDLC Posted Docs Compress Log" = X;
+        page "AQDLC Posted Docs Compress Log" = X,
+        tabledata "AQDLC Posted Docs Compress Reg" = RIMD,
+        table "AQDLC Posted Docs Compress Reg" = X;
 }

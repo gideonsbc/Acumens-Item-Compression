@@ -15,7 +15,6 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
     tabledata "Transfer Shipment Line" = rimd,
     tabledata "Transfer Receipt Header" = rimd,
     tabledata "Transfer Receipt Line" = rimd,
-    tabledata "Tracking Specification" = rimd,
     tabledata "Job Queue Log Entry" = rimd;
 
     var
@@ -91,16 +90,22 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
         StartEntryNo: Integer;
         LastEntryNo: Integer;
         EndEntryNo: Integer;
+        TableID: Integer;
+        TableName: Text;
     begin
         if MaxPostingDate = 0D then exit;
         OpenWindow();
 
+        CreateCompressionRegister();
+
         //<<Sales Invoices
-        if not CheckIfSkipTable(Database::"Sales Invoice Header") then begin
+        TableID := Database::"Sales Invoice Header";
+        TableName := 'Posted Sales Invoices (Headers and Lines)';
+        if not CheckIfSkipTable(TableID) then begin
             NoOfRecordsDeleted := 0;
-            UpdateWindow(2, 'Posted Sales Invoices');
+            UpdateWindow(2, TableName);
             LogEntryNo := 0;
-            UpdateCompressionLogEntry(0, LogEntryNo, Database::"Sales Invoice Header", 'Posted Sales Invoices (Headers + Lines)');
+            UpdateCompressionLogEntry(0, LogEntryNo, false, TableID, TableName);
 
             Counter := 0;
             PostedSalesInvoices.SetCurrentKey("Posting Date");
@@ -120,24 +125,27 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     if Counter = 1000 then begin
                         UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        UpdateCompressionLogEntry(1, LogEntryNo, false, TableID, TableName);
                         Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedSalesInvoices.Next() = 0;
 
-            UpdateCompressionLogEntry(1, LogEntryNo, Database::"Sales Invoice Header", PostedSalesInvoices.TableName);
+            UpdateCompressionLogEntry(1, LogEntryNo, true, TableID, TableName);
             Commit();
         end;
         //>>Sales Invoices
 
         //<<Purchase Invoices
         CheckExecutionTimeOut();
-        if not CheckIfSkipTable(Database::"Purch. Inv. Header") then begin
+        TableID := Database::"Purch. Inv. Header";
+        TableName := 'Posted Purchase Invoices (Headers and Lines)';
+        if not CheckIfSkipTable(TableID) then begin
             NoOfRecordsDeleted := 0;
-            UpdateWindow(2, 'Posted Purchase Invoices');
+            UpdateWindow(2, TableName);
             LogEntryNo := 0;
-            UpdateCompressionLogEntry(0, LogEntryNo, Database::"Purch. Inv. Header", 'Posted Purchase Invoices (Headers and Lines)');
+            UpdateCompressionLogEntry(0, LogEntryNo, false, TableID, TableName);
 
             Counter := 0;
             PostedPurchInvHdr.SetCurrentKey("Posting Date");
@@ -157,24 +165,27 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     if Counter = 1000 then begin
                         UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        UpdateCompressionLogEntry(1, LogEntryNo, false, TableID, TableName);
                         Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedPurchInvHdr.Next() = 0;
 
-            UpdateCompressionLogEntry(1, LogEntryNo, Database::"Purch. Inv. Header", PostedPurchInvHdr.TableName);
+            UpdateCompressionLogEntry(1, LogEntryNo, true, TableID, TableName);
             Commit();
         end;
         //>>Purchase Invoices
 
         //<<Sales Shipments
         CheckExecutionTimeOut();
-        if not CheckIfSkipTable(Database::"Sales Shipment Header") then begin
+        TableID := Database::"Sales Shipment Header";
+        TableName := 'Posted Sales Shipments (Headers and Lines)';
+        if not CheckIfSkipTable(TableID) then begin
             NoOfRecordsDeleted := 0;
-            UpdateWindow(2, 'Posted Sales Shipments');
+            UpdateWindow(2, TableName);
             LogEntryNo := 0;
-            UpdateCompressionLogEntry(0, LogEntryNo, Database::"Sales Shipment Header", 'Posted Sales Shipments (Headers and Lines)');
+            UpdateCompressionLogEntry(0, LogEntryNo, false, TableID, TableName);
 
             Counter := 0;
             PostedSalesShipmentHdr.SetCurrentKey("Posting Date");
@@ -194,24 +205,27 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     if Counter = 1000 then begin
                         UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        UpdateCompressionLogEntry(1, LogEntryNo, false, TableID, TableName);
                         Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedSalesShipmentHdr.Next() = 0;
 
-            UpdateCompressionLogEntry(1, LogEntryNo, Database::"Sales Shipment Header", PostedSalesShipmentHdr.TableName);
+            UpdateCompressionLogEntry(1, LogEntryNo, true, TableID, TableName);
             Commit();
         end;
         //>>Sales Shipments
 
         //<<Transfer Shipments
         CheckExecutionTimeOut();
-        if not CheckIfSkipTable(Database::"Transfer Shipment Header") then begin
+        TableID := Database::"Transfer Shipment Header";
+        TableName := 'Posted Transfer Shipments (Headers and Lines)';
+        if not CheckIfSkipTable(TableID) then begin
             NoOfRecordsDeleted := 0;
-            UpdateWindow(2, 'Posted Transfer Shipments');
+            UpdateWindow(2, TableName);
             LogEntryNo := 0;
-            UpdateCompressionLogEntry(0, LogEntryNo, Database::"Transfer Shipment Header", 'Posted Transfer Shipments (Headers and Lines)');
+            UpdateCompressionLogEntry(0, LogEntryNo, false, TableID, TableName);
 
             Counter := 0;
             PostedTransferShipmentHdr.SetCurrentKey("Posting Date");
@@ -231,24 +245,27 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     if Counter = 1000 then begin
                         UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        UpdateCompressionLogEntry(1, LogEntryNo, false, TableID, TableName);
                         Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedTransferShipmentHdr.Next() = 0;
 
-            UpdateCompressionLogEntry(1, LogEntryNo, Database::"Transfer Shipment Header", PostedTransferShipmentHdr.TableName);
+            UpdateCompressionLogEntry(1, LogEntryNo, true, TableID, TableName);
             Commit();
         end;
         //>>Transfer Shipments
 
         //<<Transfer Receipts
         CheckExecutionTimeOut();
-        if not CheckIfSkipTable(Database::"Transfer Receipt Header") then begin
+        TableID := Database::"Transfer Receipt Header";
+        TableName := 'Posted Transfer Receipts (Headers and Lines)';
+        if not CheckIfSkipTable(TableID) then begin
             NoOfRecordsDeleted := 0;
-            UpdateWindow(2, 'Posted Transfer Receipts');
+            UpdateWindow(2, TableName);
             LogEntryNo := 0;
-            UpdateCompressionLogEntry(0, LogEntryNo, Database::"Transfer Receipt Header", 'Posted Transfer Receipts (Headers and Lines)');
+            UpdateCompressionLogEntry(0, LogEntryNo, false, TableID, TableName);
 
             Counter := 0;
             PostedTransferRcptHdr.SetCurrentKey("Posting Date");
@@ -268,24 +285,27 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     if Counter = 1000 then begin
                         UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        UpdateCompressionLogEntry(1, LogEntryNo, false, TableID, TableName);
                         Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedTransferRcptHdr.Next() = 0;
 
-            UpdateCompressionLogEntry(1, LogEntryNo, Database::"Transfer Receipt Header", PostedTransferRcptHdr.TableName);
+            UpdateCompressionLogEntry(1, LogEntryNo, true, TableID, TableName);
             Commit();
         end;
         //>>Transfer Receipts
 
         //<<Warehouse Shipments
         CheckExecutionTimeOut();
-        if not CheckIfSkipTable(Database::"Posted Whse. Shipment Header") then begin
+        TableID := Database::"Posted Whse. Shipment Header";
+        TableName := 'Posted Warehouse Shipments (Headers and Lines)';
+        if not CheckIfSkipTable(TableID) then begin
             NoOfRecordsDeleted := 0;
-            UpdateWindow(2, 'Posted Warehouse Shipments');
+            UpdateWindow(2, TableName);
             LogEntryNo := 0;
-            UpdateCompressionLogEntry(0, LogEntryNo, Database::"Posted Whse. Shipment Header", 'Posted Warehouse Shipments (Headers and Lines)');
+            UpdateCompressionLogEntry(0, LogEntryNo, false, TableID, TableName);
 
             Counter := 0;
             PostedWarehouseShipmentHdr.SetCurrentKey("Posting Date");
@@ -305,24 +325,27 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     if Counter = 1000 then begin
                         UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        UpdateCompressionLogEntry(1, LogEntryNo, false, TableID, TableName);
                         Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedWarehouseShipmentHdr.Next() = 0;
 
-            UpdateCompressionLogEntry(1, LogEntryNo, Database::"Posted Whse. Shipment Header", PostedWarehouseShipmentHdr.TableName);
+            UpdateCompressionLogEntry(1, LogEntryNo, true, TableID, TableName);
             Commit();
         end;
         //>>Warehouse Shipments
 
         //<<Warehouse Receipts
         CheckExecutionTimeOut();
-        if not CheckIfSkipTable(Database::"Posted Whse. Receipt Header") then begin
+        TableID := Database::"Posted Whse. Receipt Header";
+        TableName := 'Posted Warehouse Receipts (Headers and Lines)';
+        if not CheckIfSkipTable(TableID) then begin
             NoOfRecordsDeleted := 0;
-            UpdateWindow(2, 'Posted Warehouse Receipts');
+            UpdateWindow(2, TableName);
             LogEntryNo := 0;
-            UpdateCompressionLogEntry(0, LogEntryNo, Database::"Posted Whse. Receipt Header", 'Posted Warehouse Receipts (Headers and Lines)');
+            UpdateCompressionLogEntry(0, LogEntryNo, false, TableID, TableName);
 
             Counter := 0;
             PostedWhseRcptHdr.SetCurrentKey("Posting Date");
@@ -342,24 +365,27 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                     if Counter = 1000 then begin
                         UpdateWindow(3, Format(NoOfRecordsDeleted));
                         Counter := 0;
+                        UpdateCompressionLogEntry(1, LogEntryNo, false, TableID, TableName);
                         Commit();
                         CheckExecutionTimeOut();
                     end;
 
                 until PostedWhseRcptHdr.Next() = 0;
 
-            UpdateCompressionLogEntry(1, LogEntryNo, Database::"Posted Whse. Receipt Header", PostedWhseRcptHdr.TableName);
+            UpdateCompressionLogEntry(1, LogEntryNo, true, TableID, TableName);
             Commit();
         end;
         //>>Warehouse Receipts
 
         //<<Job Queue Log Entries
         CheckExecutionTimeOut();
-        if not CheckIfSkipTable(Database::"Job Queue Log Entry") then begin
+        TableID := Database::"Job Queue Log Entry";
+        TableName := 'Job Queue Log Entries';
+        if not CheckIfSkipTable(TableID) then begin
             NoOfRecordsDeleted := 0;
-            UpdateWindow(2, 'Job Queue Log Entries');
+            UpdateWindow(2, TableName);
             LogEntryNo := 0;
-            UpdateCompressionLogEntry(0, LogEntryNo, Database::"Job Queue Log Entry", 'Job Queue Log Entries');
+            UpdateCompressionLogEntry(0, LogEntryNo, false, TableID, TableName);
 
             MaxPostingDateTime := CreateDateTime(CalcDate('<+1D>', MaxPostingDate), 000000T);
             LastEntryNo := 0;
@@ -383,6 +409,7 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
 
                     NoOfRecordsDeleted += EndEntryNo;
                     UpdateWindow(3, Format(NoOfRecordsDeleted));
+                    UpdateCompressionLogEntry(1, LogEntryNo, false, TableID, TableName);
 
                     Commit();
                     CheckExecutionTimeOut();
@@ -390,7 +417,7 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
                 until EndEntryNo >= LastEntryNo;
             end;
 
-            UpdateCompressionLogEntry(1, LogEntryNo, Database::"Job Queue Log Entry", JobQueueLogEntry.TableName);
+            UpdateCompressionLogEntry(1, LogEntryNo, true, TableID, TableName);
             Commit();
         end;
         //>>Job Queue Log Entries
@@ -398,59 +425,27 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
         CloseWindow();
     end;
 
-    local procedure DeletePostedWhseReceipts(DocNosFilter: Text)
-    var
-        PostedWhseReceiptHeader: Record "Posted Whse. Shipment Header";
-    begin
-        if DocNosFilter = '' then exit;
-
-        PostedWhseReceiptHeader.SetCurrentKey("No.");
-        PostedWhseReceiptHeader.SetFilter("No.", DocNosFilter);
-        PostedWhseReceiptHeader.DeleteAll();
-
-        Commit();
-    end;
-
-    local procedure DeleteJobQEntries(DocNosFilter: Text)
-    var
-        JobQLogEntry: Record "Job Queue Log Entry";
-    begin
-        if DocNosFilter = '' then exit;
-
-        JobQLogEntry.SetCurrentKey("Entry No.");
-        JobQLogEntry.SetFilter("Entry No.", DocNosFilter);
-        JobQLogEntry.DeleteAll();
-
-        Commit();
-    end;
-
     local procedure CheckIfSkipTable(TableNo: Integer): Boolean
     var
         PostedDocsCompressionLog: Record "AQDLC Posted Docs Compress Log";
     begin
-        PostedDocsCompressionLog.SetCurrentKey("Schedule No.", "As of Date", "Table ID");
+        if not SkipCompressedTables then exit(false);
+
+        PostedDocsCompressionLog.SetCurrentKey("Schedule No.", "As of Date", "Table ID", Status);
         PostedDocsCompressionLog.SetRange("Schedule No.", ScheduleNo);
         PostedDocsCompressionLog.SetRange("Table ID", TableNo);
         PostedDocsCompressionLog.SetRange("As of Date", MaxPostingDate);
-        if PostedDocsCompressionLog.Find('-') then begin
-            if SkipCompressedTables then begin
-                if PostedDocsCompressionLog."End Date/Time" = 0DT then begin //was incomplete
-                    PostedDocsCompressionLog.Delete();
-                    exit(false);
-                end else
-                    exit(true)
-            end else begin
-                PostedDocsCompressionLog.Delete();
-                exit(false);
-            end;
-        end;
+        PostedDocsCompressionLog.SetRange(Status, PostedDocsCompressionLog.Status::Completed);
+        if PostedDocsCompressionLog.Find('-') then
+            exit(true);
         exit(false);
     end;
 
     var
         LogEntryNo: Integer;
+        ScheduleMarkedAsProcessed: Boolean;
 
-    local procedure UpdateCompressionLogEntry(vAction: Option Create,Update; var vLogEntryNo: Integer; TableNo: Integer; TableName: Text)
+    local procedure UpdateCompressionLogEntry(vAction: Option Create,Update; var vLogEntryNo: Integer; vCompleted: Boolean; TableNo: Integer; TableName: Text)
     var
         PostedDocsCompressionLog: Record "AQDLC Posted Docs Compress Log";
     begin
@@ -460,6 +455,7 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
 
         if vAction = vAction::Create then begin
             PostedDocsCompressionLog.Init();
+            PostedDocsCompressionLog."Register No." := RegNo;
             PostedDocsCompressionLog."Schedule No." := ScheduleNo;
             PostedDocsCompressionLog."As of Date" := MaxPostingDate;
             PostedDocsCompressionLog."Table ID" := TableNo;
@@ -470,14 +466,18 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
         end;
 
         if vAction = vAction::Update then begin
-            PostedDocsCompressionLog.SetCurrentKey("Schedule No.", "As of Date", "Table ID");
+            PostedDocsCompressionLog.SetCurrentKey("Schedule No.", "As of Date", "Table ID", "Register No.");
+            PostedDocsCompressionLog.SetRange("Register No.", RegNo);
             PostedDocsCompressionLog.SetRange("Schedule No.", ScheduleNo);
             PostedDocsCompressionLog.SetRange("Table ID", TableNo);
             PostedDocsCompressionLog.SetRange("As of Date", MaxPostingDate);
             if PostedDocsCompressionLog.Find('-') then begin
                 PostedDocsCompressionLog."End Date/Time" := CurrentDateTime;
-                PostedDocsCompressionLog."No. of Records Deleted" := NoOfRecordsDeleted;
+                PostedDocsCompressionLog."No. of Records Deleted" += NoOfRecordsDeleted;
+                if vCompleted then
+                    PostedDocsCompressionLog.Status := PostedDocsCompressionLog.Status::Completed;
                 PostedDocsCompressionLog.Modify();
+                MarkScheduleAsProcessed();
             end;
         end;
     end;
@@ -504,6 +504,36 @@ codeunit 14305128 "AQDLC Posted Documents Comp"
         if CurrentDateTime >= ExpectedExecutionEndDt then begin
             ExecutionTimeOut := true;
             Error(ExecutionTimeOutMsg);
+        end;
+    end;
+
+    var
+        RegNo: Integer;
+
+    local procedure CreateCompressionRegister()
+    var
+        PostedDocsCompReg: Record "AQDLC Posted Docs Compress Reg";
+    begin
+        PostedDocsCompReg.Init();
+        PostedDocsCompReg."Cut-off Date" := MaxPostingDate;
+        PostedDocsCompReg."Schedule No." := ScheduleNo;
+        PostedDocsCompReg."Executed By" := UserId;
+        PostedDocsCompReg."Executed On" := CurrentDateTime;
+        PostedDocsCompReg.Insert(true);
+        RegNo := PostedDocsCompReg."Entry No.";
+    end;
+
+    local procedure MarkScheduleAsProcessed()
+    var
+        CompressionSchedule: Record "AQDLC ILE Compression Schedule";
+    begin
+        if ScheduleNo = 0 then exit;
+        if ScheduleMarkedAsProcessed then exit;
+        if CompressionSchedule.Get(ScheduleNo) and (not CompressionSchedule.Processed) then begin
+            CompressionSchedule.Processed := true;
+            CompressionSchedule.Modify();
+
+            ScheduleMarkedAsProcessed := true;
         end;
     end;
 }
