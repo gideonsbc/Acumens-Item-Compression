@@ -190,6 +190,13 @@ report 14305127 "AQDLC Compression Data Analys"
     procedure SetRunParameters(vCompressionScheduleNo: Integer)
     begin
         CompressionScheduleNo := vCompressionScheduleNo;
+
+        if CompressionScheduleNo <> 0 then begin
+            SkipCompressedItems := true;
+            if CompressionSchedule.Get(CompressionScheduleNo) then begin
+                AsOfDate := CompressionSchedule."Cut-off Date";
+            end;
+        end;
     end;
 
     var

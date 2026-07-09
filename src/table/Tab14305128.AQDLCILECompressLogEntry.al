@@ -64,6 +64,14 @@ table 14305128 "AQDLC ILE Compress Log Entry"
         {
             Editable = false;
         }
+        field(13; "No. of Records Deleted"; Integer)
+        {
+            Caption = 'No. of Records Deleted';
+        }
+        field(14; "No. of Records Created"; Integer)
+        {
+            Caption = 'No. of Records Created';
+        }
     }
     keys
     {

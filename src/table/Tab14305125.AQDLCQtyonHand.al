@@ -114,5 +114,7 @@ table 14305125 "AQDLC Qty on Hand"
         }
         key(key2; "Item No.", "Register No.", "Location Code", "Variant Code")
         { }
+        key(key3; "Item No.", "Register No.", "Posting Date")
+        { }
     }
 }

@@ -99,7 +99,6 @@ report 14305126 "AQDLC Delete ILE and VLE"
 
                 trigger OnPostDataItem();
                 begin
-                    //DeleteEntriesInBatches();
                 end;
             }
             trigger OnPreDataItem();
@@ -181,36 +180,4 @@ report 14305126 "AQDLC Delete ILE and VLE"
         ItemRegisterFilterText: Text;
         ILEsBatchDeleteCounter: Integer;
         ILECompressionSingleInst: Codeunit "AQDLC ILE Compress Single Inst";
-
-    local procedure DeleteEntriesInBatches()
-    var
-        ILE: Record "Item Ledger Entry";
-        ItemApplnEntry: Record "Item Application Entry";
-    begin
-        if ILEsFilterText = '' then exit;
-
-        ValueEntry.SetCurrentKey("Item Ledger Entry No.", "Valuation Date", "Posting Date");
-        ValueEntry.SetFilter("Item Ledger Entry No.", ILEsFilterText);
-        //ValueEntry.SetFilter("Posting Date", '<=%1', MaxPostingDate);
-        //VEDeleteCount += ValueEntry.Count();
-        ValueEntry.DeleteAll(true); //to delete item ledger relations
-
-        TrackingSpecification.SetFilter("Item Ledger Entry No.", ILEsFilterText);
-        TrackingSpecification.DeleteAll();
-
-        ItemApplnEntry.SetFilter("Item Ledger Entry No.", ILEsFilterText);
-        ItemApplnEntry.DeleteAll();
-
-        ItemApplnEntry.Reset();
-        ItemApplnEntry.SetFilter("Inbound Item Entry No.", ILEsFilterText);
-        ItemApplnEntry.DeleteAll();
-
-        ItemApplnEntry.Reset();
-        ItemApplnEntry.SetFilter("Outbound Item Entry No.", ILEsFilterText);
-        ItemApplnEntry.DeleteAll();
-
-        ILE.SetCurrentKey("Entry No.");
-        ILE.SetFilter("Entry No.", ILEsFilterText);
-        ILE.DeleteAll();
-    end;
 }

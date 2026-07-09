@@ -29,7 +29,7 @@ report 14305130 "AQDLC Compress Add. Tables Rec"
         DeleteRecord: Boolean;
     begin
         if ShowDialog then
-            Window.Open('[7/7] Compressing Related Tables...');
+            Window.Open('[7/7] Compressing Additional Tables...');
         DateToFilter := MaxPostingDate;
         if DateToFilter = 0D then
             DateToFilter := DMY2DATE(1, 1, 2015);

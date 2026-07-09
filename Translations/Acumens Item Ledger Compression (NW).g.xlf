@@ -188,6 +188,16 @@
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC ILE Compress Log Entry - Field No. of ILEs Deleted - Property Caption</note>
         </trans-unit>
+        <trans-unit id="Table 2894207471 - Field 513786324 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No. of Records Created</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC ILE Compress Log Entry - Field No. of Records Created - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 2894207471 - Field 3883614231 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No. of Records Deleted</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC ILE Compress Log Entry - Field No. of Records Deleted - Property Caption</note>
+        </trans-unit>
         <trans-unit id="Table 2894207471 - Field 564145202 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>No. of VEs Created</source>
           <note from="Developer" annotates="general" priority="2"></note>
@@ -257,6 +267,16 @@
           <source>No. of ILEs Deleted</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC ILE Compression Register - Field No. of ILEs Deleted - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 457541344 - Field 513786324 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No. of Records Created</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC ILE Compression Register - Field No. of Records Created - Property Caption</note>
+        </trans-unit>
+        <trans-unit id="Table 457541344 - Field 3883614231 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
+          <source>No. of Records Deleted</source>
+          <note from="Developer" annotates="general" priority="2"></note>
+          <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC ILE Compression Register - Field No. of Records Deleted - Property Caption</note>
         </trans-unit>
         <trans-unit id="Table 457541344 - Field 564145202 - Property 2879900210" size-unit="char" translate="yes" xml:space="preserve">
           <source>No. of VEs Created</source>
@@ -754,7 +774,7 @@
           <note from="Xliff Generator" annotates="general" priority="3">Table AQDLC Qty on Hand - Field Variant Code - Property Caption</note>
         </trans-unit>
         <trans-unit id="Codeunit 3988054447 - NamedType 1310296204" size-unit="char" translate="yes" xml:space="preserve">
-          <source>Compressing Item Ledger Entries\Period: #1#####\Processing Item: #2#####\Status: #3#####</source>
+          <source>Compressing Item Ledger Entries\Period: #1#####\Processing Item: #2#####\Step: #3#################\Counter: #4#################</source>
           <note from="Developer" annotates="general" priority="2"></note>
           <note from="Xliff Generator" annotates="general" priority="3">Codeunit AQDLC Item Ledger Compression - NamedType Txt000</note>
         </trans-unit>

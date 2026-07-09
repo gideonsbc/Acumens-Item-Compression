@@ -72,6 +72,25 @@ report 14305137 "AQDLC Compress Item Selection"
                 group(GroupName)
                 {
                     Caption = 'Options';
+                    field(CompressionScheduleNo; CompressionScheduleNo)
+                    {
+                        Caption = 'Schedule No.';
+                        TableRelation = "AQDLC ILE Compression Schedule";
+                        ToolTip = 'The compression schedule to be executed after this selection';
+
+                        trigger OnValidate()
+                        var
+                            CompressionSchedule: Record "AQDLC ILE Compression Schedule";
+                        begin
+                            if CompressionScheduleNo = 0 then exit;
+
+                            if CompressionSchedule.Get(CompressionScheduleNo) then begin
+                                AsOfDate := CompressionSchedule."Cut-off Date";
+                                SkipCompressedItems := true;
+                                CurrReport.RequestOptionsPage.Update(false);
+                            end;
+                        end;
+                    }
                     field(AsOfDate; AsOfDate)
                     {
                         Caption = 'As at Date';
@@ -91,25 +110,6 @@ report 14305137 "AQDLC Compress Item Selection"
                     field(SortingOrder; SortingOrder)
                     {
                         Caption = 'Sorting Order';
-                    }
-                    field(CompressionScheduleNo; CompressionScheduleNo)
-                    {
-                        Caption = 'Schedule No.';
-                        TableRelation = "AQDLC ILE Compression Schedule";
-                        ToolTip = 'The compression schedule to be executed after this selection';
-
-                        trigger OnValidate()
-                        var
-                            CompressionSchedule: Record "AQDLC ILE Compression Schedule";
-                        begin
-                            if CompressionScheduleNo = 0 then exit;
-
-                            if CompressionSchedule.Get(CompressionScheduleNo) then begin
-                                AsOfDate := CompressionSchedule."Cut-off Date";
-                                SkipCompressedItems := true;
-                                CurrReport.RequestOptionsPage.Update(false);
-                            end;
-                        end;
                     }
                     group(SkipCompressedItemsGrp)
                     {

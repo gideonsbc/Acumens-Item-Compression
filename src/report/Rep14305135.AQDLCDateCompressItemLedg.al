@@ -45,6 +45,7 @@ report 14305135 "AQDLC Date Compress Item Ledg"
                 StartTimeoutCountDown(ExecutionStartDt);
                 StartTime := CurrentDateTime;
                 OpenWindow();
+                ILECompressionSingleInst.SetILECompressionTask('');
                 ILECompressionSingleInst.SetILECompressionParams(EndingDate, PostingDateRunNo, RegNo, CalledFromRegisterNo, CompressionScheduleNo, ScheduleDescription);
             end;
 
@@ -70,16 +71,17 @@ report 14305135 "AQDLC Date Compress Item Ledg"
 
             trigger OnPostDataItem()
             begin
-                UpdateWindow(1, '');
+                //UpdateWindow(1, '');
                 if SomethingCompressed then begin
-                    UpdateWindow(3, 'Compress Related Tables (7/7)');
+                    //UpdateWindow(3, 'Compress Additional Tables like Registers (7/7)');
                     ILECompressionSingleInst.SetILECompressionTask('CompressAdditionalRecs');
+                    ILECompressionSingleInst.SetILECompressionParams(EndingDate, PostingDateRunNo, RegNo, CalledFromRegisterNo, CompressionScheduleNo, ScheduleDescription);
                     ClearLastError();
                     if Codeunit.Run(Codeunit::"AQDLC Item Ledger Compression", Item) then
                         ILECompressionCU.CloseILECompressionLog(2, ExecutionTimeOut, ExecutionTimeOutMsg)
                     else begin
                         UpdateExecutionSummary(GetLastErrorText);
-                        ILECompressionCU.CloseILECompressionLog(1, ExecutionTimeOut, ExecutionTimeOutMsg);
+                        ILECompressionCU.CloseILECompressionLog(1, true, GetLastErrorText);
                     end;
                 end else
                     ILECompressionCU.CloseILECompressionLog(1, ExecutionTimeOut, ExecutionTimeOutMsg);
@@ -183,10 +185,8 @@ report 14305135 "AQDLC Date Compress Item Ledg"
 
         if CompressionScheduleNo = 0 then
             GetApplicableCompressionSchedule();
-        if CompressionScheduleNo <> 0 then
+        if CompressionScheduleNo <> 0 then begin
             SkipCompressedItems := true;
-
-        if not GuiAllowed then begin
             if CompressionSchedule.Get(CompressionScheduleNo) then begin
                 EndingDate := CompressionSchedule."Cut-off Date";
                 ScheduleDescription := CompressionSchedule.Description;
@@ -211,6 +211,14 @@ report 14305135 "AQDLC Date Compress Item Ledg"
     procedure SetRunParameters(vCompressionScheduleNo: Integer)
     begin
         CompressionScheduleNo := vCompressionScheduleNo;
+
+        if CompressionScheduleNo <> 0 then begin
+            SkipCompressedItems := true;
+            if CompressionSchedule.Get(CompressionScheduleNo) then begin
+                EndingDate := CompressionSchedule."Cut-off Date";
+                ScheduleDescription := CompressionSchedule.Description;
+            end;
+        end;
     end;
 
     var

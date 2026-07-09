@@ -366,8 +366,8 @@ page 14305124 "AQDLC ILE Compression Setup"
 
         CompressionSchedule.Init();
         CompressionSchedule."Entry No." := 1;
-        CompressionSchedule.Year := Date2DMY(Rec."Latest Valid December 31", 3);
-        CompressionSchedule.Validate("Cut-off Date", Rec."Latest Valid December 31");
+        CompressionSchedule.Validate(Year, Date2DMY(Rec."Latest Valid December 31", 3));
+        //CompressionSchedule.Validate("Cut-off Date", Rec."Latest Valid December 31");
         CompressionSchedule.Insert(true);
     end;
 

@@ -87,6 +87,18 @@ table 14305127 "AQDLC ILE Compression Register"
         {
             Editable = false;
         }
+        field(16; "No. of Records Deleted"; Integer)
+        {
+            Caption = 'No. of Records Deleted';
+            FieldClass = FlowField;
+            CalcFormula = sum("AQDLC ILE Compress Log Entry"."No. of Records Deleted" where("Log No." = field("Entry No.")));
+        }
+        field(17; "No. of Records Created"; Integer)
+        {
+            Caption = 'No. of Records Created';
+            FieldClass = FlowField;
+            CalcFormula = sum("AQDLC ILE Compress Log Entry"."No. of Records Created" where("Log No." = field("Entry No.")));
+        }
     }
     keys
     {

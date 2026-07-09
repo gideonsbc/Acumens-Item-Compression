@@ -69,12 +69,24 @@ page 14305127 "AQDLC ILE Compression Register"
             {
                 Caption = 'Modified Records';
                 field("No. of ILEs Deleted"; Rec."No. of ILEs Deleted")
-                { }
+                {
+                    Visible = false;
+                }
                 field("No. of VEs Deleted"; Rec."No. of VEs Deleted")
+                {
+                    Visible = false;
+                }
+                field("No. of Records Deleted"; Rec."No. of Records Deleted")
                 { }
                 field("No. of ILEs Created"; Rec."No. of ILEs Created")
-                { }
+                {
+                    Visible = false;
+                }
                 field("No. of VEs Created"; Rec."No. of VEs Created")
+                {
+                    Visible = false;
+                }
+                field("No. of Records Created"; Rec."No. of Records Created")
                 { }
             }
             part("AQD ILE Compression Log Entrs"; "AQDLC ILE Compress Log Entries")

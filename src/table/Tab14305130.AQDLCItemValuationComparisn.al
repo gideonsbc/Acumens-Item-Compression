@@ -71,5 +71,7 @@ table 14305130 "AQDLC Item Valuation Comparisn"
         }
         key(Key1; "Register No.")
         { }
+        key(key2; "Item No.", "Register No.", "Cut-off Date")
+        { }
     }
 }
