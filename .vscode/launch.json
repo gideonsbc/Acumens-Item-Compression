@@ -40,7 +40,7 @@
             "request": "launch",
             "type": "al",
             "environmentType": "Sandbox",
-            "environmentName": "Sandbox0702",
+            "environmentName": "Sandbox0708",
             "tenant": "44457f84-c77b-426d-899d-45a659e0a65f",
             "startupObjectId": 14305124,
             "startupObjectType": "Page",

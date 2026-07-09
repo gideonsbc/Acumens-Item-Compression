@@ -16,4 +16,12 @@ tableextension 14305127 AQDLCItem extends Item
             Editable = false;
         }
     }
+
+
+    keys
+    {
+        key(AQDLCKey1; "AQDLC Last Compression No.")
+        {
+        }
+    }
 }
